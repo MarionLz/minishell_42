@@ -67,6 +67,7 @@ void	get_type(char **str, int *type, char *end_input);
 int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
 
 /* CREATE_NODES */
+t_node	*create_pipe_node(t_node *left, t_node *right);
 t_node	*create_exec_node(char **start_scan, char *end_input);
 
 /* PARSING_UTILS */

@@ -16,7 +16,7 @@ t_node	*parse_pipe(char **start_scan, char *end_input)
 	if (insight_input(start_scan, end_input, "|"))
 	{
 		get_token(start_scan, end_input, 0, 0);
-		node = create_pipe_node(node, );
+		node = create_pipe_node(node, parse_pipe(start_scan, end_input));
 	}
 	return (node);
 }
