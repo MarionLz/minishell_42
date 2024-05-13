@@ -1,0 +1,16 @@
+# Ignore executables
+*.exe
+*.out
+minishell
+
+# Ignore object files
+*.o
+
+# Ignore librairies
+*.a
+
+#Ignore text files
+*.txt
+
+#Ignore .vscode
+.vscode/
