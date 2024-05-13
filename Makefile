@@ -7,6 +7,7 @@ LDFLAGS = -lreadline
 RM = rm -f
 
 SRCS =	$(wildcard $(DIR_SRC)*.c) \
+		$(wildcard $(DIR_SRC)/parse/*.c) \
 
 OBJ = $(SRCS:.c=.o)
 

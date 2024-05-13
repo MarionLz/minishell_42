@@ -57,7 +57,21 @@ typedef struct s_pipe_node
 }	t_pipe_node;
 
 /* PARSING */
+t_node	*parse_exec(char **start_scan, char *end_input);
+t_node	*nulterminate(t_node *tree);
 t_node	*parse_input(char *input);
+
+/* TOKEN */
+int	insight_input(char **start_token, char *end_input, char *target);
+void	get_type(char **str, int *type, char *end_input);
+int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
+
+/* CREATE_NODES */
+t_node	*create_exec_node(char **start_scan, char *end_input);
+
+/* PARSING_UTILS */
+bool	is_whitespace(char c);
+bool	is_symbol(char c);
 
 /* RUN */
 void	run(t_node *tree, char **env);
