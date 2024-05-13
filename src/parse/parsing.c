@@ -8,6 +8,19 @@ t_node	*parse_exec(char **start_scan, char *end_input)
 	return (node);
 }
 
+t_node	*parse_pipe(char **start_scan, char *end_input)
+{
+	t_node	*node;
+
+	node = parse_exec(start_scan, end_input);
+	if (insight_input(start_scan, end_input, "|"))
+	{
+		get_token(start_scan, end_input, 0, 0);
+		node = create_pipe_node(node, );
+	}
+	return (node);
+}
+
 /* nulterminate : Replace the character following the command or its argument with
 a NULL character to indicate the end of the string. Thus, during execution, the program
 will only read until the NULL character. */
@@ -36,6 +49,6 @@ t_node	*parse_input(char *input)
 	t_node	*tree;
 
 	end_input = input + ft_strlen(input);
-	tree = parse_exec(&input, end_input);
+	tree = parse_pipe(&input, end_input);
 	return (nulterminate(tree));
 }

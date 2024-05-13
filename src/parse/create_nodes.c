@@ -4,6 +4,20 @@
 exec_node->args[i]: pointer to the beginning of the command or argument.
 exec_node->end_args[i]: pointer to the character following the command or argument.*/
 
+t_node	*create_pipe_node(char *left, char *right)
+{
+	t_pipe_node	*pipe_node;
+
+	pipe_node = malloc(sizeof(*pipe_node));
+	if (!pipe_node)
+		return (NULL);
+	ft_memset(pipe_node, 0, sizeof(*pipe_node));
+	pipe_node->type = PIPE;
+	pipe_node->left = left;
+	pipe_node->right = right;
+	return ((t_node *)pipe_node);
+}
+
 t_node	*create_exec_node(char **start_scan, char *end_input)
 {
 	t_exec_node	*exec_node;

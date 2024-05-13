@@ -2,21 +2,21 @@
 
 /* insight_input : Check if the beginning of the next token contains any of the characters contained in target.
 It iterates through the input as long as the read character is a whitespace.
-It updates the start_token pointer (the beginning of the new token).
+It updates the start_scan pointer (the beginning of the new token).
 It returns true if any of the characters contained in target are found. */
 
-int	insight_input(char **start_token, char *end_input, char *target)
+int	insight_input(char **start_scan, char *end_input, char *target)
 {
 	char *str;
 
-	str = *start_token;
+	str = *start_scan;
 	while (str < end_input && is_whitespace(*str))
 		str++;
-	*start_token = str;
+	*start_scan = str;
 	return (*str && ft_strchr(target, *str));
 }
 
-/* get_type : initialise the type of the token. s*/
+/* get_type : initialise the type of the token. */
 
 void	get_type(char **str, int *type, char *end_input)
 {
