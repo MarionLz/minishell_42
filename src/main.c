@@ -44,6 +44,8 @@ int	main(int ac, char **av, char **env)
 		if (input == NULL)
 			return (1);
 		tree = parse_input(input);
-		run(tree, env_cpy);
+		if (ft_fork() == 0)
+			run(tree, env_cpy);
+		wait(NULL);
 	}
 }
