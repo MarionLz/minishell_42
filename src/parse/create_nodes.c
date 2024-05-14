@@ -31,6 +31,8 @@ t_node	*create_exec_node(char **start_scan, char *end_input)
 		return (NULL);
 	ft_memset(exec_node, 0, sizeof(*exec_node));
 	exec_node->type = EXEC;
+	if (is_builtin(*start_scan) == true)
+		exec_node->is_builtin = true;
 	while (*start_scan < end_input && !insight_input(start_scan, end_input, "|"))
 	{
 		get_token(start_scan, end_input, &start_token, &end_token);
