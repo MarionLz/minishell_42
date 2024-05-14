@@ -21,6 +21,8 @@ typedef enum s_tokentype
 	ARG,
 	ENV_VAR,
 	PIPE,
+	REDIR,
+	BUILTIN,
 	IN_REDIR,		/* < */
 	OUT_REDIR,		/* > */
 	HEREDOC,		/* << */
@@ -63,9 +65,9 @@ t_node	*nulterminate(t_node *tree);
 t_node	*parse_input(char *input);
 
 /* TOKEN */
-int	insight_input(char **start_token, char *end_input, char *target);
+int		insight_input(char **start_token, char *end_input, char *target);
 void	get_type(char **str, int *type, char *end_input);
-int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
+int		get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
 
 /* CREATE_NODES */
 t_node	*create_pipe_node(t_node *left, t_node *right);
@@ -78,6 +80,33 @@ int		builtin_cmp(char *str1, char *str2, int n);
 bool	is_builtin(char *cmd);
 
 /* RUN */
+int		ft_fork(void);
 void	run(t_node *tree, char **env);
+
+/* RUN EXEC */
+void	run_exec(t_node *tree, char **env);
+
+/* CD */
+void    ft_cd(char *cmd);
+
+/* PWD */
+void    ft_pwd(void);
+
+/* ECHO */
+void	ft_echo(char *cmd, int fd);
+
+/* EXIT */
+int		ft_exit(void);
+
+/* ENV */
+void	ft_env(t_data *data);
+
+/* EXPORT */
+void	ft_export(char *cmd, t_data *data);
+int		does_var_exist(char *cmd, t_data *data);
+int		is_var_valid(char *var);
+
+/* UNSET */
+char	**unset(char *cmd, t_data *data);
 
 #endif
