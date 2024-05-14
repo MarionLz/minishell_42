@@ -37,6 +37,7 @@ typedef struct s_node
 typedef struct s_exec_node
 {
 	int		type;
+	bool	is_builtin;
 	char	*args[MAX_ARGS];
 	char	*end_args[MAX_ARGS];
 }	t_exec_node;
@@ -69,11 +70,14 @@ void	get_type(char **str, int *type, char *end_input);
 int		get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
 
 /* CREATE_NODES */
+t_node	*create_pipe_node(t_node *left, t_node *right);
 t_node	*create_exec_node(char **start_scan, char *end_input);
 
 /* PARSING_UTILS */
 bool	is_whitespace(char c);
 bool	is_symbol(char c);
+int		builtin_cmp(char *str1, char *str2, int n);
+bool	is_builtin(char *cmd);
 
 /* RUN */
 int		ft_fork(void);
