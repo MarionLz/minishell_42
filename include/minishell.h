@@ -35,6 +35,7 @@ typedef struct s_node
 typedef struct s_exec_node
 {
 	int		type;
+	bool	is_builtin;
 	char	*args[MAX_ARGS];
 	char	*end_args[MAX_ARGS];
 }	t_exec_node;
@@ -73,6 +74,8 @@ t_node	*create_exec_node(char **start_scan, char *end_input);
 /* PARSING_UTILS */
 bool	is_whitespace(char c);
 bool	is_symbol(char c);
+int		builtin_cmp(char *str1, char *str2, int n);
+bool	is_builtin(char *cmd);
 
 /* RUN */
 void	run(t_node *tree, char **env);
