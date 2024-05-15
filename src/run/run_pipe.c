@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-void	run_pipe(t_node *tree, char **env)
+void	run_pipe(t_node *tree, t_env *env)
 {
 	t_pipe_node *pipe_node;
 	int	fd[2];

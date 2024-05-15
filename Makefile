@@ -9,6 +9,7 @@ RM = rm -f
 SRCS =	$(wildcard $(DIR_SRC)*.c) \
 		$(wildcard $(DIR_SRC)/parse/*.c) \
 		$(wildcard $(DIR_SRC)/run/*.c) \
+		$(wildcard $(DIR_SRC)/builtins/*.c) \
 
 OBJ = $(SRCS:.c=.o)
 

@@ -14,10 +14,8 @@ void	run(t_node *tree, t_env *env)
 {
 	if (tree->type == EXEC)
 		run_exec(tree, env);
-	else if (tree->type == BUILTIN)
-		run_builtin(tree, env);
 	else if (tree->type == REDIR)
-		run_redir(tree);
+		run_redir(tree, env);
 	else if (tree->type == PIPE)
 		run_pipe(tree, env);
 }

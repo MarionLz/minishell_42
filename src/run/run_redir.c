@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-void	run_redir(t_node *tree, char **env)
+void	run_redir(t_node *tree, t_env *env)
 {
 	t_redir_node *redir_node;
 
