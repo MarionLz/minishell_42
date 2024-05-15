@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-void	error_unset(char **tab, int i)
+/* void	error_unset(char **tab, int i)
 {
 	int	j;
 
@@ -105,4 +105,4 @@ char	**unset(char *cmd, t_data *data)
 	free_env(data->new_env, tab_len(data->new_env));
 	free_env(split_cmd, tab_len(split_cmd));
 	return (env_copy);
-}
+} */

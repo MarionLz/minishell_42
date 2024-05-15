@@ -6,11 +6,11 @@ int	ft_fork(void)
 
 	pid = fork();
 	if (pid == -1)
-		perror("fork");
+		ft_error("fork");
 	return (pid);
 }
 
-void	run(t_node *tree, char **env)
+void	run(t_node *tree, t_env *env)
 {
 	if (tree->type == EXEC)
 		run_exec(tree, env);

@@ -1,6 +1,5 @@
 #include "../../include/minishell.h"
 
-//A gerer = mise a jour de la variable env OLDPWD
 void    ft_pwd(void)
 {
 	char *directory;
@@ -8,10 +7,7 @@ void    ft_pwd(void)
 	directory = NULL;
 	directory = getcwd(directory, 0);
 	if (directory == NULL)
-	{
-		perror("pwd");
-		return ;
-	}
+		ft_error("pwd");
 	printf("%s\n", directory);
 	free(directory);
 }

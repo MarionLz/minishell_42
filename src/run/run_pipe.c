@@ -1,11 +1,5 @@
 #include "../../include/minishell.h"
 
-void	pipe_error()
-{
-	perror("pipe");
-	exit(1);
-}
-
 void	run_pipe(t_node *tree, char **env)
 {
 	t_pipe_node *pipe_node;
@@ -13,7 +7,7 @@ void	run_pipe(t_node *tree, char **env)
 
 	pipe_node = (t_pipe_node *)tree;
 	if (pipe(fd) == -1)
-		pipe_error();
+		ft_error("pipe");
 	if (ft_fork() == 0)
 	{
 		close(fd[0]);
