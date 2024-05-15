@@ -62,7 +62,7 @@ void	add_new_var(char *var, t_env *env)
 	}
 	new_env[i] = ft_strdup(var);
 	i++;
-	new_env[i] = '\0';
+	new_env[i] = NULL;
 	free_tab(env->env_cpy);
 	env->env_cpy = dup_env(new_env);
 	free_tab(new_env);

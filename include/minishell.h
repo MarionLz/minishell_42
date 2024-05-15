@@ -4,6 +4,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <string.h>
+# include <fcntl.h>
 # include <stdbool.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -91,25 +92,27 @@ bool	is_builtin(char *cmd);
 
 /* RUN */
 int		ft_fork(void);
-void	run(t_node *tree, char **env);
+void	run(t_node *tree, t_env *env);
+
+/* RUN BUILTIN */
+void	run_builtin(char **args, t_env *env);
+
+/* RUN REDIR */
+void	run_redir(t_node *tree, t_env *env);
+
+/* RUN PIPE */
+void	run_pipe(t_node *tree, t_env *env);
 
 /* RUN EXEC */
+void	free_tab(char **tab);
 void	run_exec(t_node *tree, t_env *env);
 
-/* CD */
-void    ft_cd(char **args, char **env);
-
-/* PWD */
-void    ft_pwd(void);
-
-/* ECHO */
+/* BUILTINS */
+void	ft_cd(char **args, t_env *env);
+void	ft_pwd(void);
 void	ft_echo(char **args);
-
-/* EXIT */
 int		ft_exit(void);
-
-/* ENV */
-void	ft_env(char **env);
+void	ft_env(t_env *env);
 
 /* EXPORT */
 int		is_var_valid(char *var);
