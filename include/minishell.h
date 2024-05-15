@@ -29,6 +29,11 @@ typedef enum s_tokentype
 	APPEND,			/* >> */
 }	t_tokentype;
 
+typedef struct s_env
+{
+	char **env_cpy;
+}	t_env;
+
 typedef struct s_node
 {
 	int	type;
@@ -59,6 +64,11 @@ typedef struct s_pipe_node
 	t_node	*right;
 }	t_pipe_node;
 
+
+/* MAIN */
+void	ft_error(char *error);
+char	**dup_env(char **env);
+
 /* PARSING */
 t_node	*parse_exec(char **start_scan, char *end_input);
 t_node	*nulterminate(t_node *tree);
@@ -84,29 +94,31 @@ int		ft_fork(void);
 void	run(t_node *tree, char **env);
 
 /* RUN EXEC */
-void	run_exec(t_node *tree, char **env);
+void	run_exec(t_node *tree, t_env *env);
 
 /* CD */
-void    ft_cd(char *cmd);
+void    ft_cd(char **args, char **env);
 
 /* PWD */
 void    ft_pwd(void);
 
 /* ECHO */
-void	ft_echo(char *cmd, int fd);
+void	ft_echo(char **args);
 
 /* EXIT */
 int		ft_exit(void);
 
 /* ENV */
-void	ft_env(t_data *data);
+void	ft_env(char **env);
 
 /* EXPORT */
-void	ft_export(char *cmd, t_data *data);
-int		does_var_exist(char *cmd, t_data *data);
 int		is_var_valid(char *var);
+int		does_var_exist(char *var, t_env *env);
+void	add_new_var(char *var, t_env *env);
+void	change_var(char *var, t_env *env);
+void	ft_export(char **args, t_env *env);
 
 /* UNSET */
-char	**unset(char *cmd, t_data *data);
+//char	**unset(char *cmd, t_data *data);
 
 #endif

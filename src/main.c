@@ -1,5 +1,11 @@
 #include "../include/minishell.h"
 
+void	ft_error(char *error)
+{
+	perror(error);
+	exit(1);
+}
+
 char	**dup_env(char **env)
 {
 	char	**new_env;
@@ -32,12 +38,12 @@ char	**dup_env(char **env)
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
-	char	**env_cpy;
 	t_node	*tree;
+	t_env	*new_env;
 
 	(void)ac;
 	(void)av;
-	env_cpy = dup_env(env);
+	new_env->env_cpy  = dup_env(env);
 	while (1)
 	{
 		input = readline("minishell > ");
@@ -45,7 +51,7 @@ int	main(int ac, char **av, char **env)
 			return (1);
 		tree = parse_input(input);
 		if (ft_fork() == 0)
-			run(tree, env_cpy);
+			run(tree, new_env);
 		wait(NULL);
 	}
 }
