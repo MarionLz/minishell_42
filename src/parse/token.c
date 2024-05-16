@@ -27,21 +27,29 @@ void	get_type(char **str, int *type, char *end_input)
 	}
 	else if (**str == '<')
 	{
-		if (**str++ == '<')
+		(*str)++;
+		if (**str == '<')
+		{
 			*type = HEREDOC;
+			(*str)++;
+		}
 		else
 			*type = IN_REDIR;
 	}
 	else if (**str == '>')
 	{
-		if (**str++ == '>')
+		(*str)++;
+		if (**str == '>')
+		{
 			*type = APPEND;
+			(*str)++;
+		}
 		else
 			*type = OUT_REDIR;
 	}
 	else
 	{
-		*type = (EXEC);
+		*type = EXEC;
 		while (*str < end_input && !is_whitespace(**str) && !is_symbol(**str))
 			(*str)++;
 	}
@@ -53,6 +61,26 @@ end_input: pointer to the end of the input.
 start_token and end_token: pointers to the beginning and end of the found token.
 Reposition the start_token pointer to the beginning of the next token. */
 
+/*int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token)
+{
+	char	*str;
+	int		type;
+
+	str = *start_scan;
+	while (str < end_input && is_whitespace(*str))
+		str++;
+	if (start_token)
+		*start_token = str;
+	type = *str;
+	get_type(&str, &type, end_input);
+	if (end_token)
+		*end_token = str;
+	while (str < end_input && is_whitespace(*str))
+		str++;
+	*start_scan = str;
+	return (type);
+}*/
+
 int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token)
 {
 	char	*str;
@@ -63,8 +91,8 @@ int	get_token(char **start_scan, char *end_input, char **start_token, char **end
 		str++;
 	if (start_token)
 		*start_token = str;
-	if (!str)
-		type = -1;
+	if (str >= end_input)
+		return (-1);
 	get_type(&str, &type, end_input);
 	if (end_token)
 		*end_token = str;
@@ -73,3 +101,5 @@ int	get_token(char **start_scan, char *end_input, char **start_token, char **end
 	*start_scan = str;
 	return (type);
 }
+
+
