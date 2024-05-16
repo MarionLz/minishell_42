@@ -6,7 +6,9 @@
 # include <string.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <fcntl.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <signal.h>
 # include <readline/readline.h>
@@ -51,7 +53,7 @@ typedef struct s_exec_node
 typedef struct s_redir_node
 {
 	int		type;
-	t_node	*node;
+	t_node	*cmd;
 	char 	*file;
 	char	*end_file;
 	int		mode;
@@ -81,8 +83,9 @@ void	get_type(char **str, int *type, char *end_input);
 int		get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
 
 /* CREATE_NODES */
+t_node	*create_redir_node(t_node *cmd, char *start_file, char *end_file, int mode, int fd);
 t_node	*create_pipe_node(t_node *left, t_node *right);
-t_node	*create_exec_node(char **start_scan, char *end_input);
+t_node	*create_exec_node(char **start_scan);
 
 /* PARSING_UTILS */
 bool	is_whitespace(char c);

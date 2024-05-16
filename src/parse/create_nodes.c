@@ -4,6 +4,23 @@
 exec_node->args[i]: pointer to the beginning of the command or argument.
 exec_node->end_args[i]: pointer to the character following the command or argument.*/
 
+t_node	*create_redir_node(t_node *cmd, char *start_file, char *end_file, int mode, int fd)
+{
+	t_redir_node	*redir_node;
+
+	redir_node = malloc(sizeof(*redir_node));
+	if (!redir_node)
+		return (NULL);
+	ft_memset(redir_node, 0, sizeof(*redir_node));
+	redir_node->type = REDIR;
+	redir_node->cmd = cmd;
+	redir_node->file = start_file;
+	redir_node->end_file = end_file;
+	redir_node->mode = mode;
+	redir_node->fd = fd;
+	return ((t_node *)redir_node);
+}
+
 t_node	*create_pipe_node(t_node *left, t_node *right)
 {
 	t_pipe_node	*pipe_node;
@@ -18,14 +35,10 @@ t_node	*create_pipe_node(t_node *left, t_node *right)
 	return ((t_node *)pipe_node);
 }
 
-t_node	*create_exec_node(char **start_scan, char *end_input)
+t_node	*create_exec_node(char **start_scan)
 {
 	t_exec_node	*exec_node;
-	int			i;
-	char		*start_token;
-	char		*end_token;
 
-	i = 0;
 	exec_node = malloc(sizeof(*exec_node));
 	if (!exec_node)
 		return (NULL);
@@ -33,12 +46,5 @@ t_node	*create_exec_node(char **start_scan, char *end_input)
 	exec_node->type = EXEC;
 	if (is_builtin(*start_scan) == true)
 		exec_node->is_builtin = true;
-	while (*start_scan < end_input && !insight_input(start_scan, end_input, "|"))
-	{
-		get_token(start_scan, end_input, &start_token, &end_token);
-		exec_node->args[i] = start_token;
-		exec_node->end_args[i] = end_token;
-		i++;
-	}
 	return ((t_node*)exec_node);
 }
