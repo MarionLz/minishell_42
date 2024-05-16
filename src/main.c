@@ -43,7 +43,9 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	new_env = malloc(sizeof(t_env));
+	new_env = malloc(sizeof(*new_env));
+	if (!new_env)
+		return (1);
 	new_env->env_cpy  = dup_env(env);
 	while (1)
 	{
