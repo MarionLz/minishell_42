@@ -32,7 +32,7 @@ typedef enum s_tokentype
 
 typedef struct s_env
 {
-	char **env_cpy;
+	char	**env_cpy;
 }	t_env;
 
 typedef struct s_node
