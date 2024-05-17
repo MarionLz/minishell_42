@@ -47,8 +47,11 @@ int	main(int ac, char **av, char **env)
 	if (!new_env)
 		return (1);
 	new_env->env_cpy  = dup_env(env);
+	handle_sigint();
+	handle_sigquit();
 	while (1)
 	{
+		add_history(input);
 		input = readline("minishell > ");
 		if (input == NULL)
 			return (1);

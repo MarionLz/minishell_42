@@ -127,4 +127,9 @@ void	ft_export(char **args, t_env *env);
 /* UNSET */
 //char	**unset(char *cmd, t_data *data);
 
+/* SIGNALS */
+void	sigint_routine(int signal);
+void	handle_sigint(void);
+void	handle_sigquit(void);
+
 #endif
