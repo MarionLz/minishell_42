@@ -78,7 +78,7 @@ t_node	*nulterminate(t_node *tree)
 	{
 		exec_node = (t_exec_node *)tree;
 		i = 0;
-		while (exec_node->args[i++])
+		while (exec_node->args[i])
 		{
 			*exec_node->end_args[i] = 0;
 			i++;
