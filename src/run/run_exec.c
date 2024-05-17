@@ -60,11 +60,14 @@ void	run_exec(t_node *tree, t_env *env)
 		exit ();*/
 	if (ex_node->is_builtin == true)
 		run_builtin(ex_node->args, env);
-	path = get_path(ex_node->args[0], env);
-	if (execve(path, ex_node->args, env->env_cpy) == -1)
+	else
 	{
-		free(path);
-		ft_error(ex_node->args[0]);
-		exit(1);
+		path = get_path(ex_node->args[0], env);
+		if (execve(path, ex_node->args, env->env_cpy) == -1)
+		{
+			free(path);
+			ft_error(ex_node->args[0]);
+			exit(1);
+		}
 	}
 }

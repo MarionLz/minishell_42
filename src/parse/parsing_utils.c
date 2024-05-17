@@ -42,6 +42,10 @@ bool	is_builtin(char *cmd)
 		return (true);
 	else if (builtin_cmp(cmd, "exit", 4) == 0)
 		return (true);
+	else if (builtin_cmp(cmd, "export", 6) == 0)
+		return (true);
+	else if (builtin_cmp(cmd, "unset", 5) == 0)
+		return (true);
 	else if (builtin_cmp(cmd, "env", 3) == 0)
 		return (true);
 	return (false);

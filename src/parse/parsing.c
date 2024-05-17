@@ -77,9 +77,12 @@ t_node	*nulterminate(t_node *tree)
 	if (tree->type == EXEC)
 	{
 		exec_node = (t_exec_node *)tree;
-		i = -1;
+		i = 0;
 		while (exec_node->args[i++])
+		{
 			*exec_node->end_args[i] = 0;
+			i++;
+		}
 	}
 	if (tree->type == REDIR)
 	{
