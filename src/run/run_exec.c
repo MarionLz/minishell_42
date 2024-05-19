@@ -53,7 +53,7 @@ char	*get_path(char *cmd, t_env *env)
 void	run_exec(t_node *tree, t_env *env)
 {
 	t_exec_node *ex_node;
-	char *path;
+	char		*path;
 
 	ex_node = (t_exec_node *)tree;
 	/*if (ex_node->args[0] == 0)
