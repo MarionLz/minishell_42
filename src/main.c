@@ -40,20 +40,9 @@ int	main(int ac, char **av, char **env)
 	char	*input;
 	t_node	*tree;
 	t_env	*new_env;
-	int	fd;
 	
 	(void)ac;
 	(void)av;
-
-	while((fd = open("console", O_RDWR)) >= 0)
-	{
-		if(fd >= 3)
-		{
-			close(fd);
-			break;
-    	}
-  	}
-
 	new_env = malloc(sizeof(*new_env));
 	if (!new_env)
 		return (1);

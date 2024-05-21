@@ -41,7 +41,9 @@ t_node	*parse_exec(char **start_scan, char *end_input)
 		if ((type = get_token(start_scan, end_input, &start_token, &end_token)) == -1)
 			break;
 		exec_node->args[i] = start_token;
+		printf("start token = %s\n", exec_node->args[i]);
 		exec_node->end_args[i] = end_token;
+		printf("end token = %s\n", exec_node->end_args[i]);
 		i++;
 		if (i >= MAX_ARGS)
 			printf("error, too many arguments.\n");
@@ -88,7 +90,7 @@ t_node	*nulterminate(t_node *tree)
 	{
 		redir_node = (t_redir_node *)tree;
 		nulterminate(redir_node->cmd);
-		redir_node->end_file = 0;
+		*redir_node->end_file = 0;
 	}
 	if (tree->type == PIPE)
 	{
@@ -104,6 +106,10 @@ t_node	*parse_input(char *input)
 	char	*end_input;
 	t_node	*tree;
 
+	/*input = clean_input(input);
+	printf("input = %s\n", input);
+	if (!input)
+		return (NULL);*/
 	end_input = input + ft_strlen(input);
 	tree = parse_pipe(&input, end_input);
 	return (nulterminate(tree));

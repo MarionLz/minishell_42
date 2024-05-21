@@ -1,5 +1,19 @@
 #include "../../include/minishell.h"
 
+void	reopen_stdin_stdout(int fd)
+{
+	if (fd == 0)
+	{
+		if (open("/dev/tty", O_RDONLY) < 0)
+			ft_error("open stdin failed");
+	}
+	else if (fd == 1)
+	{
+		if (open("/dev/tty", O_WRONLY) < 0)
+			ft_error("open stdout failed");
+	}
+}
+
 void	run_redir(t_node *tree, t_env *env)
 {
 	t_redir_node *redir_node;
@@ -18,7 +32,6 @@ void	run_redir(t_node *tree, t_env *env)
 	run(redir_node->cmd, env);
 	if (close(redir_node->fd) < 0)
 		ft_error("close file failed");
-	if (open("/dev/tty", O_WRONLY) < 0)
-		ft_error("open stdin/stdout failed");
+	reopen_stdin_stdout(redir_node->fd);
 	return ;
 }
