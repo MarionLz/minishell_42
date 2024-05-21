@@ -18,14 +18,14 @@ int	insight_input(char **start_scan, char *end_input, char *target)
 
 /* get_type : initialise the type of the token. */
 
-void	get_type(char **str, int *type, char *end_input)
+void	get_type(char **str, int *type, char *end_input, char quote)
 {
-	if (**str == '|')
+	if (**str == '|' && quote == 0)
 	{
 		*type = PIPE;
 		(*str)++;
-	}
-	else if (**str == '<')
+		}
+	else if (**str == '<' && quote == 0)
 	{
 		(*str)++;
 		if (**str == '<')
@@ -36,7 +36,7 @@ void	get_type(char **str, int *type, char *end_input)
 		else
 			*type = IN_REDIR;
 	}
-	else if (**str == '>')
+	else if (**str == '>' && quote == 0)
 	{
 		(*str)++;
 		if (**str == '>')
@@ -50,7 +50,13 @@ void	get_type(char **str, int *type, char *end_input)
 	else
 	{
 		*type = EXEC;
-		while (*str < end_input && !is_whitespace(**str) && !is_symbol(**str))
+		if (quote == 0)
+		{
+			while (*str < end_input && !is_whitespace(**str) && !is_symbol(**str) && !is_quotes(**str))
+				(*str)++;
+		}
+		else
+			while (*str < end_input && **str != quote)
 			(*str)++;
 	}
 }
@@ -61,27 +67,77 @@ end_input: pointer to the end of the input.
 start_token and end_token: pointers to the beginning and end of the found token.
 Reposition the start_token pointer to the beginning of the next token. */
 
+int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token)
+{
+	char	*str;
+	int		type;
+	char	quote;
+	int		count_quotes;
+
+	str = *start_scan;
+	quote = 0;
+	while (str < end_input && is_whitespace(*str))
+		str++;
+	while (is_quotes(*str) == true)
+	{
+		count_quotes = 0;
+		quote = *str;
+		while (*str == quote)
+		{
+			str++;
+			count_quotes++;
+		}
+		if (count_quotes % 2 != 0)
+			break;
+		quote = 0;
+	}
+	if (start_token)
+		*start_token = str;
+	if (str >= end_input)
+		return (-1);
+	get_type(&str, &type, end_input, quote);
+	if (end_token)
+		*end_token = str;
+	while (is_quotes(*str))
+		str++;
+	while (str < end_input && is_whitespace(*str))
+		str++;
+	*start_scan = str;
+	return (type);
+}
+
 /*int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token)
 {
 	char	*str;
 	int		type;
+	char	quote;
 
 	str = *start_scan;
+	quote = 0;
 	while (str < end_input && is_whitespace(*str))
 		str++;
+	if (is_quotes(*str) == true)
+	{
+		quote = *str;
+		while (*str == quote)
+			str++;
+	}
 	if (start_token)
 		*start_token = str;
-	type = *str;
-	get_type(&str, &type, end_input);
+	if (str >= end_input)
+		return (-1);
+	get_type(&str, &type, end_input, quote);
 	if (end_token)
 		*end_token = str;
+	if (is_quotes(*str))
+		str++;
 	while (str < end_input && is_whitespace(*str))
 		str++;
 	*start_scan = str;
 	return (type);
 }*/
 
-int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token)
+/*int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token)
 {
 	char	*str;
 	int		type;
@@ -100,6 +156,6 @@ int	get_token(char **start_scan, char *end_input, char **start_token, char **end
 		str++;
 	*start_scan = str;
 	return (type);
-}
+}*/
 
 

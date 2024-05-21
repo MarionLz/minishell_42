@@ -77,15 +77,23 @@ t_node	*parse_exec(char **start_scan, char *end_input);
 t_node	*nulterminate(t_node *tree);
 t_node	*parse_input(char *input);
 
+/* CLEAN INPUT */
+char	*clean_input(char *input);
+
 /* TOKEN */
 int		insight_input(char **start_token, char *end_input, char *target);
-void	get_type(char **str, int *type, char *end_input);
+void	get_type(char **str, int *type, char *end_input, char quote);
 int		get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
 
 /* CREATE_NODES */
 t_node	*create_redir_node(t_node *cmd, char *start_file, char *end_file, int mode, int fd);
 t_node	*create_pipe_node(t_node *left, t_node *right);
 t_node	*create_exec_node(char **start_scan);
+
+/* QUOTES */
+bool	is_quotes(char c);
+void	check_quotes(int *simple_quote, int *double_quotes, char *input);
+bool	open_quotes(char *input);
 
 /* PARSING_UTILS */
 bool	is_whitespace(char c);
@@ -101,6 +109,7 @@ void	run(t_node *tree, t_env *env);
 void	run_builtin(char **args, t_env *env);
 
 /* RUN REDIR */
+void	reopen_stdin_stdout(int fd);
 void	run_redir(t_node *tree, t_env *env);
 
 /* RUN PIPE */
