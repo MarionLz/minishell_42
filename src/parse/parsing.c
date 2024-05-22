@@ -14,7 +14,7 @@ t_node	*parse_redir(t_node *node, char **start_scan, char *end_input)
 		if (token_type == IN_REDIR)
 			node = create_redir_node(node, start_file, end_file, O_RDONLY, 0);
 		else if (token_type == OUT_REDIR)
-			node = create_redir_node(node, start_file, end_file, O_RDWR | O_CREAT, 1);
+			node = create_redir_node(node, start_file, end_file, O_RDWR | O_CREAT | O_TRUNC, 1);
 		/*else if (token_type == HEREDOC)
 			node = create_redir_node();*/
 		else if (token_type == APPEND)
@@ -66,7 +66,6 @@ t_node	*parse_pipe(char **start_scan, char *end_input)
 /* nulterminate : Replace the character following the command or its argument with
 a NULL character to indicate the end of the string. Thus, during execution, the program
 will only read until the NULL character. */
-
 t_node	*nulterminate(t_node *tree)
 {
 	t_exec_node		*exec_node;

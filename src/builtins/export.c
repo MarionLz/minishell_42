@@ -51,7 +51,7 @@ void	add_new_var(char *var, t_env *env)
 	i = 0;
 	while (env->env_cpy[i])
 		i++;
-	new_env = (char **)malloc(sizeof(char *) * i + 2);
+	new_env = (char **)malloc((sizeof(char *) * i) + 2);
 	if (!new_env)
 		return ;
 	i = 0;
@@ -65,7 +65,6 @@ void	add_new_var(char *var, t_env *env)
 	new_env[i] = NULL;
 	free_tab(env->env_cpy);
 	env->env_cpy = dup_env(new_env);
-	free_tab(new_env);
 }
 
 void	change_var(char *var, t_env *env)

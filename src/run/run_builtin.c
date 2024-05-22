@@ -11,7 +11,10 @@ void	run_builtin(char **args, t_env *env)
 	else if (ft_strncmp(args[0], "export", 6) == 0)
 		ft_export(args, env);
 	else if (ft_strncmp(args[0], "exit", 4) == 0)
+	{
+		env->exit_requested = 1;
 		ft_exit();
+	}
 	else if (ft_strncmp(args[0], "env", 3) == 0)
 		ft_env(env);
 	return ;

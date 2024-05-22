@@ -1,8 +1,8 @@
 #include "../../include/minishell.h"
 
 //fonctions de free a ajouter
-int	ft_exit(void)
+int	ft_exit()
 {
 	printf("exit\n");
-	exit (0);
+	exit (1);
 }
