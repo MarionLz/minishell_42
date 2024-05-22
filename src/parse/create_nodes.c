@@ -16,7 +16,7 @@ t_node	*create_redir_node(t_node *cmd, char *start_file, char *end_file, int mod
 	redir_node->cmd = cmd;
 	redir_node->file = start_file;
 	redir_node->end_file = end_file;
-	printf("end file = %s\n", end_file);
+	//printf("end file = %s\n", end_file);
 	redir_node->mode = mode;
 	redir_node->fd = fd;
 	return ((t_node *)redir_node);
