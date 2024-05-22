@@ -35,7 +35,7 @@ typedef enum s_tokentype
 typedef struct s_env
 {
 	char	**env_cpy;
-	int		exit_requested;
+	int		exit_status;
 }	t_env;
 
 typedef struct s_node
@@ -123,8 +123,14 @@ void	run_exec(t_node *tree, t_env *env);
 void	ft_cd(char **args, t_env *env);
 void	ft_pwd(void);
 void	ft_echo(char **args);
-int		ft_exit(void);
 void	ft_env(t_env *env);
+
+/* EXIT */
+void	actualize_status_and_exit(char *status, t_env *env);
+void	ft_exit(char **args, t_env *env);
+void	is_input_exit(char *input);
+void	ft_exit_and_free(char **input_cpy);
+
 
 /* EXPORT */
 int		is_var_valid(char *var);

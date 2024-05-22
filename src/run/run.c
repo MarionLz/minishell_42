@@ -18,4 +18,5 @@ void	run(t_node *tree, t_env *env)
 		run_redir(tree, env);
 	else if (tree->type == PIPE)
 		run_pipe(tree, env);
+	exit (0);
 }

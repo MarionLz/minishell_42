@@ -41,9 +41,9 @@ t_node	*parse_exec(char **start_scan, char *end_input)
 		if ((type = get_token(start_scan, end_input, &start_token, &end_token)) == -1)
 			break;
 		exec_node->args[i] = start_token;
-		printf("start token = %s\n", exec_node->args[i]);
+		//printf("start token = %s\n", exec_node->args[i]);
 		exec_node->end_args[i] = end_token;
-		printf("end token = %s\n", exec_node->end_args[i]);
+		//printf("end token = %s\n", exec_node->end_args[i]);
 		i++;
 		if (i >= MAX_ARGS)
 			printf("error, too many arguments.\n");
