@@ -19,7 +19,7 @@ void	actualize_env(char *directory, char *var, t_env *env)
 	free(new_oldpwd);
 }
 
-void    ft_cd(char **args, t_env *env)
+void	ft_cd(char **args, t_env *env)
 {
 	char *error_msg;
 	char *old_directory;

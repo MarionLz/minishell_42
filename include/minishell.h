@@ -35,6 +35,7 @@ typedef enum s_tokentype
 typedef struct s_env
 {
 	char	**env_cpy;
+	int		exit_requested;
 }	t_env;
 
 typedef struct s_node
@@ -66,7 +67,6 @@ typedef struct s_pipe_node
 	t_node	*left;
 	t_node	*right;
 }	t_pipe_node;
-
 
 /* MAIN */
 void	ft_error(char *error);

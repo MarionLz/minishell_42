@@ -27,7 +27,7 @@ int	builtin_cmp(char *str1, char *str2, int n)
 	}
 	if (is_whitespace(str1[i]) || is_symbol(str1[i]))
 		return (0);
-	return (1);
+	return (0);
 }
 
 bool	is_builtin(char *cmd)
