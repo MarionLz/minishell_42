@@ -24,7 +24,7 @@ void	get_type(char **str, int *type, char *end_input, char quote)
 	{
 		*type = PIPE;
 		(*str)++;
-		}
+	}
 	else if (**str == '<' && quote == 0)
 	{
 		(*str)++;
@@ -57,7 +57,7 @@ void	get_type(char **str, int *type, char *end_input, char quote)
 		}
 		else
 			while (*str < end_input && **str != quote)
-			(*str)++;
+				(*str)++;
 	}
 }
 
@@ -72,60 +72,30 @@ int	get_token(char **start_scan, char *end_input, char **start_token, char **end
 	char	*str;
 	int		type;
 	char	quote;
-	int		count_quotes;
 
 	str = *start_scan;
 	quote = 0;
 	while (str < end_input && is_whitespace(*str))
 		str++;
-	while (is_quotes(*str) == true)
+	if (str >= end_input)
+		return (-1);
+	if (is_quotes(*str))
 	{
-		count_quotes = 0;
 		quote = *str;
-		while (*str == quote)
+		*start_token = str;
+		str++;
+		if (*str == quote)
 		{
 			str++;
-			count_quotes++;
+			*end_token = str;
+			while (str < end_input && is_whitespace(*str))
+				str++;
+			*start_scan = str;
+			return (EXEC);
 		}
-		if (count_quotes % 2 != 0)
-			break;
-		quote = 0;
 	}
 	if (start_token)
 		*start_token = str;
-	if (str >= end_input)
-		return (-1);
-	get_type(&str, &type, end_input, quote);
-	if (end_token)
-		*end_token = str;
-	while (is_quotes(*str))
-		str++;
-	while (str < end_input && is_whitespace(*str))
-		str++;
-	*start_scan = str;
-	return (type);
-}
-
-/*int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token)
-{
-	char	*str;
-	int		type;
-	char	quote;
-
-	str = *start_scan;
-	quote = 0;
-	while (str < end_input && is_whitespace(*str))
-		str++;
-	if (is_quotes(*str) == true)
-	{
-		quote = *str;
-		while (*str == quote)
-			str++;
-	}
-	if (start_token)
-		*start_token = str;
-	if (str >= end_input)
-		return (-1);
 	get_type(&str, &type, end_input, quote);
 	if (end_token)
 		*end_token = str;
@@ -135,27 +105,4 @@ int	get_token(char **start_scan, char *end_input, char **start_token, char **end
 		str++;
 	*start_scan = str;
 	return (type);
-}*/
-
-/*int	get_token(char **start_scan, char *end_input, char **start_token, char **end_token)
-{
-	char	*str;
-	int		type;
-
-	str = *start_scan;
-	while (str < end_input && is_whitespace(*str))
-		str++;
-	if (start_token)
-		*start_token = str;
-	if (str >= end_input)
-		return (-1);
-	get_type(&str, &type, end_input);
-	if (end_token)
-		*end_token = str;
-	while (str < end_input && is_whitespace(*str))
-		str++;
-	*start_scan = str;
-	return (type);
-}*/
-
-
+}
