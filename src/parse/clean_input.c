@@ -1,73 +1,69 @@
 #include "../../include/minishell.h"
 
-/*int	insight_input(char **start_scan, char *end_input, char *target)
+void	skip_quotes_to_ignore(char **input, char *new_input, int *i)
 {
-	char *str;
+	int		count_quotes;
+	char	quote_type;
 
-	str = *start_scan;
-	while (str < end_input && is_whitespace(*str))
-		str++;
-	*start_scan = str;
-	return (*str && ft_strchr(target, *str));
-}*/
+	while (**input && is_quotes(**input))
+	{
+		count_quotes = 0;
+		quote_type = **input;
+		while (**input == quote_type)
+		{
+			(*input)++;
+			count_quotes++;
+		}
+		if (inside_quotes(count_quotes))
+		{
+			while (**input != quote_type)
+			{
+				new_input[*i] = **input;
+				(*i)++;
+				(*input)++;
+			}
+			(*input)++;
+		}
+	}
+}
 
-/*void	insight_quotes(char **input, char *target)
+void	delimit_token_with_quotes(char *new_input, int *i, bool *open_tok)
 {
-
-}*/
+	new_input[*i] = '"';
+	(*i)++;
+	if (*open_tok == true)
+		*open_tok = false;
+	else
+		*open_tok = true;
+}
 
 char	*clean_quotes(char *input)
 {
 	static char	new_input[200];
-	int		count_quotes;
-	char	quote;
-	int		i;
+	int			i;
+	bool		open_tok;
 
 	i = 0;
+	open_tok = false;
 	while (*input && is_whitespace(*input))
 		input++;
 	while (*input)
 	{
+		if (is_token_with_quotes(input) && open_tok == false)
+			delimit_token_with_quotes(new_input, &i, &open_tok);
 		if (is_quotes(*input))
+			skip_quotes_to_ignore(&input, new_input, &i);
+		if (*input && !is_quotes(*input))
 		{
-			while (*input && is_quotes(*input))
-			{
-				count_quotes = 0;
-				quote = *input;
-				while (*input == quote)
-				{
-					input++;
-					count_quotes++;
-				}
-				if (count_quotes % 2 != 0)
-					break;
-			}
-			if (count_quotes % 2 != 0)
-			{
-
-				while (*input != quote)
-				{
-					new_input[i] = *input;
-					printf("char = %c\n", *input);
-					input++;
-					i++;
-				}
-			}
+			if (open_tok == true && (is_whitespace(*input) || is_symbol(*input)))
+				delimit_token_with_quotes(new_input, &i, &open_tok);
+			new_input[i++] = *input++;
 		}
-		if (!is_quotes(*input))
-		{
-			new_input[i] = *input;
-			printf("char = %c\n", *input);
-			input++;
-			i++;
-		}
-		else
-			input++;
 	}
+	if (open_tok == true)
+		new_input[i++] = '"';
 	new_input[i] = '\0';
-	printf("new_input = %s\n", new_input);
-	input = new_input;
-	return (input);
+	return (new_input);
 }
 
 char	*clean_input(char *input)
