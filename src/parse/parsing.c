@@ -68,7 +68,7 @@ t_node	*parse_pipe(char **start_scan, char *end_input)
 /* nulterminate : Replace the character following the command or its argument with
 a NULL character to indicate the end of the string. Thus, during execution, the program
 will only read until the NULL character. */
-t_node	*nulterminate(t_node *tree)
+t_node	*nulterminate(t_node *tree, t_env *env)
 {
 	t_exec_node		*exec_node;
 	t_redir_node	*redir_node;
@@ -79,6 +79,7 @@ t_node	*nulterminate(t_node *tree)
 	{
 		exec_node = (t_exec_node *)tree;
 		i = 0;
+		env->nb_cmd += 1;
 		while (exec_node->args[i])
 		{
 			*exec_node->end_args[i] = 0;
@@ -88,19 +89,19 @@ t_node	*nulterminate(t_node *tree)
 	if (tree->type == REDIR)
 	{
 		redir_node = (t_redir_node *)tree;
-		nulterminate(redir_node->cmd);
+		nulterminate(redir_node->cmd, env);
 		*redir_node->end_file = 0;
 	}
 	if (tree->type == PIPE)
 	{
 		pipe_node = (t_pipe_node *)tree;
-		nulterminate(pipe_node->left);
-		nulterminate(pipe_node->right);
+		nulterminate(pipe_node->left, env);
+		nulterminate(pipe_node->right, env);
 	}
 	return (tree);
 }
 
-t_node	*parse_input(char *input)
+t_node	*parse_input(char *input, t_env *env)
 {
 	char	*end_input;
 	t_node	*tree;
@@ -109,7 +110,8 @@ t_node	*parse_input(char *input)
 	printf("input = %s\n", input);
 	if (!input)
 		return (NULL);*/
+	env->nb_cmd = 0;
 	end_input = input + ft_strlen(input);
 	tree = parse_pipe(&input, end_input);
-	return (nulterminate(tree));
+	return (nulterminate(tree, env));
 }

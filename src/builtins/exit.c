@@ -51,13 +51,13 @@ void	ft_exit_and_free(char **input_cpy)
 
 void	actualize_status_and_exit(char *status, t_env *env)
 {
-	env->exit_status = ft_atoi(status);
-	if (env->exit_status >= 0 && env->exit_status <= 255)
-		exit(env->exit_status);
+	exit_status = ft_atoi(status);
+	if (exit_status >= 0 && exit_status <= 255)
+		exit(exit_status);
 	else
 	{
-		env->exit_status %= 256;
-		exit(env->exit_status);
+		exit_status %= 256;
+		exit(exit_status);
 	}
 }
 
@@ -81,7 +81,7 @@ void	ft_exit(char **args, t_env *env)
 	}
 	else
 	{
-		env->exit_status = 1;
-		exit(1);
+		exit_status = 0;
+		exit(0);
 	}
 }
