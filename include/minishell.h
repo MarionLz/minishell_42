@@ -17,6 +17,9 @@
 
 # define MAX_ARGS 10
 
+//variable globale
+extern	int		exit_status;
+
 typedef enum s_tokentype
 {
 	EXEC,
@@ -35,7 +38,7 @@ typedef enum s_tokentype
 typedef struct s_env
 {
 	char	**env_cpy;
-	int		exit_status;
+	int		nb_cmd;
 }	t_env;
 
 typedef struct s_node
@@ -74,8 +77,8 @@ char	**dup_env(char **env);
 
 /* PARSING */
 t_node	*parse_exec(char **start_scan, char *end_input);
-t_node	*nulterminate(t_node *tree);
-t_node	*parse_input(char *input);
+t_node	*nulterminate(t_node *tree, t_env *env);
+t_node	*parse_input(char *input, t_env *env);
 
 /* CLEAN INPUT */
 char	*clean_input(char *input);
@@ -106,6 +109,7 @@ bool	is_builtin(char *cmd);
 /* RUN */
 int		ft_fork(void);
 void	run(t_node *tree, t_env *env);
+void	check_and_run(t_node *tree, t_env *env);
 
 /* RUN BUILTIN */
 void	run_builtin(char **args, t_env *env);
@@ -146,7 +150,7 @@ void	change_var(char *var, t_env *env);
 void	ft_export(char **args, t_env *env);
 
 /* UNSET */
-//char	**unset(char *cmd, t_data *data);
+void	ft_unset(char **args, t_env *env);
 
 /* SIGNALS */
 void	sigint_routine(int signal);

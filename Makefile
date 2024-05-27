@@ -1,27 +1,32 @@
 NAME = minishell
 DIR_SRC = src/
+DIR_OBJ = obj/
 LIBFT = libft/libft.a
 CC = cc 
 CFLAGS = -Wall -Wextra -Werror -ggdb 
 LDFLAGS = -lreadline
 RM = rm -f
 
-SRCS =	$(wildcard $(DIR_SRC)*.c) \
+SRCS =  $(wildcard $(DIR_SRC)*.c) \
 		$(wildcard $(DIR_SRC)/parse/*.c) \
 		$(wildcard $(DIR_SRC)/run/*.c) \
 		$(wildcard $(DIR_SRC)/builtins/*.c) \
 
-OBJ = $(SRCS:.c=.o)
+OBJS = $(SRCS:$(DIR_SRC)%.c=$(DIR_OBJ)%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(DIR_OBJ)%.o: $(DIR_SRC)%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME): $(OBJS)
 	make -C ./libft
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(LDFLAGS)
 
 clean:
 	make clean -C libft
-	rm -rf $(OBJ)
+	rm -rf $(DIR_OBJ)
 
 fclean: clean
 	$(RM) $(NAME)

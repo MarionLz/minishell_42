@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-/* void	error_unset(char **tab, int i)
+void	error_unset(char **tab, int i)
 {
 	int	j;
 
@@ -60,49 +60,58 @@ void	*free_env(char **env, int i)
 	return (NULL);
 }
 
-int	find_var_to_delete(char *env, char **split_cmd)
+int	find_var_to_delete(char *env, char **args)
 {
 	int		j;
 	int		len_var;
 
 	j = 1;
-	while (split_cmd[j])
+	while (args[j])
 	{
-		len_var = ft_strlen(split_cmd[j]);
-		if (ft_strncmp(env, split_cmd[j], len_var) == 0 && env[len_var] == '=')
+		len_var = ft_strlen(args[j]);
+		if (ft_strncmp(env, args[j], len_var) == 0 && env[len_var] == '=')
 			return (1);
 		j++;
 	}
 	return (0);
 }
 
-char	**unset(char *cmd, t_data *data)
+char	*copy_variable(char *to_copy, char **new_env, int j)
+{
+	char *variable_cpy;
+
+	variable_cpy = ft_strdup(to_copy);
+	if (!variable_cpy)
+	{
+		free_env (new_env, j);
+		return (NULL);
+	}
+	return (variable_cpy);
+}
+
+void	ft_unset(char **args, t_env *env)
 {
 	int		i;
 	int 	j;
-	char	**env_copy;
-	char	**split_cmd;
+	char	**new_env;
 	
 	i = 0;
 	j = 0;
-	split_cmd = ft_split(cmd, ' ');
-	check_var_name(split_cmd);
-	env_copy = malloc((tab_len(data->new_env) - (tab_len(split_cmd) - 1) + 1) * sizeof(char *));
-	if (!env_copy)
-		return (NULL);
-	while (data->new_env[i])
+	check_var_name(args);
+	new_env = malloc((tab_len(env->env_cpy) - (tab_len(args) - 1) + 1) * sizeof(char *));
+	if (!new_env)
+		return ;
+	while (env->env_cpy[i])
 	{
-		if (find_var_to_delete(data->new_env[i], split_cmd) == 0)
+		if (find_var_to_delete(env->env_cpy[i], args) == 0)
 		{
-			env_copy[j] = ft_strdup(data->new_env[i]);
-			if (!env_copy[j])
-				return (free_env(env_copy, j));
+			new_env[j] = copy_variable(env->env_cpy[i], new_env, j);
 			j++;
 		}
 		i++;
 	}
-	env_copy[j] = NULL;
-	free_env(data->new_env, tab_len(data->new_env));
-	free_env(split_cmd, tab_len(split_cmd));
-	return (env_copy);
-} */
+	new_env[j] = NULL;
+	free_tab(env->env_cpy);
+	env->env_cpy = dup_env(new_env);
+	return ;
+} 

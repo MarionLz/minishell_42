@@ -83,7 +83,7 @@ void	change_var(char *var, t_env *env)
 	}
 	free(env->env_cpy[i]);
 	env->env_cpy[i] = ft_strdup(var);
-	free(var_name);
+	free_tab(var_name);
 }
 
 void	ft_export(char **args, t_env *env)
