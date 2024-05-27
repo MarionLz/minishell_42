@@ -32,7 +32,7 @@ t_node	*parse_exec(char **start_scan, char *end_input)
 	char		*end_token;
 	int 		type;
 
-	node = create_exec_node(start_scan);
+	node = create_exec_node();
 	exec_node = (t_exec_node *)node;
 	node = parse_redir(node, start_scan, end_input);
 	i = 0;
@@ -41,12 +41,15 @@ t_node	*parse_exec(char **start_scan, char *end_input)
 		if ((type = get_token(start_scan, end_input, &start_token, &end_token)) == -1)
 			break;
 		exec_node->args[i] = start_token;
-		//printf("start token = %s\n", exec_node->args[i]);
 		exec_node->end_args[i] = end_token;
-		//printf("end token = %s\n", exec_node->end_args[i]);
+		if (is_builtin(start_token) == true)
+			exec_node->is_builtin = true;
 		i++;
 		if (i >= MAX_ARGS)
+		{
 			printf("error, too many arguments.\n");
+			//exit(EXIT_FAILURE);
+		}
 		node = parse_redir(node, start_scan, end_input);
 	}
 	return (node);
@@ -106,11 +109,9 @@ t_node	*parse_input(char *input, t_env *env)
 	char	*end_input;
 	t_node	*tree;
 
-	/*input = clean_input(input);
-	printf("input = %s\n", input);
+	input = clean_input(input);
 	if (!input)
 		return (NULL);*/
-	env->nb_cmd = 0;
 	end_input = input + ft_strlen(input);
 	tree = parse_pipe(&input, end_input);
 	return (nulterminate(tree, env));
