@@ -62,6 +62,7 @@ typedef struct s_redir_node
 	char	*end_file;
 	int		mode;
 	int		fd;
+	bool	is_heredoc;
 }	t_redir_node;
 
 typedef struct s_pipe_node
@@ -92,7 +93,7 @@ void	get_type(char **str, int *type, char *end_input, char quote);
 int		get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
 
 /* CREATE_NODES */
-t_node	*create_redir_node(t_node *cmd, char *start_file, char *end_file, int mode, int fd);
+t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file, char *end_file);
 t_node	*create_pipe_node(t_node *left, t_node *right);
 t_node	*create_exec_node();
 
