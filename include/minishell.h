@@ -81,7 +81,10 @@ t_node	*nulterminate(t_node *tree, t_env *env);
 t_node	*parse_input(char *input, t_env *env);
 
 /* CLEAN INPUT */
-char	*clean_input(char *input);
+char	*clean_input(char *input, t_env *new_env);
+
+/* REPLACE_DOLLAR */
+char	*handle_dollar(char *input, char *new_input, t_env *new_env);
 
 /* TOKEN */
 int		insight_input(char **start_token, char *end_input, char *target);
@@ -95,7 +98,7 @@ t_node	*create_exec_node();
 
 /* QUOTES */
 bool	is_quotes(char c);
-void	check_quotes(int *simple_quote, int *double_quotes, char *input);
+void	check_quotes(int *simple_quote, int *double_quotes, char *input, int i);
 bool	open_quotes(char *input);
 bool	is_token_with_quotes(char *input);
 bool	inside_quotes(int count_quotes);

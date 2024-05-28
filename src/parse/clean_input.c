@@ -37,9 +37,9 @@ void	delimit_token_with_quotes(char *new_input, int *i, bool *open_tok)
 		*open_tok = true;
 }
 
-char	*clean_quotes(char *input)
+char	*clean_quotes(char *input, char *new_input)
 {
-	static char	new_input[200];
+	//static char	new_input[200];
 	int			i;
 	bool		open_tok;
 
@@ -66,10 +66,25 @@ char	*clean_quotes(char *input)
 	return (new_input);
 }
 
-char	*clean_input(char *input)
+bool	contain_dollar(char *input, char c)
 {
+	while (*input)
+	{
+		if (*input == c)
+			return (true);
+		input++;
+	}
+	return (false);
+}
+
+char	*clean_input(char *input, t_env *env)
+{
+	static char	new_input[200];
+	
 	if (open_quotes(input) == true)
 		return (NULL);
-	input = clean_quotes(input);
+	if (contain_dollar(input, '$'))
+		input = handle_dollar(input, new_input, env);
+	input = clean_quotes(input, new_input);
 	return (input);
 }

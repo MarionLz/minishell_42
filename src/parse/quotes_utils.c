@@ -11,16 +11,16 @@ bool	is_quotes(char c)
 
 /*check_quotes : when there is a double quote or a single quote, this function analyses
 if it's an open or a closed quote (1 = open, 0 = close).*/
-void	check_quotes(int *simple_quote, int *double_quotes, char *input)
+void	check_quotes(int *simple_quote, int *double_quotes, char *input, int i)
 {
-	if (*input == '"')
+	if (input[i] == '"')
 	{
 		if (!*simple_quote && !*double_quotes)
 			*double_quotes = 1;
 		else
 			*double_quotes = 0;
 	}
-	if (*input == '\'')
+	if (input[i] == '\'')
 	{
 		if (!*double_quotes && !*simple_quote)
 			*simple_quote = 1;
@@ -33,15 +33,17 @@ void	check_quotes(int *simple_quote, int *double_quotes, char *input)
 If yes, the function prints an error message and returns true.*/
 bool	open_quotes(char *input)
 {
+	int i;
 	int	simple_quote;
 	int	double_quotes;
 
+	i = 0;
 	simple_quote = 0;
 	double_quotes = 0;
-	while (*input)
+	while (input[i])
 	{
-		check_quotes(&simple_quote, &double_quotes, input);
-		input++;
+		check_quotes(&simple_quote, &double_quotes, input, i);
+		i++;
 	}
 	if (simple_quote || double_quotes)
 	{

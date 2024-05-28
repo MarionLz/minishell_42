@@ -109,7 +109,7 @@ t_node	*parse_input(char *input, t_env *env)
 	char	*end_input;
 	t_node	*tree;
 
-	input = clean_input(input);
+	input = clean_input(input, env);
 	if (!input)
 		return (NULL);
 	end_input = input + ft_strlen(input);
