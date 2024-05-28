@@ -1,4 +1,5 @@
 #include "../include/minishell.h"
+int	exit_status;
 
 void	ft_error(char *error)
 {
@@ -62,6 +63,7 @@ int	main(int ac, char **av, char **env)
 		add_history(input);
 		tree = parse_input(input, new_env);
 		check_and_run(tree, new_env); //cot cot 🐔
+		printf("%d\n", exit_status);
 	}
 	free(new_env);
 	return (0);

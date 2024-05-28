@@ -1,4 +1,5 @@
 #include "../../include/minishell.h"
+//int exit_status;
 
 //fonctions de free a ajouter
 void	is_input_exit(char *input)
@@ -49,19 +50,24 @@ void	ft_exit_and_free(char **input_cpy)
 	exit(1);
 }
 
-void	actualize_status_and_exit(char *status, t_env *env)
+void	actualize_status_and_exit(char *status)
 {
 	exit_status = ft_atoi(status);
 	if (exit_status >= 0 && exit_status <= 255)
+	{
+		printf("ici1\n");
+		printf("%d\n", exit_status);
 		exit(exit_status);
+	}
 	else
 	{
 		exit_status %= 256;
+		printf("%d\n", exit_status);
 		exit(exit_status);
 	}
 }
 
-void	ft_exit(char **args, t_env *env)
+void	ft_exit(char **args)
 {
 	int	i;
 
@@ -73,11 +79,13 @@ void	ft_exit(char **args, t_env *env)
 			if (!ft_isdigit(args[1][i]))
 			{
 				printf("exit\nminishell: exit: %s: numeric argument required\n", args[1]);
+				exit_status = 1;
 				exit (1);
 			}
 			i++;
 		}
-		actualize_status_and_exit(args[1], env);
+		printf("ici\n");
+		actualize_status_and_exit(args[1]);
 	}
 	else
 	{

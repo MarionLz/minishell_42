@@ -29,30 +29,47 @@ int	is_cmd_env_builtin(t_node *tree)
 
 void	run(t_node *tree, t_env *env)
 {
+	int	return_status;
 
+	return_status = 0;
 	if (tree->type == EXEC)
 		run_exec(tree, env);
 	else if (tree->type == REDIR)
 		run_redir(tree, env);
 	else if (tree->type == PIPE)
-		run_pipe(tree, env);
-	exit (0);
+		return_status = run_pipe(tree, env);
+	exit (return_status);
 }
 
 void	check_and_run(t_node *tree, t_env *env)
 {
 	t_exec_node *ex_node;
+	pid_t		pid;
+	int			status;
 
+	pid = 0;
 	if (is_cmd_env_builtin(tree) == 1 && env->nb_cmd == 1)
 	{
 		ex_node = (t_exec_node *)tree;
 		run_builtin(ex_node->args, env);
+		exit_status = 0;
 	}
 	else
 	{
-		if (ft_fork() == 0)
+		pid = ft_fork();
+		if (pid == 0)
 			run(tree, env);
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+			{
+				//printf("Debug: pid=%d, status=%d\n", pid, status);
+				//printf("Debug: WIFEXITED=%d, WEXITSTATUS=%d\n", WIFEXITED(status), WEXITSTATUS(status));
+				//printf("Debug: exit_status=%d\n", exit_status);
+				exit_status = WEXITSTATUS(status);
+			}
+		}
 	}
-	wait(NULL);
 	return ;
 }
