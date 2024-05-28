@@ -91,17 +91,19 @@ int		get_token(char **start_scan, char *end_input, char **start_token, char **en
 /* CREATE_NODES */
 t_node	*create_redir_node(t_node *cmd, char *start_file, char *end_file, int mode, int fd);
 t_node	*create_pipe_node(t_node *left, t_node *right);
-t_node	*create_exec_node(char **start_scan);
+t_node	*create_exec_node();
 
 /* QUOTES */
 bool	is_quotes(char c);
 void	check_quotes(int *simple_quote, int *double_quotes, char *input);
 bool	open_quotes(char *input);
+bool	is_token_with_quotes(char *input);
+bool	inside_quotes(int count_quotes);
 
 /* PARSING_UTILS */
 bool	is_whitespace(char c);
 bool	is_symbol(char c);
-int		builtin_cmp(char *str1, char *str2, int n);
+int		compare_cmd(char *str1, char *str2, int n);
 bool	is_builtin(char *cmd);
 
 /* RUN */
@@ -126,8 +128,12 @@ void	run_exec(t_node *tree, t_env *env);
 /* BUILTINS */
 void	ft_cd(char **args, t_env *env);
 void	ft_pwd(void);
-void	ft_echo(char **args);
 void	ft_env(t_env *env);
+
+/* ECHO */
+bool	is_empty_quotes(char *str);
+void	print_args(char **args, int i);
+void	ft_echo(char **args);
 
 /* EXIT */
 void	actualize_status_and_exit(char *status);
