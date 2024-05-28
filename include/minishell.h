@@ -119,7 +119,7 @@ void	reopen_stdin_stdout(int fd);
 void	run_redir(t_node *tree, t_env *env);
 
 /* RUN PIPE */
-void	run_pipe(t_node *tree, t_env *env);
+int	run_pipe(t_node *tree, t_env *env);
 
 /* RUN EXEC */
 void	free_tab(char **tab);
@@ -136,8 +136,8 @@ void	print_args(char **args, int i);
 void	ft_echo(char **args);
 
 /* EXIT */
-void	actualize_status_and_exit(char *status, t_env *env);
-void	ft_exit(char **args, t_env *env);
+void	actualize_status_and_exit(char *status);
+void	ft_exit(char **args);
 void	is_input_exit(char *input);
 void	ft_exit_and_free(char **input_cpy);
 
