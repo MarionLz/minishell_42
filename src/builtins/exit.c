@@ -1,5 +1,4 @@
 #include "../../include/minishell.h"
-//int exit_status;
 
 //fonctions de free a ajouter
 void	is_input_exit(char *input)
@@ -79,7 +78,6 @@ void	ft_exit(char **args)
 			if (!ft_isdigit(args[1][i]))
 			{
 				printf("exit\nminishell: exit: %s: numeric argument required\n", args[1]);
-				exit_status = 1;
 				exit (1);
 			}
 			i++;
@@ -88,8 +86,5 @@ void	ft_exit(char **args)
 		actualize_status_and_exit(args[1]);
 	}
 	else
-	{
-		exit_status = 0;
 		exit(0);
-	}
 }
