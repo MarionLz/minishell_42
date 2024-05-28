@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-bool	find_variable_in_env(char *str, int index, t_data *data, t_dollar *var_env)
+/*bool	find_variable_in_env(char *str, int index, t_data *data, t_dollar *var_env)
 {
 	int	i;
 
@@ -70,14 +70,15 @@ char	*get_exit_status(char *input, t_dollar *var_env)
 	var_env->len_value = ft_strlen(var_env->value);
 	var_env->len_name = 2;
 	return (make_new_input(input, var_env));
-}
+}*/
 
-char	*handle_dollar(char *input, char *new_input, t_env *new_env)
+char	*handle_dollar(char *input, char *new_input, t_env *env)
 {
 	int	i;
 	int	simple_quote;
 	int	double_quotes;
 	
+	(void)env;
 	i = 0;
 	simple_quote = 0;
 	double_quotes = 0;
@@ -88,8 +89,9 @@ char	*handle_dollar(char *input, char *new_input, t_env *new_env)
 		{
 			/*if (input[i + 1] == '?')
 				input = get_exit_status(input, var_env);*/
-			if (find_variable_in_env(input, i + 1, new_input, new_env))
-				input = make_new_input(input, var_env);
+			/*if (find_variable_in_env(input, i + 1, new_input, new_env))
+				input = make_new_input(input, var_env);*/
+			printf("ok\n");
 		}
 		i++;
 	}

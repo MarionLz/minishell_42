@@ -10,15 +10,11 @@ t_node	*parse_redir(t_node *node, char **start_scan, char *end_input)
 	{
 		token_type = get_token(start_scan, end_input, 0, 0);
 		if (get_token(start_scan, end_input, &start_file, &end_file) != EXEC)
-			printf("error, missing file for redirection\n");
-		if (token_type == IN_REDIR)
-			node = create_redir_node(node, start_file, end_file, O_RDONLY, 0);
-		else if (token_type == OUT_REDIR)
-			node = create_redir_node(node, start_file, end_file, O_RDWR | O_CREAT | O_TRUNC, 1);
-		/*else if (token_type == HEREDOC)
-			node = create_redir_node();*/
-		else if (token_type == APPEND)
-			node = create_redir_node(node, start_file, end_file, O_RDWR | O_CREAT | O_APPEND, 1);
+		{
+			printf("error, missing file or delimiter for redirection\n");
+			//exit;
+		}
+		node = create_redir_node(token_type, node, start_file, end_file);
 	}
 	return (node);
 }
