@@ -51,3 +51,24 @@ bool	is_builtin(char *cmd)
 		return (true);
 	return (false);
 }
+
+char	*strjoin_char(char *s1, char c)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	str = malloc((sizeof(char)) * ft_strlen(s1) + 2);
+	if (!str)
+		return (NULL);
+	while (s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	str[i] = c;
+	i++;
+	str[i] = '\0';
+	free(s1);
+	return (str);
+}

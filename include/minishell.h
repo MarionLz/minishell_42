@@ -15,7 +15,7 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-# define MAX_ARGS 10
+# define MAX_ARGS 50
 
 //variable globale
 extern	int		exit_status;
@@ -40,6 +40,13 @@ typedef struct s_env
 	char	**env_cpy;
 	int		nb_cmd;
 }	t_env;
+
+typedef struct s_dollar
+{
+	char	*name;
+	int		len_name;
+	int		index;
+} t_dollar;
 
 typedef struct s_node
 {
@@ -85,7 +92,7 @@ t_node	*parse_input(char *input, t_env *env);
 char	*clean_input(char *input, t_env *new_env);
 
 /* REPLACE_DOLLAR */
-char	*handle_dollar(char *input, char *new_input, t_env *new_env);
+char	*replace_dollar(char *new_input, char **input, t_env *env);
 
 /* TOKEN */
 int		insight_input(char **start_token, char *end_input, char *target);
@@ -101,7 +108,7 @@ t_node	*create_exec_node();
 bool	is_quotes(char c);
 void	check_quotes(int *simple_quote, int *double_quotes, char *input, int i);
 bool	open_quotes(char *input);
-bool	is_token_with_quotes(char *input);
+bool	is_token_with_quotes(char *input, char *quote_type);
 bool	inside_quotes(int count_quotes);
 
 /* PARSING_UTILS */
@@ -109,6 +116,7 @@ bool	is_whitespace(char c);
 bool	is_symbol(char c);
 int		compare_cmd(char *str1, char *str2, int n);
 bool	is_builtin(char *cmd);
+char	*strjoin_char(char *s1, char c);
 
 /* RUN */
 int		ft_fork(void);

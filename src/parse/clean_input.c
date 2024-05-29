@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-void	skip_quotes_to_ignore(char **input, char *new_input, int *i)
+char	*skip_quotes_to_ignore(char **input, char *new_input, t_env *env)
 {
 	int		count_quotes;
 	char	quote_type;
@@ -18,73 +18,68 @@ void	skip_quotes_to_ignore(char **input, char *new_input, int *i)
 		{
 			while (**input != quote_type)
 			{
-				new_input[*i] = **input;
-				(*i)++;
-				(*input)++;
+				if (**input == '$' && quote_type == '"')
+					new_input = replace_dollar(new_input, input, env);
+				if (**input != quote_type)
+				{
+					new_input = strjoin_char(new_input, **input);
+					(*input)++;
+				}
 			}
 			(*input)++;
 		}
 	}
+	return (new_input);
 }
 
-void	delimit_token_with_quotes(char *new_input, int *i, bool *open_tok)
+char	*delimit_token_with_quotes(char *new_input, bool *open_tok, char quote)
 {
-	new_input[*i] = '"';
-	(*i)++;
+	new_input = strjoin_char(new_input, quote);
 	if (*open_tok == true)
 		*open_tok = false;
 	else
 		*open_tok = true;
+	return (new_input);
 }
 
-char	*clean_quotes(char *input, char *new_input)
+char	*clean_quotes(char *input, t_env *env)
 {
-	//static char	new_input[200];
-	int			i;
-	bool		open_tok;
+	bool	open_tok;
+	char	*new_input;
+	char	quote;
 
-	i = 0;
 	open_tok = false;
+	new_input = ft_strdup("");
+	quote = 0;
 	while (*input && is_whitespace(*input))
 		input++;
 	while (*input)
 	{
-		if (is_token_with_quotes(input) && open_tok == false)
-			delimit_token_with_quotes(new_input, &i, &open_tok);
+		if (is_token_with_quotes(input, &quote) && open_tok == false)
+			new_input = delimit_token_with_quotes(new_input, &open_tok, quote);
 		if (is_quotes(*input))
-			skip_quotes_to_ignore(&input, new_input, &i);
+			new_input = skip_quotes_to_ignore(&input, new_input, env);
 		if (*input && !is_quotes(*input))
 		{
 			if (open_tok == true && (is_whitespace(*input) || is_symbol(*input)))
-				delimit_token_with_quotes(new_input, &i, &open_tok);
-			new_input[i++] = *input++;
+				new_input = delimit_token_with_quotes(new_input, &open_tok, quote);
+			if (*input == '$')
+				new_input = replace_dollar(new_input, &input, env);
+			new_input = strjoin_char(new_input, *input);
+			input++;
 		}
 	}
 	if (open_tok == true)
-		new_input[i++] = '"';
-	new_input[i] = '\0';
+		new_input = delimit_token_with_quotes(new_input, &open_tok, quote);
+	new_input = strjoin_char(new_input, '\0');
 	return (new_input);
 }
 
-bool	contain_dollar(char *input, char c)
-{
-	while (*input)
-	{
-		if (*input == c)
-			return (true);
-		input++;
-	}
-	return (false);
-}
-
 char	*clean_input(char *input, t_env *env)
-{
-	static char	new_input[200];
-	
+{	
+	(void)env;
 	if (open_quotes(input) == true)
 		return (NULL);
-	if (contain_dollar(input, '$'))
-		input = handle_dollar(input, new_input, env);
-	input = clean_quotes(input, new_input);
+	input = clean_quotes(input, env);
 	return (input);
 }
