@@ -63,12 +63,7 @@ void	check_and_run(t_node *tree, t_env *env)
 		{
 			waitpid(pid, &status, 0);
 			if (WIFEXITED(status))
-			{
-				//printf("Debug: pid=%d, status=%d\n", pid, status);
-				//printf("Debug: WIFEXITED=%d, WEXITSTATUS=%d\n", WIFEXITED(status), WEXITSTATUS(status));
-				//printf("Debug: exit_status=%d\n", exit_status);
 				exit_status = WEXITSTATUS(status);
-			}
 		}
 	}
 	return ;

@@ -36,14 +36,39 @@ char	**dup_env(char **env)
 	return (new_env);
 }
 
+int	is_input_empty(char *input)
+{
+	if (!input)
+	{
+		printf("exit\n");
+		exit (1);
+	}
+	if (*input == '\0')
+	{
+		free(input);
+		return (1);
+	}
+	return (0);
+}
+
+void	input_handler(char *input, t_env *env)
+{
+	t_node *tree;
+
+	is_input_exit(input);
+	add_history(input);
+	tree = parse_input(input, env);
+	check_and_run(tree, env); //cot cot 🐔
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
-	t_node	*tree;
 	t_env	*new_env;
 	
-	(void)ac;
 	(void)av;
+	if (ac > 1)
+		printf("minishell: program does not require arguments");
 	new_env = malloc(sizeof(*new_env));
 	if (!new_env)
 		return (1);
@@ -54,15 +79,8 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		input = readline("minishell $ ");
-		if (input == NULL)
-		{
-			printf("exit\n");
-			break ;
-		}
-		is_input_exit(input);
-		add_history(input);
-		tree = parse_input(input, new_env);
-		check_and_run(tree, new_env); //cot cot 🐔
+		if (!is_input_empty(input))
+			input_handler(input, new_env);
 	}
 	free(new_env);
 	return (0);

@@ -7,6 +7,8 @@ void	is_input_exit(char *input)
 	char **input_cpy;
 
 	i = 0;
+	if (!input)
+		return ;
 	input_cpy = ft_split(input, ' ');
 	if (strcmp(input_cpy[0], "exit") == 0)
 	{
@@ -53,15 +55,10 @@ void	actualize_status_and_exit(char *status)
 {
 	exit_status = ft_atoi(status);
 	if (exit_status >= 0 && exit_status <= 255)
-	{
-		printf("ici1\n");
-		printf("%d\n", exit_status);
 		exit(exit_status);
-	}
 	else
 	{
 		exit_status %= 256;
-		printf("%d\n", exit_status);
 		exit(exit_status);
 	}
 }
@@ -82,7 +79,6 @@ void	ft_exit(char **args)
 			}
 			i++;
 		}
-		printf("ici\n");
 		actualize_status_and_exit(args[1]);
 	}
 	else
