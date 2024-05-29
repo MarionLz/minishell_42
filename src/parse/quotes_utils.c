@@ -55,12 +55,15 @@ bool	open_quotes(char *input)
 
 /*is_token_with_quotes : take a look in the token to check if it contains quotes.
 Return true if it contains quotes, return false if not.*/
-bool	is_token_with_quotes(char *input)
+bool	is_token_with_quotes(char *input, char *quote_type)
 {
 	while (*input && !is_whitespace(*input) && !is_symbol(*input))
 	{
 		if (is_quotes(*input))
+		{
+			*quote_type = *input;
 			return (true);
+		}
 		input++;
 	}
 	return (false);
