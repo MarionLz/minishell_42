@@ -31,7 +31,7 @@ void	ft_echo(char **args)
 {
 	int i;
 
-	if (compare_cmd(args[1], "-n", 2) == 0)
+	if (args[1] && compare_cmd(args[1], "-n", 2) == 0)
 	{
 		i = 2;
 		print_args(args, i);

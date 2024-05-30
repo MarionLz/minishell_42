@@ -74,6 +74,7 @@ t_node	*nulterminate(t_node *tree, t_env *env)
 	t_pipe_node		*pipe_node;
 	int				i;
 
+	env->nb_cmd = 0;
 	if (tree->type == EXEC)
 	{
 		exec_node = (t_exec_node *)tree;
