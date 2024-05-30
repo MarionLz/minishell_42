@@ -1,10 +1,45 @@
 # include "../../include/minishell.h"
 
+char	*get_user_name(t_env *env)
+{
+	int		i;
+	int		j;
+	char	*path;
+
+	i = 0;
+	j = 5;
+	path = ft_strdup("/home/");
+	while (env->env_cpy[i])
+	{
+		if (ft_strncmp("USER=", env->env_cpy[i], 5) == 0)
+			break;
+		i++;
+	}
+	while (env->env_cpy[i][j])
+	{
+		path = strjoin_char(path, env->env_cpy[i][j]);
+		j++;
+	}
+	path = strjoin_char(path, '\0');
+	return (path);
+}
+
+void	change_directory(char *path)
+{
+	char	*error_msg;
+
+	if (chdir(path) == -1)
+	{
+		error_msg = ft_strjoin("cd:", path);
+		ft_error(error_msg);
+	}
+}
+
 void	actualize_env(char *directory, char *var, t_env *env)
 {
-	int	i;
-	char *new_oldpwd;
-	int	var_len;
+	int		i;
+	char	*new_oldpwd;
+	int		var_len;
 
 	i = -1;
 	var_len = (int)ft_strlen(var);
@@ -21,18 +56,20 @@ void	actualize_env(char *directory, char *var, t_env *env)
 
 void	ft_cd(char **args, t_env *env)
 {
-	char *error_msg;
-	char *old_directory;
-	char *current_directory;
+	char	*old_directory;
+	char	*current_directory;
+	char	*path;
 
 	old_directory = NULL;
 	current_directory = NULL;
 	old_directory = getcwd(old_directory, 0);
-	if (chdir(args[1]) == -1)
+	if (!args[1])
 	{
-		error_msg = ft_strjoin("cd:", args[0]);
-		ft_error(error_msg);
+		path = get_user_name(env);
+		change_directory(path);
 	}
+	else
+		change_directory(args[1]);
 	current_directory = getcwd(current_directory, 0);
 	actualize_env(old_directory, "OLDPWD=", env);
 	actualize_env(current_directory, "PWD=", env);

@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-/* is_quotes : return true if the character is a simple or a double quote
+/*is_quotes : return true if the character is a simple or a double quote
 and return false if not.*/
 bool	is_quotes(char c)
 {
