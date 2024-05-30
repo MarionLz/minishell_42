@@ -1,4 +1,5 @@
 #include "../include/minishell.h"
+
 int	exit_status;
 
 void	ft_error(char *error)

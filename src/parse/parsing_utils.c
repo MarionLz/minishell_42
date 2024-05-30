@@ -35,19 +35,19 @@ bool	is_builtin(char *cmd)
 {
 	while (cmd && is_whitespace(*cmd))
 		cmd++;
-	if (compare_cmd(cmd, "cd", 2) == 0)
+	if (ft_strncmp(cmd, "cd", 2) == 0 && !cmd[2])
 		return (true);
-	else if (compare_cmd(cmd, "echo", 4) == 0)
+	else if (ft_strncmp(cmd, "echo", 4) == 0 && !cmd[4])
 		return (true);
-	else if (compare_cmd(cmd, "pwd", 3) == 0)
+	else if (ft_strncmp(cmd, "pwd", 3) == 0 && !cmd[3])
 		return (true);
-	else if (compare_cmd(cmd, "exit", 4) == 0)
+	else if (ft_strncmp(cmd, "exit", 4) == 0 && !cmd[4])
 		return (true);
-	else if (compare_cmd(cmd, "export", 6) == 0)
+	else if (ft_strncmp(cmd, "export", 6) == 0 && !cmd[6])
 		return (true);
-	else if (compare_cmd(cmd, "unset", 5) == 0)
+	else if (ft_strncmp(cmd, "unset", 5) == 0 && !cmd[5])
 		return (true);
-	else if (compare_cmd(cmd, "env", 3) == 0)
+	else if (ft_strncmp(cmd, "env", 3) == 0 && !cmd[3])
 		return (true);
 	return (false);
 }

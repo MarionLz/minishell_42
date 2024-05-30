@@ -46,7 +46,7 @@ int	tab_len(char **tab)
 	return (i);
 }
 
-void	*free_env(char **env, int i)
+void	*free_env_until_i(char **env, int i)
 {
 	int j;
 
@@ -83,7 +83,7 @@ char	*copy_variable(char *to_copy, char **new_env, int j)
 	variable_cpy = ft_strdup(to_copy);
 	if (!variable_cpy)
 	{
-		free_env (new_env, j);
+		free_env_until_i(new_env, j);
 		return (NULL);
 	}
 	return (variable_cpy);
@@ -114,4 +114,4 @@ void	ft_unset(char **args, t_env *env)
 	free_tab(env->env_cpy);
 	env->env_cpy = dup_env(new_env);
 	return ;
-} 
+}

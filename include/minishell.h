@@ -96,7 +96,7 @@ char	*replace_dollar(char *new_input, char **input, t_env *env);
 
 /* TOKEN */
 int		insight_input(char **start_token, char *end_input, char *target);
-void	get_type(char **str, int *type, char *end_input, char quote);
+int		get_type(char **str, int type, char *end_input);
 int		get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
 
 /* CREATE_NODES */
@@ -168,5 +168,8 @@ void	ft_unset(char **args, t_env *env);
 void	sigint_routine(int signal);
 void	handle_sigint(void);
 void	handle_sigquit(void);
+
+/* FREE */
+void	free_env(t_env *env);
 
 #endif

@@ -1,5 +1,7 @@
 #include "../../include/minishell.h"
 
+/*get_exit_status : retrieves the exit status returned by the previous command line and replaces $? with its value.*/
+
 char	*get_exit_status(char *new_input)
 {
 	char		*str_exit_status;
@@ -13,6 +15,8 @@ char	*get_exit_status(char *new_input)
 	//free(str_exit_status);
 	return (new_input);
 }
+
+/*get_var_name : stores in a string the name of the environment variable contained in the input (after the $) and calculates its length.*/
 
 char	*get_var_name(t_dollar *var, char **input)
 {
@@ -40,6 +44,9 @@ char	*get_var_name(t_dollar *var, char **input)
 	return (var->name);
 }
 
+/*find_var_in_env : browses the environment to find the requested variable in the input.
+Return true if it founds it, return false if not.*/
+
 bool	find_var_in_env(t_dollar *var, t_env *env)
 {
 	int	i;
@@ -57,6 +64,8 @@ bool	find_var_in_env(t_dollar *var, t_env *env)
 	return (false);
 }
 
+/*copy_var_value : copies the content of the environment variable (after =) dans new_input.*/
+
 char	*copy_var_value(t_dollar *var, char *new_input, t_env *env)
 {
 	int	i;
@@ -72,6 +81,8 @@ char	*copy_var_value(t_dollar *var, char *new_input, t_env *env)
 	}
 	return (new_input);
 }
+
+/*replace_dollar : replaces the environment variable with its content.*/
 
 char	*replace_dollar(char *new_input, char **input, t_env *env)
 {

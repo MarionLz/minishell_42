@@ -17,9 +17,9 @@ int	is_cmd_env_builtin(t_node *tree)
 	if (tree->type == EXEC)
 	{
 		ex_node = (t_exec_node *)tree;
-		if (ft_strncmp(ex_node->args[0], "cd", 2) == 0 ||
-			ft_strncmp(ex_node->args[0], "export", 6) == 0 ||
-			ft_strncmp(ex_node->args[0], "unset", 5) == 0)
+		if ((ft_strncmp(ex_node->args[0], "cd", 2) == 0 && !ex_node->args[0][2]) ||
+			(ft_strncmp(ex_node->args[0], "export", 6) == 0 && !ex_node->args[0][6]) ||
+			(ft_strncmp(ex_node->args[0], "unset", 5) == 0 && !ex_node->args[0][5]))
 			return (1);
 		else
 			return (0);

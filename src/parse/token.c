@@ -16,49 +16,75 @@ int	insight_input(char **start_scan, char *end_input, char *target)
 	return (*str && ft_strchr(target, *str));
 }
 
-/* get_type : initialise the type of the token. */
-
-void	get_type(char **str, int *type, char *end_input, char quote)
+int	get_type_redir(char **str, int type)
 {
-	if (**str == '|' && quote == 0)
-	{
-		*type = PIPE;
-		(*str)++;
-	}
-	else if (**str == '<' && quote == 0)
+	if (**str == '<')
 	{
 		(*str)++;
 		if (**str == '<')
 		{
-			*type = HEREDOC;
+			type = HEREDOC;
 			(*str)++;
 		}
 		else
-			*type = IN_REDIR;
+			type = IN_REDIR;
 	}
-	else if (**str == '>' && quote == 0)
+	else if (**str == '>')
 	{
 		(*str)++;
 		if (**str == '>')
 		{
-			*type = APPEND;
+			type = APPEND;
 			(*str)++;
 		}
 		else
-			*type = OUT_REDIR;
+			type = OUT_REDIR;
+	}
+	return (type);
+}
+
+/* get_type : initialise the type of the token. */
+
+int	get_type(char **str, int type, char *end_input)
+{
+	if (**str == '|')
+	{
+		type = PIPE;
+		(*str)++;
+	}
+	else if (**str == '<' || **str == '>')
+		type = get_type_redir(str, type);
+	else
+	{
+		type = EXEC;
+		while (*str < end_input && !is_whitespace(**str) && !is_symbol(**str) && !is_quotes(**str))
+			(*str)++;
+	}
+	return (type);
+}
+
+int	token_with_quotes(char **str, char **start_token, char **end_token)
+{
+	char	quote;
+
+	quote = **str;
+	*start_token = *str;
+	(*str)++;
+	if (**str == quote)
+	{
+		(*str)++;
+		*end_token = *str;
 	}
 	else
 	{
-		*type = EXEC;
-		if (quote == 0)
-		{
-			while (*str < end_input && !is_whitespace(**str) && !is_symbol(**str) && !is_quotes(**str))
-				(*str)++;
-		}
-		else
-			while (*str < end_input && **str != quote)
-				(*str)++;
+		*start_token = *str;
+		while (**str != quote)
+			(*str)++;
+		*end_token = *str;
+		if (is_quotes(**str))
+			(*str)++;
 	}
+	return (EXEC);
 }
 
 /* get_token : Scan the input, locate the position of the next token, and initialize its type.
@@ -71,36 +97,23 @@ int	get_token(char **start_scan, char *end_input, char **start_token, char **end
 {
 	char	*str;
 	int		type;
-	char	quote;
 
 	str = *start_scan;
-	quote = 0;
+	type = 0;
 	while (str < end_input && is_whitespace(*str))
 		str++;
 	if (str >= end_input)
 		return (-1);
 	if (is_quotes(*str))
+		type = token_with_quotes(&str, start_token, end_token);
+	else
 	{
-		quote = *str;
-		*start_token = str;
-		str++;
-		if (*str == quote)
-		{
-			str++;
+		if (start_token)
+			*start_token = str;
+		type = get_type(&str, type, end_input);
+		if (end_token)
 			*end_token = str;
-			while (str < end_input && is_whitespace(*str))
-				str++;
-			*start_scan = str;
-			return (EXEC);
-		}
 	}
-	if (start_token)
-		*start_token = str;
-	get_type(&str, &type, end_input, quote);
-	if (end_token)
-		*end_token = str;
-	if (is_quotes(*str))
-		str++;
 	while (str < end_input && is_whitespace(*str))
 		str++;
 	*start_scan = str;
