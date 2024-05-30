@@ -59,7 +59,9 @@ void	run_exec(t_node *tree, t_env *env)
 	/*if (ex_node->args[0] == 0)
 		exit ();*/
 	if (ex_node->is_builtin == true)
+	{
 		run_builtin(ex_node->args, env);
+	}
 	else
 	{
 		path = get_path(ex_node->args[0], env);

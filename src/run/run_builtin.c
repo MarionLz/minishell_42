@@ -3,7 +3,9 @@
 void	run_builtin(char **args, t_env *env)
 {
 	if (ft_strncmp(args[0], "cd", 2) == 0)
+	{
 		ft_cd(args, env);
+	}
 	else if (ft_strncmp(args[0], "echo", 4) == 0)
 		ft_echo(args);
 	else if (ft_strncmp(args[0], "pwd", 3) == 0)
