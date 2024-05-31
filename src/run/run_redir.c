@@ -115,7 +115,7 @@ void	run_redir(t_node *tree, t_env *env)
 	else
 	{
 		if (close(redir_node->fd) < 0)
-		ft_error("close stdin/stdout failed");
+			ft_error("close stdin/stdout failed");
 		if (open(redir_node->file, redir_node->mode, 0777) < 0)
 			ft_error(redir_node->file);
 	}
