@@ -1,6 +1,7 @@
 NAME = minishell
 DIR_SRC = src/
 DIR_OBJ = obj/
+DIR_GNL = gnl/
 LIBFT = libft/libft.a
 CC = cc 
 CFLAGS = -Wall -Wextra -Werror -ggdb 
@@ -11,6 +12,7 @@ SRCS =  $(wildcard $(DIR_SRC)*.c) \
 		$(wildcard $(DIR_SRC)/parse/*.c) \
 		$(wildcard $(DIR_SRC)/run/*.c) \
 		$(wildcard $(DIR_SRC)/builtins/*.c) \
+		$(wildcard $(DIR_GNL)*.c) \
 
 OBJS = $(SRCS:$(DIR_SRC)%.c=$(DIR_OBJ)%.o)
 

@@ -169,4 +169,8 @@ void	sigint_routine(int signal);
 void	handle_sigint(void);
 void	handle_sigquit(void);
 
+/* GNL */
+char	*get_next_line(int fd);
+char	*ft_strjoin_and_free(char *s1, char *s2);
+
 #endif
