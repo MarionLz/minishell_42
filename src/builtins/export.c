@@ -4,7 +4,6 @@
 //all other characters until the '=' must be alphanum char
 //if not, var unvalid.
 //if no '=', var unvalid.
-
 int	is_var_valid(char *var)
 {
 	int	i;

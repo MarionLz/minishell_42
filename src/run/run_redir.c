@@ -14,58 +14,28 @@ void	reopen_stdin_stdout(int fd)
 	}
 }
 
-int	is_line_delimiter(char *line, t_redir_node *redir_node)
-{
-	size_t	line_len;
-	size_t	delimiter_len;
-
-	if (!line)
-	{
-		printf("Debug: line is NULL\n");
-		return (0);
-	}
- 	if (*line == '\0')
-	{
-		printf("Debug: line is empty\n");
-		return (0);
-	}
-	line_len = ft_strlen(line);
-	delimiter_len = ft_strlen(redir_node->file);
-	if (ft_strncmp(line, redir_node->file, delimiter_len) == 0 
-			&& (line_len == delimiter_len))
-		return (1);
-	else
-		return (0);
-}
-
-void	handler_heredoc(int signal)
-{
-	if (signal == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-} 
-
-
+//classic here_doc implementation.
+//change ctrl+c and ctrl+d signals cause they don't behave the same when in a here_doc prompt
+//ctrl+c exit the here_doc prompt
+//ctrl+d terminate the text entry like if delimiter was written.
 void	run_heredoc(t_redir_node *redir_node)
 {
 	char	*line;
 	int		file;
-
+	
 	file = open(".here_doc", O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (file < 0)
 		ft_error(redir_node->file);
+	setup_heredoc_signals();
 	while (1)
 	{
-		signal(SIGINT, handler_heredoc);  // Pour Ctrl+C
-		signal(SIGQUIT, handler_heredoc);
-		//signal(SIGINT, handler_heredoc);
 		line = readline("> ");
 		if (!line)
+		{
+			printf("minishell: warning: here-document delimited by end-of-file (wanted %s)\n",
+					redir_node->file);
 			return ;
+		}
 		if (is_line_delimiter(line, redir_node))
 		{
 			free(line);
@@ -73,11 +43,7 @@ void	run_heredoc(t_redir_node *redir_node)
 			return ;
 		}
 		else
-		{
-			ft_putstr_fd(line, file);
-			ft_putchar_fd('\n', file);
-			free(line);
-		}
+			handle_line(line, file);
 	}
 }
 
@@ -91,13 +57,15 @@ void	ft_heredoc(t_redir_node *redir_node)
 	if (file < 0)
 		ft_error("heredoc");
 	if (dup2(file, 0) < 0) 
-	{
-		perror("Error duplicating file descriptor");
 		ft_error("dup2 failed");
-	}
 	close(file);
 }
 
+//check what kind of redirection has to be handled.
+//if IN_REDIR or OUT_REDIR, close the proper fd (stdin or stdout basicaly) and open the given
+//file (open fct attribute to the opened file the 1st closed fd in the list)
+//if HERE_DOC, run ft_heredoc just above.
+//make sure in the end to reopen stdin and stdout properly for the next input.
 void	run_redir(t_node *tree, t_env *env)
 {
 	t_redir_node 	*redir_node;
@@ -120,8 +88,8 @@ void	run_redir(t_node *tree, t_env *env)
 			ft_error(redir_node->file);
 	}
 	run(redir_node->cmd, env);
-	if (close(redir_node->fd) < 0)
-		ft_error("close file failed");
+/* 	if (close(redir_node->fd) < 0)
+		ft_error("close file failed"); */
 	reopen_stdin_stdout(redir_node->fd);
 	return ;
 }
