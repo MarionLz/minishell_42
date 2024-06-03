@@ -1,4 +1,5 @@
 #include "../include/minishell.h"
+
 int	exit_status;
 
 void	ft_error(char *error)
@@ -36,6 +37,10 @@ char	**dup_env(char **env)
 	return (new_env);
 }
 
+//check if input is NULL. if so, it means that readline sent back NULL and that there was
+//nothing to read. this handle the case when when ctrl+d is called and exit the program.
+//check also if the 1st character of input is a null char. It means that readline read
+//something but it is an empty line
 int	is_input_empty(char *input)
 {
 	if (!input)
@@ -51,6 +56,9 @@ int	is_input_empty(char *input)
 	return (0);
 }
 
+//before anything else, check if input is exit cmd alone
+//if so, exit the program.
+//otherwise,, parse and execute the input
 void	input_handler(char *input, t_env *env)
 {
 	t_node *tree;
@@ -58,7 +66,7 @@ void	input_handler(char *input, t_env *env)
 	is_input_exit(input);
 	add_history(input);
 	tree = parse_input(input, env);
-	check_and_run(tree, env); //cot cot 🐔
+	check_and_run(tree, env);
 }
 
 int	main(int ac, char **av, char **env)
@@ -74,8 +82,7 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	new_env->env_cpy  = dup_env(env);
 	exit_status = 0;
-	handle_sigint();
-	handle_sigquit();
+	setup_main_signals();
 	while (1)
 	{
 		input = readline("minishell $ ");

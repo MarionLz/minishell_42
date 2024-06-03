@@ -26,7 +26,6 @@ void	print_args(char **args, int i)
 	}
 }
 
-//A voir pour le cas de $=xxxxx
 void	ft_echo(char **args)
 {
 	int i;

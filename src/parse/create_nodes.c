@@ -32,7 +32,10 @@ t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file, char *e
 	redir_node->file = start_file;
 	redir_node->end_file = end_file;
 	if (token_type == HEREDOC)
+	{
+		exit_status = -42;
 		redir_node->is_heredoc = true;
+	}
 	else
 		redir_node->is_heredoc = false;
 	init_fd_and_mode(token_type, redir_node);
@@ -58,7 +61,7 @@ t_node	*create_pipe_node(t_node *left, t_node *right)
 exec_node->args[i]: pointer to the beginning of the command or argument.
 exec_node->end_args[i]: pointer to the character following the command or argument.*/
 
-t_node	*create_exec_node()
+t_node	*create_exec_node(void)
 {
 	t_exec_node	*exec_node;
 

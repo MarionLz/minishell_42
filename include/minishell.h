@@ -29,10 +29,10 @@ typedef enum s_tokentype
 	PIPE,
 	REDIR,
 	BUILTIN,
-	IN_REDIR,		/* < */
-	OUT_REDIR,		/* > */
-	HEREDOC,		/* << */
-	APPEND,			/* >> */
+	IN_REDIR,
+	OUT_REDIR,
+	HEREDOC,
+	APPEND,
 }	t_tokentype;
 
 typedef struct s_env
@@ -46,7 +46,7 @@ typedef struct s_dollar
 	char	*name;
 	int		len_name;
 	int		index;
-} t_dollar;
+}	t_dollar;
 
 typedef struct s_node
 {
@@ -65,7 +65,7 @@ typedef struct s_redir_node
 {
 	int		type;
 	t_node	*cmd;
-	char 	*file;
+	char	*file;
 	char	*end_file;
 	int		mode;
 	int		fd;
@@ -102,7 +102,7 @@ int		get_token(char **start_scan, char *end_input, char **start_token, char **en
 /* CREATE_NODES */
 t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file, char *end_file);
 t_node	*create_pipe_node(t_node *left, t_node *right);
-t_node	*create_exec_node();
+t_node	*create_exec_node(void);
 
 /* QUOTES */
 bool	is_quotes(char c);
@@ -127,11 +127,16 @@ void	check_and_run(t_node *tree, t_env *env);
 void	run_builtin(char **args, t_env *env);
 
 /* RUN REDIR */
+void	handler_heredoc(int signal);
 void	reopen_stdin_stdout(int fd);
 void	run_redir(t_node *tree, t_env *env);
 
+/* HERE DOC UTILS */
+void	handle_line(char *line, int file);
+int		is_line_delimiter(char *line, t_redir_node *redir_node);
+
 /* RUN PIPE */
-int	run_pipe(t_node *tree, t_env *env);
+int		run_pipe(t_node *tree, t_env *env);
 
 /* RUN EXEC */
 void	free_tab(char **tab);
@@ -153,7 +158,6 @@ void	ft_exit(char **args);
 void	is_input_exit(char *input);
 void	ft_exit_and_free(char **input_cpy);
 
-
 /* EXPORT */
 int		is_var_valid(char *var);
 int		does_var_exist(char *var, t_env *env);
@@ -165,8 +169,9 @@ void	ft_export(char **args, t_env *env);
 void	ft_unset(char **args, t_env *env);
 
 /* SIGNALS */
-void	sigint_routine(int signal);
-void	handle_sigint(void);
-void	handle_sigquit(void);
+void	setup_heredoc_signals(void);
+void	setup_main_signals(void);
+void	signal_routine(int signal);
+void	heredoc_handler(int signal);
 
 #endif
