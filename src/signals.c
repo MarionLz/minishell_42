@@ -43,11 +43,7 @@ void setup_main_signals(void)
 	sigemptyset(&sa_main.sa_mask);      // Initialiser le masque de signaux
 	sa_main.sa_flags = 0;               // Définir les flags (0 par défaut)
 	sigaction(SIGINT, &sa_main, NULL);  // Installer le gestionnaire pour SIGINT
-
-	sa_main.sa_handler = signal_routine; // Définir le gestionnaire pour SIGQUIT
-	sigemptyset(&sa_main.sa_mask);       // Initialiser le masque de signaux
-	sa_main.sa_flags = 0;                // Définir les flags (0 par défaut)
-	sigaction(SIGQUIT, &sa_main, NULL);  // Installer le gestionnaire pour SIGQUIT
+	sigaction(SIGQUIT, &sa_main, NULL);
 }
 
 //same as above but for when the program is in a here_doc prompt
