@@ -11,7 +11,7 @@ void	signal_routine(int signal)
 		rl_redisplay();
 	}
 	else if (signal == SIGQUIT)
-		;
+		return ;
 }
 
 void	heredoc_handler(int signal)

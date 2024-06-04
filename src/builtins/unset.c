@@ -1,63 +1,31 @@
 #include "../../include/minishell.h"
 
-void	error_unset(char **tab, int i)
-{
-	int	j;
-
-	j = 0;
-	printf("unset : %s : invalid parameter name\n", tab[i]);
-	while (tab[j])
-	{
-		free(tab[j]);
-		j++;
-	}
-	free(tab);
-	exit (EXIT_FAILURE);
-}
-
-void	check_var_name(char **tab)
+bool	is_var_name_valid(char **args)
 {
 	int	i;
 	int	j;
 
 	i = 1;
-	while (tab[i])
+	while (args[i])
 	{
 		j = 0;
-		if (!ft_isalpha(tab[i][j]) && tab[i][j] != '_')
-			error_unset(tab, i);
-		while(tab[i][j])
+		if (!ft_isalpha(args[i][j]) && args[i][j] != '_')
 		{
-			if (!ft_isalnum(tab[i][j]) && tab[i][j] != '_')
-				error_unset(tab, i);
+			printf("unset: '%s': not a valid identifier\n", args[1]);
+			return (false);
+		}
+		while(args[i][j])
+		{
+			if (!ft_isalnum(args[i][j]) && args[i][j] != '_')
+			{
+				printf("unset: '%s': not a valid identifier\n", args[1]);
+				return (false);
+			}
 			j++;
 		}
 		i++;
 	}
-}
-
-int	tab_len(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
-void	*free_env_until_i(char **env, int i)
-{
-	int j;
-
-	j = 0;
-	while (j < i)
-	{
-		free(env[j]);
-		j++;
-	}
-	free(env);
-	return (NULL);
+	return (true);
 }
 
 int	find_var_to_delete(char *env, char **args)
@@ -83,7 +51,7 @@ char	*copy_variable(char *to_copy, char **new_env, int j)
 	variable_cpy = ft_strdup(to_copy);
 	if (!variable_cpy)
 	{
-		free_env_until_i(new_env, j);
+		free_tab_until_n(new_env, j);
 		return (NULL);
 	}
 	return (variable_cpy);
@@ -95,9 +63,10 @@ void	ft_unset(char **args, t_env *env)
 	int 	j;
 	char	**new_env;
 	
-	i = 0;
+	i = 1;
 	j = 0;
-	check_var_name(args);
+	if (!is_var_name_valid(args))
+		return ;
 	new_env = malloc((tab_len(env->env_cpy) - (tab_len(args) - 1) + 1) * sizeof(char *));
 	if (!new_env)
 		return ;
