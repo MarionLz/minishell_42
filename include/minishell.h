@@ -81,7 +81,13 @@ typedef struct s_pipe_node
 
 /* MAIN */
 void	ft_error(char *error);
+
+/* ENV */
+int		tab_len(char **tab);
 char	**dup_env(char **env);
+bool	valid_num_content(char *str);
+char 	**increase_shell_level(t_env *new_env);
+t_env	*handle_env(char **env);
 
 /* PARSING */
 t_node	*parse_exec(char **start_scan, char *end_input);
@@ -159,7 +165,7 @@ void	is_input_exit(char *input, t_env *env);
 void	ft_exit_and_free(char **input_cpy, t_env *env);
 
 /* EXPORT */
-int		is_var_valid(char *var);
+int		is_var_valid(char *args);
 int		does_var_exist(char *var, t_env *env);
 void	add_new_var(char *var, t_env *env);
 void	change_var(char *var, t_env *env);
@@ -174,8 +180,12 @@ void	setup_main_signals(void);
 void	signal_routine(int signal);
 void	heredoc_handler(int signal);
 
+/* UTILS */
+char *ft_strnjoin(char *s1, char *s2, int n);
+
 /* FREE */
 void	free_env(t_env *env);
 void	free_tree(t_node *tree);
+void	*free_tab_until_n(char **env, int n);
 
 #endif

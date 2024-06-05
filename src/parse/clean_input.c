@@ -97,13 +97,9 @@ char	*cleaner(char *new_input, char *input, t_env *env)
 
 char	*clean_input(char *input, t_env *env)
 {
-	bool	open_tok;
 	char	*new_input;
-	char	quote;
 
-	open_tok = false;
 	new_input = ft_strdup("");
-	quote = 0;
 	if (open_quotes(input) == true)
 	{
 		free_tab(env->env_cpy);

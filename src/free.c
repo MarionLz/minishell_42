@@ -40,3 +40,16 @@ void	free_tree(t_node *tree)
 	}
 }
 
+void	*free_tab_until_n(char **env, int n)
+{
+	int j;
+
+	j = 0;
+	while (j < n)
+	{
+		free(env[j]);
+		j++;
+	}
+	free(env);
+	return (NULL);
+}

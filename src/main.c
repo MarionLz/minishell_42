@@ -8,35 +8,6 @@ void	ft_error(char *error)
 	exit(1);
 }
 
-char	**dup_env(char **env)
-{
-	char	**new_env;
-	int		i;
-	int		j;
-
-	i = -1;
-	j = -1;
-	while (env[++i])
-		;
-	new_env = malloc((i + 1) * sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	i = -1;
-	while (env[++i])
-	{
-		new_env[i] = ft_strdup(env[i]);
-		if (!new_env[i])
-		{
-			while (++j < i)
-				free(new_env[j]);
-			free(new_env);
-			return (NULL);
-		}
-	}
-	new_env[i] = NULL;
-	return (new_env);
-}
-
 //check if input is NULL. if so, it means that readline sent back NULL and that there was
 //nothing to read. this handle the case when when ctrl+d is called and exit the program.
 //check also if the 1st character of input is a null char. It means that readline read
@@ -87,10 +58,9 @@ int	main(int ac, char **av, char **env)
 		printf("minishell: program does not require arguments");
 		return (0);
 	}
-	new_env = malloc(sizeof(*new_env));
-	if (!new_env)
+	new_env = handle_env(env);
+	if (!env)
 		return (1);
-	new_env->env_cpy  = dup_env(env);
 	exit_status = 0;
 	setup_main_signals();
 	while (1)
