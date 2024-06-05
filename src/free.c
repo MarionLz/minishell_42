@@ -13,3 +13,30 @@ void	free_env(t_env *env)
 	free(env->env_cpy);
     free(env);
 }
+
+void	free_tree(t_node *tree)
+{
+	t_pipe_node 	*pipe_node;
+	t_redir_node	*redir_node;
+	t_exec_node		*exec_node;
+
+	if (tree->type == EXEC)
+	{
+		exec_node = (t_exec_node *)tree;
+		free(exec_node);
+	}
+	else if (tree->type == REDIR)
+	{
+		redir_node = (t_redir_node *)tree;
+		free_tree(redir_node->cmd);
+		free(redir_node);
+	}
+	else if (tree->type == PIPE)
+	{
+		pipe_node = (t_pipe_node *)tree;
+		free_tree(pipe_node->left);
+		free_tree(pipe_node->right);
+		free(pipe_node);
+	}
+}
+

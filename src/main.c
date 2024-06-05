@@ -41,10 +41,13 @@ char	**dup_env(char **env)
 //nothing to read. this handle the case when when ctrl+d is called and exit the program.
 //check also if the 1st character of input is a null char. It means that readline read
 //something but it is an empty line
-int	is_input_empty(char *input)
+int	is_input_empty(char *input, t_env *new_env)
 {
 	if (!input)
 	{
+		free_tab(new_env->env_cpy);
+		free(new_env);
+		free(input);
 		printf("exit\n");
 		exit (1);
 	}
@@ -63,10 +66,14 @@ void	input_handler(char *input, t_env *env)
 {
 	t_node *tree;
 
-	is_input_exit(input);
+	is_input_exit(input, env);
 	add_history(input);
 	tree = parse_input(input, env);
-	check_and_run(tree, env);
+	if (tree != NULL)
+	{
+		check_and_run(tree, env);
+		free_tree(tree);
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -76,7 +83,10 @@ int	main(int ac, char **av, char **env)
 	
 	(void)av;
 	if (ac > 1)
+	{
 		printf("minishell: program does not require arguments");
+		return (0);
+	}
 	new_env = malloc(sizeof(*new_env));
 	if (!new_env)
 		return (1);
@@ -86,9 +96,8 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		input = readline("minishell $ ");
-		if (!is_input_empty(input))
+		if (!is_input_empty(input, new_env))
 			input_handler(input, new_env);
 	}
-	free(new_env);
 	return (0);
 }

@@ -56,19 +56,26 @@ char	*strjoin_char(char *s1, char c)
 {
 	char	*str;
 	int		i;
+	int		len;
 
+	if (s1 == NULL)
+		len = 0;
+	else
+		len = ft_strlen(s1);
 	i = 0;
-	str = malloc((sizeof(char)) * ft_strlen(s1) + 2);
+	str = malloc((sizeof(char)) * (len + 2));
 	if (!str)
+	{
+		free(s1);
 		return (NULL);
+	}
 	while (s1[i])
 	{
 		str[i] = s1[i];
 		i++;
 	}
 	str[i] = c;
-	i++;
-	str[i] = '\0';
+	str[i + 1] = '\0';
 	free(s1);
 	return (str);
 }
