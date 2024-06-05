@@ -1,7 +1,7 @@
 #include "../../include/minishell.h"
 
 //fonctions de free a ajouter
-void	is_input_exit(char *input)
+void	is_input_exit(char *input, t_env *env)
 {
 	int	i;
 	char **input_cpy;
@@ -18,18 +18,20 @@ void	is_input_exit(char *input)
 		{
 			printf("exit\nminishell: exit: too many arguments\n");
 			free_tab(input_cpy);
+			free(input);
 			return ;
 		}
 		else
 		{
 			printf("exit\n");
-			ft_exit_and_free(input_cpy);
+			ft_exit_and_free(input_cpy, env);
 		}
 	}
+	free_tab(input_cpy);
 	return ;
 }
 
-void	ft_exit_and_free(char **input_cpy)
+void	ft_exit_and_free(char **input_cpy, t_env *env)
 {
 	int	i;
 
@@ -40,14 +42,18 @@ void	ft_exit_and_free(char **input_cpy)
 		{
 			if (!ft_isdigit(input_cpy[1][i]))
 			{
-				printf("exit\nminishell: exit: %s: numeric argument required\n", input_cpy[1]);
+				printf("minishell: exit: %s: numeric argument required\n", input_cpy[1]);
 				free_tab(input_cpy);
-				exit (1);
+				free_tab(env->env_cpy);
+				free(env);
+				exit (1) ;
 			}
 			i++;
 		}
 	}
 	free_tab(input_cpy);
+	free_tab(env->env_cpy);
+	free(env);
 	exit(1);
 }
 

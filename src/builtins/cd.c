@@ -75,9 +75,10 @@ void	ft_cd(char **args, t_env *env)
 	if (!args[1])
 	{
 		path = get_user_name(env);
-		if (path == NULL)
+		if (path == NULL)		
 			return ;
 		change_directory(path);
+		free(path);
 	}
 	else
 		change_directory(args[1]);

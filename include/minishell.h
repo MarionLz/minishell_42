@@ -161,8 +161,8 @@ void	ft_echo(char **args);
 /* EXIT */
 void	actualize_status_and_exit(char *status);
 void	ft_exit(char **args);
-void	is_input_exit(char *input);
-void	ft_exit_and_free(char **input_cpy);
+void	is_input_exit(char *input, t_env *env);
+void	ft_exit_and_free(char **input_cpy, t_env *env);
 
 /* EXPORT */
 int		is_var_valid(char *args);
@@ -185,6 +185,7 @@ char *ft_strnjoin(char *s1, char *s2, int n);
 
 /* FREE */
 void	free_env(t_env *env);
+void	free_tree(t_node *tree);
 void	*free_tab_until_n(char **env, int n);
 
 #endif

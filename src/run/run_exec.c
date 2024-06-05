@@ -56,8 +56,6 @@ void	run_exec(t_node *tree, t_env *env)
 	char		*path;
 
 	ex_node = (t_exec_node *)tree;
-	/*if (ex_node->args[0] == 0)
-		exit ();*/
 	if (ex_node->is_builtin == true)
 	{
 		run_builtin(ex_node->args, env);
@@ -67,9 +65,12 @@ void	run_exec(t_node *tree, t_env *env)
 		path = get_path(ex_node->args[0], env);
 		if (execve(path, ex_node->args, env->env_cpy) == -1)
 		{
-			free(path);
-			ft_error(ex_node->args[0]);
-			exit(1);
+			if (execve(ex_node->args[0], ex_node->args, env->env_cpy) == -1)
+			{
+				free(path);
+				ft_error(ex_node->args[0]);
+				exit(1);
+			}
 		}
 	}
 }

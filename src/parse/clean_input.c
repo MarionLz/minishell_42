@@ -90,7 +90,7 @@ char	*cleaner(char *new_input, char *input, t_env *env)
 	}
 	if (open_tok == true)
 		new_input = delimit_token(new_input, &open_tok, quote);
-	return (new_input = strjoin_char(new_input, '\0'));
+	return (new_input /* = strjoin_char(new_input, '\0') */);
 }
 
 /*clean_input : checks that there are no open quotes and calls the function that will clean the input.*/
@@ -102,8 +102,11 @@ char	*clean_input(char *input, t_env *env)
 	new_input = ft_strdup("");
 	if (open_quotes(input) == true)
 	{
+		free_tab(env->env_cpy);
 		free_env(env);
+		free(new_input);
 		exit (EXIT_FAILURE);
 	}
-	return (new_input = cleaner(new_input, input, env));
+	new_input = cleaner(new_input, input, env);
+	return (new_input);
 }
