@@ -52,7 +52,7 @@ char	*get_path(char *cmd, t_data *data)
 
 void	run_exec(t_node *tree, t_data *data)
 {
-	t_exec_node *exec_node;
+	t_exec_node	*exec_node;
 	char		*path;
 
 	exec_node = (t_exec_node *)tree;
@@ -65,7 +65,8 @@ void	run_exec(t_node *tree, t_data *data)
 		path = get_path(exec_node->args[0], data);
 		if (execve(path, exec_node->args, data->env_cpy) == -1)
 		{
-			if (execve(exec_node->args[0], exec_node->args, data->env_cpy) == -1)
+			if (execve(exec_node->args[0], exec_node->args,
+					data->env_cpy) == -1)
 			{
 				free(path);
 				ft_error(exec_node->args[0]);

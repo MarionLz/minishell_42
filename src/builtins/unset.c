@@ -14,7 +14,7 @@ bool	is_var_name_valid(char **args)
 			printf("unset: '%s': not a valid identifier\n", args[1]);
 			return (false);
 		}
-		while(args[i][j])
+		while (args[i][j])
 		{
 			if (!ft_isalnum(args[i][j]) && args[i][j] != '_')
 			{
@@ -46,7 +46,7 @@ int	find_var_to_delete(char *env, char **args)
 
 char	*copy_variable(char *to_copy, char **new_env, int j)
 {
-	char *variable_cpy;
+	char	*variable_cpy;
 
 	variable_cpy = ft_strdup(to_copy);
 	if (!variable_cpy)
@@ -60,14 +60,15 @@ char	*copy_variable(char *to_copy, char **new_env, int j)
 void	ft_unset(char **args, t_data *data)
 {
 	int		i;
-	int 	j;
+	int		j;
 	char	**new_env;
-	
+
 	i = 1;
 	j = 0;
 	if (!is_var_name_valid(args))
 		return ;
-	new_env = malloc((tab_len(data->env_cpy) - (tab_len(args) - 1) + 1) * sizeof(char *));
+	new_env = malloc((tab_len(data->env_cpy) - (tab_len(args) - 1) + 1)
+			* sizeof(char *));
 	if (!new_env)
 		return ;
 	while (data->env_cpy[i])

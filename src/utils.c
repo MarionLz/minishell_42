@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-char *ft_strnjoin(char *s1, char *s2, int n)
+char	*ft_strnjoin(char *s1, char *s2, int n)
 {
 	char	*str;
 	int		totalsize;
@@ -31,7 +31,8 @@ char *ft_strnjoin(char *s1, char *s2, int n)
 
 bool	is_whitespace(char c)
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
+		|| c == '\r')
 		return (true);
 	return (false);
 }

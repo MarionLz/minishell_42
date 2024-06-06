@@ -2,7 +2,7 @@
 
 void	free_env(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (data->env_cpy[i])
@@ -15,7 +15,7 @@ void	free_env(t_data *data)
 
 void	free_tree(t_node *tree)
 {
-	t_pipe_node 	*pipe_node;
+	t_pipe_node		*pipe_node;
 	t_redir_node	*redir_node;
 	t_exec_node		*exec_node;
 
@@ -41,7 +41,7 @@ void	free_tree(t_node *tree)
 
 void	*free_tab_until_n(char **env, int n)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	while (j < n)

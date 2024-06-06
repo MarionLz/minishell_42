@@ -2,7 +2,7 @@
 
 void	ft_pwd(void)
 {
-	char *directory;
+	char	*directory;
 
 	directory = NULL;
 	directory = getcwd(directory, 0);
