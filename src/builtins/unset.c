@@ -57,7 +57,7 @@ char	*copy_variable(char *to_copy, char **new_env, int j)
 	return (variable_cpy);
 }
 
-void	ft_unset(char **args, t_env *env)
+void	ft_unset(char **args, t_data *data)
 {
 	int		i;
 	int 	j;
@@ -67,20 +67,20 @@ void	ft_unset(char **args, t_env *env)
 	j = 0;
 	if (!is_var_name_valid(args))
 		return ;
-	new_env = malloc((tab_len(env->env_cpy) - (tab_len(args) - 1) + 1) * sizeof(char *));
+	new_env = malloc((tab_len(data->env_cpy) - (tab_len(args) - 1) + 1) * sizeof(char *));
 	if (!new_env)
 		return ;
-	while (env->env_cpy[i])
+	while (data->env_cpy[i])
 	{
-		if (find_var_to_delete(env->env_cpy[i], args) == 0)
+		if (find_var_to_delete(data->env_cpy[i], args) == 0)
 		{
-			new_env[j] = copy_variable(env->env_cpy[i], new_env, j);
+			new_env[j] = copy_variable(data->env_cpy[i], new_env, j);
 			j++;
 		}
 		i++;
 	}
 	new_env[j] = NULL;
-	free_tab(env->env_cpy);
-	env->env_cpy = dup_env(new_env);
+	free_tab(data->env_cpy);
+	data->env_cpy = dup_env(new_env);
 	return ;
 }

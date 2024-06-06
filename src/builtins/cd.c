@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-char	*get_user_name(t_env *env)
+char	*get_user_name(t_data *data)
 {
 	int		i;
 	int		j;
@@ -9,20 +9,20 @@ char	*get_user_name(t_env *env)
 	i = 0;
 	j = 5;
 	path = ft_strdup("");
-	while (env->env_cpy[i])
+	while (data->env_cpy[i])
 	{
-		if (ft_strncmp("HOME=", env->env_cpy[i], 5) == 0)
+		if (ft_strncmp("HOME=", data->env_cpy[i], 5) == 0)
 			break;
 		i++;
 	}
-	if (!env->env_cpy[i])
+	if (!data->env_cpy[i])
 	{
 		printf("minishell: cd: HOME not set\n");
 		return (NULL);
 	}
-	while (env->env_cpy[i][j])
+	while (data->env_cpy[i][j])
 	{
-		path = strjoin_char(path, env->env_cpy[i][j]);
+		path = strjoin_char(path, data->env_cpy[i][j]);
 		j++;
 	}
 	path = strjoin_char(path, '\0');
@@ -41,7 +41,7 @@ void	change_directory(char *path)
 }
 
 //actualize OLDPWD and PWD variables in environment
-void	actualize_env(char *directory, char *var, t_env *env)
+void	actualize_env(char *directory, char *var, t_data *data)
 {
 	int		i;
 	char	*new_oldpwd;
@@ -50,20 +50,20 @@ void	actualize_env(char *directory, char *var, t_env *env)
 	i = -1;
 	var_len = (int)ft_strlen(var);
 	new_oldpwd = ft_strjoin(var, directory);
-	while (env->env_cpy[++i])
+	while (data->env_cpy[++i])
 	{
-		if (ft_strncmp(var, env->env_cpy[i], var_len) == 0)
+		if (ft_strncmp(var, data->env_cpy[i], var_len) == 0)
 			break ;
 	}
-	free(env->env_cpy[i]);
-	env->env_cpy[i] = ft_strdup(new_oldpwd);
+	free(data->env_cpy[i]);
+	data->env_cpy[i] = ft_strdup(new_oldpwd);
 	free(new_oldpwd);
 }
 
 //change directory to the given path. 
 //in case of cd alone, check if HOME variable hasn't been unset.
 //if so, just display proper error message.
-void	ft_cd(char **args, t_env *env)
+void	ft_cd(char **args, t_data *data)
 {
 	char	*old_directory;
 	char	*current_directory;
@@ -74,7 +74,7 @@ void	ft_cd(char **args, t_env *env)
 	old_directory = getcwd(old_directory, 0);
 	if (!args[1])
 	{
-		path = get_user_name(env);
+		path = get_user_name(data);
 		if (path == NULL)		
 			return ;
 		change_directory(path);
@@ -83,8 +83,8 @@ void	ft_cd(char **args, t_env *env)
 	else
 		change_directory(args[1]);
 	current_directory = getcwd(current_directory, 0);
-	actualize_env(old_directory, "OLDPWD=", env);
-	actualize_env(current_directory, "PWD=", env);
+	actualize_env(old_directory, "OLDPWD=", data);
+	actualize_env(current_directory, "PWD=", data);
 	free(old_directory);
 	free(current_directory);
 }

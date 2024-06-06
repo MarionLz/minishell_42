@@ -1,12 +1,5 @@
 #include "../../include/minishell.h"
 
-bool	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
-		return (true);
-	return (false);
-}
-
 bool	is_symbol(char c)
 {
 	if (c == '|' || c == '<' || c == '>')
@@ -58,12 +51,11 @@ char	*strjoin_char(char *s1, char c)
 	int		i;
 	int		len;
 
-	if (s1 == NULL)
-		len = 0;
-	else
-		len = ft_strlen(s1);
+	if (!s1)
+		return (NULL);
+	len = ft_strlen(s1);
 	i = 0;
-	str = malloc((sizeof(char)) * (len + 2));
+	str = (char *)malloc(sizeof(char) * (len + 2));
 	if (!str)
 	{
 		free(s1);
@@ -78,4 +70,28 @@ char	*strjoin_char(char *s1, char c)
 	str[i + 1] = '\0';
 	free(s1);
 	return (str);
+}
+
+bool	empty_pipe(char *input)
+{
+	while (*input)
+	{
+		if (*input == '|')
+		{
+			input++;
+			while (*input && *input != '|')
+			{
+				if (!is_whitespace(*input))
+					break ;
+				input++;
+			}
+			if (!*input)
+			{
+				printf("Error, empty pipe.\n");
+				return (true);
+			}
+		}
+		input++;
+	}
+	return (false);
 }

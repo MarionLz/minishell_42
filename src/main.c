@@ -8,11 +8,23 @@ void	ft_error(char *error)
 	exit(1);
 }
 
+bool	contain_only_whitespace(char *input)
+{
+	int i;
+
+	i = 0;
+	while (input[i] && is_whitespace(input[i]))
+		i++;
+	if (i == (int)ft_strlen(input))
+		return (true);
+	return (false);
+}
+
 //check if input is NULL. if so, it means that readline sent back NULL and that there was
 //nothing to read. this handle the case when when ctrl+d is called and exit the program.
 //check also if the 1st character of input is a null char. It means that readline read
 //something but it is an empty line
-int	is_input_empty(char *input, t_env *new_env)
+int	is_input_empty(char *input, t_data *new_env)
 {
 	if (!input)
 	{
@@ -22,7 +34,7 @@ int	is_input_empty(char *input, t_env *new_env)
 		printf("exit\n");
 		exit (1);
 	}
-	if (*input == '\0')
+	if (*input == '\0' || contain_only_whitespace(input))
 	{
 		free(input);
 		return (1);
@@ -33,7 +45,7 @@ int	is_input_empty(char *input, t_env *new_env)
 //before anything else, check if input is exit cmd alone
 //if so, exit the program.
 //otherwise,, parse and execute the input
-void	input_handler(char *input, t_env *env)
+void	input_handler(char *input, t_data *env)
 {
 	t_node *tree;
 
@@ -44,13 +56,15 @@ void	input_handler(char *input, t_env *env)
 	{
 		check_and_run(tree, env);
 		free_tree(tree);
+		free(env->new_input);
+		free(input);
 	}
 }
 
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
-	t_env	*new_env;
+	t_data	*data;
 	
 	(void)av;
 	if (ac > 1)
@@ -58,7 +72,7 @@ int	main(int ac, char **av, char **env)
 		printf("minishell: program does not require arguments");
 		return (0);
 	}
-	new_env = handle_env(env);
+	data = handle_env(env);
 	if (!env)
 		return (1);
 	exit_status = 0;
@@ -66,8 +80,8 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		input = readline("minishell $ ");
-		if (!is_input_empty(input, new_env))
-			input_handler(input, new_env);
+		if (!is_input_empty(input, data))
+			input_handler(input, data);
 	}
 	return (0);
 }

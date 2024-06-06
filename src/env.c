@@ -50,7 +50,7 @@ bool	valid_num_content(char *str)
 	return(true);
 }
 
-char **increase_shell_level(t_env *new_env)
+char **increase_shell_level(t_data *data)
 {
 	int		i;
 	char	*old_level;
@@ -58,35 +58,36 @@ char **increase_shell_level(t_env *new_env)
 	int		level;
 
 	i = 0;
-	while (new_env->env_cpy[i])
+	while (data->env_cpy[i])
 	{
-		if (ft_strncmp(new_env->env_cpy[i], "SHLVL", 5) == 0 && new_env->env_cpy[i][5] == '=')
+		if (ft_strncmp(data->env_cpy[i], "SHLVL", 5) == 0 && data->env_cpy[i][5] == '=')
 		{
-			old_level = &new_env->env_cpy[i][6];
+			old_level = &data->env_cpy[i][6];
 			if (!valid_num_content(old_level))
 			{
-				new_env->env_cpy[i] = ft_strnjoin(new_env->env_cpy[i], "0", 6);
-				return (new_env->env_cpy);
+				data->env_cpy[i] = ft_strnjoin(data->env_cpy[i], "0", 6);
+				return (data->env_cpy);
 			}
 			level = ft_atoi(old_level) + 1;
 			new_level = ft_itoa(level);
-			new_env->env_cpy[i] = ft_strnjoin(new_env->env_cpy[i], new_level, 6);
-			return (new_env->env_cpy);
+			data->env_cpy[i] = ft_strnjoin(data->env_cpy[i], new_level, 6);
+			return (data->env_cpy);
 		}
 		i++;
 	}
-	add_new_var("SHLVL=0", new_env);
-	return (new_env->env_cpy);
+	add_new_var("SHLVL=0", data);
+	return (data->env_cpy);
 }
 
-t_env	*handle_env(char **env)
+t_data	*handle_env(char **env)
 {
-	t_env	*new_env;
+	t_data	*data;
 
-	new_env = malloc(sizeof(*new_env));
-	if (!new_env)
+	data = malloc(sizeof(*data));
+	if (!data)
 		return (NULL);
-	new_env->env_cpy = dup_env(env);
-	new_env->env_cpy = increase_shell_level(new_env);
-	return (new_env);
+	data->env_cpy = dup_env(env);
+	data->env_cpy = increase_shell_level(data);
+	data->new_input = ft_strdup("");
+	return (data);
 }

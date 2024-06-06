@@ -24,7 +24,7 @@ int	is_var_valid(char *args)
 }
 
 //check if the export variable name is already existing in the env
-int	does_var_exist(char *var, t_env *env)
+int	does_var_exist(char *var, t_data *data)
 {
 	char	**var_name;
 	int		var_name_len;
@@ -33,9 +33,9 @@ int	does_var_exist(char *var, t_env *env)
 	i = 0;
 	var_name = ft_split(var, '=');
 	var_name_len = ft_strlen(var_name[0]);
-	while (env->env_cpy[i])
+	while (data->env_cpy[i])
 	{
-		if (ft_strncmp(var_name[0], env->env_cpy[i], var_name_len) == 0 && env->env_cpy[i][var_name_len] == '=')
+		if (ft_strncmp(var_name[0], data->env_cpy[i], var_name_len) == 0 && data->env_cpy[i][var_name_len] == '=')
 			return (1);
 		i++;
 	}
@@ -43,31 +43,31 @@ int	does_var_exist(char *var, t_env *env)
 	return (0);
 }
 
-void	add_new_var(char *var, t_env *env)
+void	add_new_var(char *var, t_data *data)
 {
 	int	i;
 	char **new_env;
 
 	i = 0;
-	while (env->env_cpy[i])
+	while (data->env_cpy[i])
 		i++;
 	new_env = (char **)malloc((sizeof(char *) * i) + 2);
 	if (!new_env)
 		return ;
 	i = 0;
-	while (env->env_cpy[i])
+	while (data->env_cpy[i])
 	{
-		new_env[i] = ft_strdup(env->env_cpy[i]);
+		new_env[i] = ft_strdup(data->env_cpy[i]);
 		i++;
 	}
 	new_env[i] = ft_strdup(var);
 	i++;
 	new_env[i] = NULL;
-	free_tab(env->env_cpy);
-	env->env_cpy = dup_env(new_env);
+	free_tab(data->env_cpy);
+	data->env_cpy = dup_env(new_env);
 }
 
-void	change_var(char *var, t_env *env)
+void	change_var(char *var, t_data *data)
 {
 	char **var_name;
 	int	var_name_len;
@@ -76,17 +76,17 @@ void	change_var(char *var, t_env *env)
 	i = -1;
 	var_name = ft_split(var, '=');
 	var_name_len = ft_strlen(var_name[0]);
-	while (env->env_cpy[++i])
+	while (data->env_cpy[++i])
 	{
-		if (ft_strncmp(var_name[0], env->env_cpy[i], var_name_len) == 0)
+		if (ft_strncmp(var_name[0], data->env_cpy[i], var_name_len) == 0)
 			break ;
 	}
-	free(env->env_cpy[i]);
-	env->env_cpy[i] = ft_strdup(var);
+	free(data->env_cpy[i]);
+	data->env_cpy[i] = ft_strdup(var);
 	free_tab(var_name);
 }
 
-void	ft_export(char **args, t_env *env)
+void	ft_export(char **args, t_data *data)
 {
 	int	i;
 
@@ -98,10 +98,10 @@ void	ft_export(char **args, t_env *env)
 			printf("export: '%s': not a valid identifier\n", args[1]);
 			return ;
 		}
-		if (does_var_exist(args[1], env) == 0)
-			add_new_var(args[i], env);
+		if (does_var_exist(args[1], data) == 0)
+			add_new_var(args[i], data);
 		else
-			change_var(args[i], env);
+			change_var(args[i], data);
 		i++;
 	}
 }

@@ -1,17 +1,17 @@
 #include "../include/minishell.h"
 
-void	free_env(t_env *env)
+void	free_env(t_data *data)
 {
 	int i;
 
 	i = 0;
-	while (env->env_cpy[i])
+	while (data->env_cpy[i])
 	{
-		free(env->env_cpy[i]);
+		free(data->env_cpy[i]);
 		i++;
 	}
-	free(env->env_cpy);
-    free(env);
+	free(data->env_cpy);
+    free(data);
 }
 
 void	free_tree(t_node *tree)
