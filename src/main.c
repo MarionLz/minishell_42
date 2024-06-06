@@ -24,12 +24,12 @@ bool	contain_only_whitespace(char *input)
 //nothing to read. this handle the case when when ctrl+d is called and exit the program.
 //check also if the 1st character of input is a null char. It means that readline read
 //something but it is an empty line
-int	is_input_empty(char *input, t_data *new_env)
+int	is_input_empty(char *input, t_data *data)
 {
 	if (!input)
 	{
-		free_tab(new_env->env_cpy);
-		free(new_env);
+		free_tab(data->env_cpy);
+		free(data);
 		free(input);
 		printf("exit\n");
 		exit (1);
@@ -45,18 +45,19 @@ int	is_input_empty(char *input, t_data *new_env)
 //before anything else, check if input is exit cmd alone
 //if so, exit the program.
 //otherwise,, parse and execute the input
-void	input_handler(char *input, t_data *env)
+void	input_handler(char *input, t_data *data)
 {
 	t_node *tree;
 
-	is_input_exit(input, env);
+	is_input_exit(input, data);
 	add_history(input);
-	tree = parse_input(input, env);
+	tree = parse_input(input, data);
 	if (tree != NULL)
 	{
-		check_and_run(tree, env);
+		check_and_run(tree, data);
 		free_tree(tree);
-		free(env->new_input);
+		free(data->new_input);
+		//free(data);
 		free(input);
 	}
 }

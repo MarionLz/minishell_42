@@ -69,12 +69,11 @@ t_node	*parse_input(char *input, t_data *data)
 	char	*end_input;
 	t_node	*tree;
 
-	input = clean_input(input, data);
+	data->new_input = clean_input(input, data);
 	if (!input)
 		return (NULL);
 	end_input = input + ft_strlen(input);
 	tree = parse_pipe(&input, end_input);
 	tree = nulterminate(tree, data);
-	//free(input);
 	return (tree);
 }

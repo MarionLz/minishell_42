@@ -88,6 +88,5 @@ t_data	*handle_env(char **env)
 		return (NULL);
 	data->env_cpy = dup_env(env);
 	data->env_cpy = increase_shell_level(data);
-	data->new_input = ft_strdup("");
 	return (data);
 }

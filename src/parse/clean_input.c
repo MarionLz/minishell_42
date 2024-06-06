@@ -87,18 +87,23 @@ char	*cleaner(char *new_input, char *input, t_data *data)
 	}
 	if (open_tok == true)
 		new_input = delimit_token(new_input, &open_tok, quote);
-	return (new_input /* = strjoin_char(new_input, '\0') */);
+	return (new_input);
 }
 
 /*clean_input : checks that there are no open quotes and calls the function that will clean the input.*/
 
 char	*clean_input(char *input, t_data *data)
 {
+	char	*new;
+
 	if (open_quotes(input) == true || empty_pipe(input))
 	{
 		free_env(data);
 		exit (EXIT_FAILURE);
 	}
-	data->new_input = cleaner(data->new_input, input, data);
+	new = ft_strdup("");
+	if (!new)
+		return (NULL);
+	data->new_input = cleaner(new, input, data);
 	return (data->new_input);
 }
