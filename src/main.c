@@ -20,10 +20,11 @@ bool	contain_only_whitespace(char *input)
 	return (false);
 }
 
-//check if input is NULL. if so, it means that readline sent back NULL and that there was
-//nothing to read. this handle the case when when ctrl+d is called and exit the program.
-//check also if the 1st character of input is a null char. It means that readline read
-//something but it is an empty line
+//check if input is NULL. if so, it means that readline sent back NULL 
+//and that there was nothing to read. this handle the case when when ctrl+d 
+//is called and exit the program. 
+//check also if the 1st character of input is a null char. 
+//It means that readline read something but it is an empty line
 int	is_input_empty(char *input, t_data *data)
 {
 	if (!input)
@@ -65,7 +66,7 @@ int	main(int ac, char **av, char **env)
 {
 	char	*input;
 	t_data	*data;
-	
+
 	(void)av;
 	if (ac > 1)
 	{

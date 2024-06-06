@@ -12,7 +12,7 @@ char	*get_user_name(t_data *data)
 	while (data->env_cpy[i])
 	{
 		if (ft_strncmp("HOME=", data->env_cpy[i], 5) == 0)
-			break;
+			break ;
 		i++;
 	}
 	if (!data->env_cpy[i])
@@ -75,7 +75,7 @@ void	ft_cd(char **args, t_data *data)
 	if (!args[1])
 	{
 		path = get_user_name(data);
-		if (path == NULL)		
+		if (path == NULL)
 			return ;
 		change_directory(path);
 		free(path);

@@ -12,14 +12,17 @@ int	ft_fork(void)
 
 int	is_cmd_env_builtin(t_node *tree)
 {
-	t_exec_node *ex_node;
+	t_exec_node	*ex_node;
 
 	if (tree->type == EXEC)
 	{
 		ex_node = (t_exec_node *)tree;
-		if ((ft_strncmp(ex_node->args[0], "cd", 2) == 0 && !ex_node->args[0][2]) ||
-			(ft_strncmp(ex_node->args[0], "export", 6) == 0 && !ex_node->args[0][6]) ||
-			(ft_strncmp(ex_node->args[0], "unset", 5) == 0 && !ex_node->args[0][5]))
+		if ((ft_strncmp(ex_node->args[0], "cd", 2) == 0
+				&& !ex_node->args[0][2]) ||
+			(ft_strncmp(ex_node->args[0], "export", 6) == 0
+				&& !ex_node->args[0][6]) ||
+			(ft_strncmp(ex_node->args[0], "unset", 5) == 0
+				&& !ex_node->args[0][5]))
 			return (1);
 		else
 			return (0);
@@ -27,8 +30,9 @@ int	is_cmd_env_builtin(t_node *tree)
 	return (0);
 }
 
-//function that is called recursively to run cmd accordingly to the pipes and redirection
-//that are in the input.
+//function that is called recursively to run cmd 
+//accordingly to the pipes and redirection that are in 
+//the input.
 void	run(t_node *tree, t_data *data)
 {
 	int	return_status;
@@ -43,14 +47,16 @@ void	run(t_node *tree, t_data *data)
 	exit (return_status);
 }
 
-//check 1st if the cmd to be runned is a builtin involving to modify the environment.
-// if so, run them before forking so the program always remember what is modified on env.
+//check 1st if the cmd to be runned is a builtin involving 
+//to modify the environment.
+//if so, run them before forking so the program always remember 
+//what is modified on env.
 //(as parent don't inherite of what's done in child)
 //otherwise, fork, run the cmd and wait for the process to be done properly.
 //while (waitpid) ensure that it will know that the process is done.
 void	check_and_run(t_node *tree, t_data *data)
 {
-	t_exec_node *ex_node;
+	t_exec_node	*ex_node;
 	pid_t		pid;
 	int			status;
 

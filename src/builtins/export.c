@@ -12,7 +12,7 @@ int	is_var_valid(char *args)
 	i = 1;
 	if (!ft_isalpha(args[i]) && args[i] != '_')
 		return (0);
-	while(args[i] != '=')
+	while (args[i] != '=')
 	{
 		if (args[i] == '\0')
 			return (0);
@@ -35,7 +35,8 @@ int	does_var_exist(char *var, t_data *data)
 	var_name_len = ft_strlen(var_name[0]);
 	while (data->env_cpy[i])
 	{
-		if (ft_strncmp(var_name[0], data->env_cpy[i], var_name_len) == 0 && data->env_cpy[i][var_name_len] == '=')
+		if (ft_strncmp(var_name[0], data->env_cpy[i], var_name_len) == 0
+			&& data->env_cpy[i][var_name_len] == '=')
 			return (1);
 		i++;
 	}
@@ -45,8 +46,8 @@ int	does_var_exist(char *var, t_data *data)
 
 void	add_new_var(char *var, t_data *data)
 {
-	int	i;
-	char **new_env;
+	int		i;
+	char	**new_env;
 
 	i = 0;
 	while (data->env_cpy[i])
@@ -69,9 +70,9 @@ void	add_new_var(char *var, t_data *data)
 
 void	change_var(char *var, t_data *data)
 {
-	char **var_name;
-	int	var_name_len;
-	int	i;
+	char	**var_name;
+	int		var_name_len;
+	int		i;
 
 	i = -1;
 	var_name = ft_split(var, '=');

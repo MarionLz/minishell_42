@@ -47,20 +47,21 @@ bool	valid_num_content(char *str)
 			return (false);
 		str++;
 	}
-	return(true);
+	return (true);
 }
 
-char **increase_shell_level(t_data *data)
+char	**increase_shell_level(t_data *data)
 {
 	int		i;
 	char	*old_level;
 	char	*new_level;
 	int		level;
 
-	i = 0;
-	while (data->env_cpy[i])
+	i = -1;
+	while (data->env_cpy[++i])
 	{
-		if (ft_strncmp(data->env_cpy[i], "SHLVL", 5) == 0 && data->env_cpy[i][5] == '=')
+		if (ft_strncmp(data->env_cpy[i], "SHLVL", 5) == 0
+			&& data->env_cpy[i][5] == '=')
 		{
 			old_level = &data->env_cpy[i][6];
 			if (!valid_num_content(old_level))
@@ -73,7 +74,6 @@ char **increase_shell_level(t_data *data)
 			data->env_cpy[i] = ft_strnjoin(data->env_cpy[i], new_level, 6);
 			return (data->env_cpy);
 		}
-		i++;
 	}
 	add_new_var("SHLVL=0", data);
 	return (data->env_cpy);

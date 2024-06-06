@@ -1,8 +1,8 @@
-# include "../../include/minishell.h"
+#include "../../include/minishell.h"
 
 bool	is_empty_quotes(char *str)
 {
-	char quote;
+	char	quote;
 
 	if (is_quotes(*str))
 	{
@@ -28,7 +28,7 @@ void	print_args(char **args, int i)
 
 void	ft_echo(char **args)
 {
-	int i;
+	int	i;
 
 	if (args[1] && compare_cmd(args[1], "-n", 2) == 0)
 	{

@@ -29,31 +29,32 @@ void	heredoc_handler(int signal)
 	}
 	else if (signal == SIGQUIT)
 		exit_status = 0;
-} 
+}
 
-//initialize sigaction structure for when ctrl+d and ctrl+c are called in the main program
+//initialize sigaction structure for when ctrl+d and 
+//ctrl+c are called in the main program
 //structure is defined is signal.h lib
 //ctrl+c = sigint
 //ctrl+d = sigquit
-void setup_main_signals(void) 
+void	setup_main_signals(void)
 {
-	struct sigaction sa_main;
+	struct sigaction	sa_main;
 
-	sa_main.sa_handler = signal_routine; // Définir le gestionnaire pour SIGINT
-	sigemptyset(&sa_main.sa_mask);      // Initialiser le masque de signaux
-	sa_main.sa_flags = 0;               // Définir les flags (0 par défaut)
-	sigaction(SIGINT, &sa_main, NULL);  // Installer le gestionnaire pour SIGINT
+	sa_main.sa_handler = signal_routine;
+	sigemptyset(&sa_main.sa_mask);
+	sa_main.sa_flags = 0;
+	sigaction(SIGINT, &sa_main, NULL);
 	sigaction(SIGQUIT, &sa_main, NULL);
 }
 
 //same as above but for when the program is in a here_doc prompt
-void setup_heredoc_signals(void) 
+void	setup_heredoc_signals(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
-	sa.sa_handler = heredoc_handler;  // Définir le gestionnaire de signal
-	sigemptyset(&sa.sa_mask);         // Initialiser le masque de signaux
-	sa.sa_flags = 0;                  // Définir les flags (0 par défaut)
-	sigaction(SIGINT, &sa, NULL);     // Installer le gestionnaire pour SIGINT
-	sigaction(SIGQUIT, &sa, NULL);    // Installer le gestionnaire pour SIGQUIT
+	sa.sa_handler = heredoc_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }

@@ -17,15 +17,15 @@ int	is_line_delimiter(char *line, t_redir_node *redir_node)
 		printf("Debug: line is NULL\n");
 		return (0);
 	}
- 	if (*line == '\0')
+	if (*line == '\0')
 	{
 		printf("Debug: line is empty\n");
 		return (0);
 	}
 	line_len = ft_strlen(line);
 	delimiter_len = ft_strlen(redir_node->file);
-	if (ft_strncmp(line, redir_node->file, delimiter_len) == 0 
-			&& (line_len == delimiter_len))
+	if (ft_strncmp(line, redir_node->file, delimiter_len) == 0
+		&& (line_len == delimiter_len))
 		return (1);
 	else
 		return (0);
