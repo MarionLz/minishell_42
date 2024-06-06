@@ -1,5 +1,12 @@
 #include "../../include/minishell.h"
 
+void	fill_args(t_exec_node *exec_node, char *start_token, char *end_token, int *i)
+{
+	exec_node->args[*i] = start_token;
+	exec_node->end_args[*i] = end_token;
+	(*i)++;
+}
+
 void	init_fd_and_mode(int token_type, t_redir_node	*redir_node)
 {
 	if (token_type == IN_REDIR)
@@ -53,6 +60,12 @@ t_node	*create_pipe_node(t_node *left, t_node *right)
 	pipe_node->type = PIPE;
 	pipe_node->left = left;
 	pipe_node->right = right;
+	if (!pipe_node->right)
+	{
+		free(pipe_node->left);
+		free(pipe_node);
+		return (NULL);
+	}
 	return ((t_node *)pipe_node);
 }
 

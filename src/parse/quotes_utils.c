@@ -47,7 +47,7 @@ bool	open_quotes(char *input)
 	}
 	if (simple_quote || double_quotes)
 	{
-		printf("Error, open quotes\n");
+		parse_error("open quotes");
 		return (true);
 	}
 	return (false);

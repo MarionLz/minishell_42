@@ -98,8 +98,8 @@ char	*clean_input(char *input, t_data *data)
 
 	if (open_quotes(input) == true || empty_pipe(input))
 	{
-		free_env(data);
-		exit (EXIT_FAILURE);
+		free(input);
+		return (NULL);
 	}
 	new = ft_strdup("");
 	if (!new)

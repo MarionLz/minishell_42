@@ -91,7 +91,8 @@ char 	**increase_shell_level(t_data *data);
 t_data	*handle_env(char **data);
 
 /* PARSING */
-t_node	*parse_exec(char **start_scan, char *end_input);
+t_node	*parse_error(char *message);
+t_node	*parse_exec(char **start_scan, char *end_input, t_data *data);
 t_node	*nulterminate(t_node *tree, t_data *data);
 t_node	*parse_input(char *input, t_data *data);
 
@@ -107,6 +108,7 @@ int		get_type(char **str, int type, char *end_input);
 int		get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
 
 /* CREATE_NODES */
+void	fill_args(t_exec_node *exec_node, char *start_token, char *end_token, int *i);
 t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file, char *end_file);
 t_node	*create_pipe_node(t_node *left, t_node *right);
 t_node	*create_exec_node(void);
@@ -123,7 +125,7 @@ int		compare_cmd(char *str1, char *str2, int n);
 bool	is_builtin(char *cmd);
 char	*strjoin_char(char *s1, char c);
 bool	empty_pipe(char *input);
-int	check_for_double_pipe(char *start_scan, char *end_input);
+int		check_next_token(char *start_scan, char *end_input);
 
 /* NULTERMINATE */
 void	nulterminate_exec_node(t_data *data, t_exec_node *exec_node);

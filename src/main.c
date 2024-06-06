@@ -46,13 +46,15 @@ int	is_input_empty(char *input, t_data *data)
 //before anything else, check if input is exit cmd alone
 //if so, exit the program.
 //otherwise,, parse and execute the input
-void	input_handler(char *input, t_data *data)
+void	*input_handler(char *input, t_data *data)
 {
 	t_node *tree;
 
 	is_input_exit(input, data);
 	add_history(input);
 	tree = parse_input(input, data);
+	if (!tree)
+		return (NULL);
 	if (tree != NULL)
 	{
 		check_and_run(tree, data);
@@ -60,6 +62,7 @@ void	input_handler(char *input, t_data *data)
 		free(data->new_input);
 		free(input);
 	}
+	return (0);
 }
 
 int	main(int ac, char **av, char **env)

@@ -80,7 +80,7 @@ bool	empty_pipe(char *input)
 			}
 			if (!*input)
 			{
-				printf("Error, empty pipe.\n");
+				parse_error("empty pipe");
 				return (true);
 			}
 		}
@@ -89,11 +89,19 @@ bool	empty_pipe(char *input)
 	return (false);
 }
 
-int	check_for_double_pipe(char *start_scan, char *end_input)
+int	check_next_token(char *start_scan, char *end_input)
 {
 	while (start_scan < end_input && is_whitespace(*start_scan))
 		start_scan++;
 	if (*start_scan == '|')
+	{
+		parse_error("double pipe");
 		return (1);
+	}
+	if (*start_scan == '<' || *start_scan == '>')
+	{
+		parse_error("need cmd after pipe");
+		return (1);
+	}
 	return (0);
 }
