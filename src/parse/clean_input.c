@@ -12,7 +12,7 @@ char	*make_new_input(char *new_input, char **input)
 /*skip_quotes_to_ignore : skips over quotes that are not read (one or more pairs of empty quotes at the beginning, middle, or end of a token).
 If it encounters quotes with content, it copies everything between these quotes into the new input, without copying the quotes. If it encounters a $, it calls replace_dollar, which will replace the environment variable with its content only if double quotes are open.*/
 
-char	*skip_quotes_to_ignore(char **input, char *new_input, t_env *env)
+char	*skip_quotes_to_ignore(char **input, char *new_input, t_data *data)
 {
 	int		count_quotes;
 	char	quote_type;
@@ -31,7 +31,7 @@ char	*skip_quotes_to_ignore(char **input, char *new_input, t_env *env)
 			while (**input != quote_type)
 			{
 				if (**input == '$' && quote_type == '"')
-					new_input = replace_dollar(new_input, input, env);
+					new_input = replace_dollar(new_input, input, data);
 				if (**input != quote_type)
 					new_input = make_new_input(new_input, input);
 			}
@@ -47,10 +47,7 @@ Example: echo bonjour" ca va? | oui" will be delimited as follows: "bonjour ca v
 char	*delimit_token(char *new_input, bool *open_tok, char quote)
 {
 	new_input = strjoin_char(new_input, quote);
-	if (*open_tok == true)
-		*open_tok = false;
-	else
-		*open_tok = true;
+	*open_tok = !*open_tok;
 	return (new_input);
 }
 
@@ -64,7 +61,7 @@ char	*delimit_token(char *new_input, bool *open_tok, char quote)
 	- it continues to fill the new input.
 Once at the end of the input, it delimits the end of the token by adding a quote if necessary and adds a '\0' to define the end of the new input.*/
 
-char	*cleaner(char *new_input, char *input, t_env *env)
+char	*cleaner(char *new_input, char *input, t_data *data)
 {
 	bool	open_tok;
 	char	quote;
@@ -78,13 +75,13 @@ char	*cleaner(char *new_input, char *input, t_env *env)
 		if (is_token_with_quotes(input, &quote) && open_tok == false)
 			new_input = delimit_token(new_input, &open_tok, quote);
 		if (is_quotes(*input))
-			new_input = skip_quotes_to_ignore(&input, new_input, env);
+			new_input = skip_quotes_to_ignore(&input, new_input, data);
 		if (*input && !is_quotes(*input))
 		{
 			if (open_tok == true && (is_whitespace(*input) || is_symbol(*input)))
 				new_input = delimit_token(new_input, &open_tok, quote);
 			if (*input == '$')
-				new_input = replace_dollar(new_input, &input, env);
+				new_input = replace_dollar(new_input, &input, data);
 			new_input = make_new_input(new_input, &input);
 		}
 	}
@@ -95,18 +92,13 @@ char	*cleaner(char *new_input, char *input, t_env *env)
 
 /*clean_input : checks that there are no open quotes and calls the function that will clean the input.*/
 
-char	*clean_input(char *input, t_env *env)
+char	*clean_input(char *input, t_data *data)
 {
-	char	*new_input;
-
-	new_input = ft_strdup("");
-	if (open_quotes(input) == true)
+	if (open_quotes(input) == true || empty_pipe(input))
 	{
-		free_tab(env->env_cpy);
-		free_env(env);
-		free(new_input);
+		free_env(data);
 		exit (EXIT_FAILURE);
 	}
-	new_input = cleaner(new_input, input, env);
-	return (new_input);
+	data->new_input = cleaner(data->new_input, input, data);
+	return (data->new_input);
 }

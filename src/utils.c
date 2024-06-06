@@ -28,3 +28,10 @@ char *ft_strnjoin(char *s1, char *s2, int n)
 	free(s2);
 	return (str);
 }
+
+bool	is_whitespace(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
+		return (true);
+	return (false);
+}

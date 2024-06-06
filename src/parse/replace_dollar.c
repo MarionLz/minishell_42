@@ -47,14 +47,14 @@ char	*get_var_name(t_dollar *var, char **input)
 /*find_var_in_env : browses the environment to find the requested variable in the input.
 Return true if it founds it, return false if not.*/
 
-bool	find_var_in_env(t_dollar *var, t_env *env)
+bool	find_var_in_env(t_dollar *var, t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while(env->env_cpy[i])
+	while(data->env_cpy[i])
 	{
-		if (ft_strncmp(var->name, env->env_cpy[i], var->len_name) == 0 && env->env_cpy[i][var->len_name] == '=')
+		if (ft_strncmp(var->name, data->env_cpy[i], var->len_name) == 0 && data->env_cpy[i][var->len_name] == '=')
 		{
 			var->index = i;
 			return (true);
@@ -66,17 +66,17 @@ bool	find_var_in_env(t_dollar *var, t_env *env)
 
 /*copy_var_value : copies the content of the environment variable (after =) dans new_input.*/
 
-char	*copy_var_value(t_dollar *var, char *new_input, t_env *env)
+char	*copy_var_value(t_dollar *var, char *new_input, t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (env->env_cpy[var->index][i] != '=')
+	while (data->env_cpy[var->index][i] != '=')
 		i++;
 	i++;
-	while (env->env_cpy[var->index][i])
+	while (data->env_cpy[var->index][i])
 	{
-		new_input = strjoin_char(new_input, env->env_cpy[var->index][i]);
+		new_input = strjoin_char(new_input, data->env_cpy[var->index][i]);
 		i++;
 	}
 	return (new_input);
@@ -84,7 +84,7 @@ char	*copy_var_value(t_dollar *var, char *new_input, t_env *env)
 
 /*replace_dollar : replaces the environment variable with its content.*/
 
-char	*replace_dollar(char *new_input, char **input, t_env *env)
+char	*replace_dollar(char *new_input, char **input, t_data *data)
 {
 	t_dollar	*var;
 
@@ -101,8 +101,8 @@ char	*replace_dollar(char *new_input, char **input, t_env *env)
 			return (NULL);
 		ft_memset(var, 0, sizeof(*var));
 		get_var_name(var, input);
-		if (find_var_in_env(var, env))
-			new_input = copy_var_value(var, new_input, env);
+		if (find_var_in_env(var, data))
+			new_input = copy_var_value(var, new_input, data);
 		free(var->name);
 		free(var);
 	}

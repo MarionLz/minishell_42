@@ -29,17 +29,17 @@ int	is_cmd_env_builtin(t_node *tree)
 
 //function that is called recursively to run cmd accordingly to the pipes and redirection
 //that are in the input.
-void	run(t_node *tree, t_env *env)
+void	run(t_node *tree, t_data *data)
 {
 	int	return_status;
 
 	return_status = 0;
 	if (tree->type == EXEC)
-		run_exec(tree, env);
+		run_exec(tree, data);
 	else if (tree->type == REDIR)
-		run_redir(tree, env);
+		run_redir(tree, data);
 	else if (tree->type == PIPE)
-		return_status = run_pipe(tree, env);
+		return_status = run_pipe(tree, data);
 	exit (return_status);
 }
 
@@ -48,24 +48,24 @@ void	run(t_node *tree, t_env *env)
 //(as parent don't inherite of what's done in child)
 //otherwise, fork, run the cmd and wait for the process to be done properly.
 //while (waitpid) ensure that it will know that the process is done.
-void	check_and_run(t_node *tree, t_env *env)
+void	check_and_run(t_node *tree, t_data *data)
 {
 	t_exec_node *ex_node;
 	pid_t		pid;
 	int			status;
 
 	pid = 0;
-	if (is_cmd_env_builtin(tree) == 1 && env->nb_cmd == 1)
+	if (is_cmd_env_builtin(tree) == 1 && data->nb_cmd == 1)
 	{
 		ex_node = (t_exec_node *)tree;
-		run_builtin(ex_node->args, env);
+		run_builtin(ex_node->args, data);
 		exit_status = 0;
 	}
 	else
 	{
 		pid = ft_fork();
 		if (pid == 0)
-			run(tree, env);
+			run(tree, data);
 		else if (pid > 0)
 		{
 			while (waitpid(pid, &status, 0) == -1)

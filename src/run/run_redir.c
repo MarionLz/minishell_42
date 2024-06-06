@@ -66,7 +66,7 @@ void	ft_heredoc(t_redir_node *redir_node)
 //file (open fct attribute to the opened file the 1st closed fd in the list)
 //if HERE_DOC, run ft_heredoc just above.
 //make sure in the end to reopen stdin and stdout properly for the next input.
-void	run_redir(t_node *tree, t_env *env)
+void	run_redir(t_node *tree, t_data *data)
 {
 	t_redir_node 	*redir_node;
 
@@ -87,7 +87,7 @@ void	run_redir(t_node *tree, t_env *env)
 		if (open(redir_node->file, redir_node->mode, 0777) < 0)
 			ft_error(redir_node->file);
 	}
-	run(redir_node->cmd, env);
+	run(redir_node->cmd, data);
 /* 	if (close(redir_node->fd) < 0)
 		ft_error("close file failed"); */
 	reopen_stdin_stdout(redir_node->fd);

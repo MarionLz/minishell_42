@@ -25,14 +25,14 @@ char	*extract_env(char **env)
 	return (NULL);
 }
 
-char	*get_path(char *cmd, t_env *env)
+char	*get_path(char *cmd, t_data *data)
 {
 	int		i;
 	char	**allpaths;
 	char	*goodpath;
 	char	*subpath;
 
-	allpaths = ft_split(extract_env(env->env_cpy), ':');
+	allpaths = ft_split(extract_env(data->env_cpy), ':');
 	i = -1;
 	while (allpaths[++i])
 	{
@@ -50,25 +50,25 @@ char	*get_path(char *cmd, t_env *env)
 	return (NULL);
 }
 
-void	run_exec(t_node *tree, t_env *env)
+void	run_exec(t_node *tree, t_data *data)
 {
-	t_exec_node *ex_node;
+	t_exec_node *exec_node;
 	char		*path;
 
-	ex_node = (t_exec_node *)tree;
-	if (ex_node->is_builtin == true)
+	exec_node = (t_exec_node *)tree;
+	if (exec_node->is_builtin == true)
 	{
-		run_builtin(ex_node->args, env);
+		run_builtin(exec_node->args, data);
 	}
 	else
 	{
-		path = get_path(ex_node->args[0], env);
-		if (execve(path, ex_node->args, env->env_cpy) == -1)
+		path = get_path(exec_node->args[0], data);
+		if (execve(path, exec_node->args, data->env_cpy) == -1)
 		{
-			if (execve(ex_node->args[0], ex_node->args, env->env_cpy) == -1)
+			if (execve(exec_node->args[0], exec_node->args, data->env_cpy) == -1)
 			{
 				free(path);
-				ft_error(ex_node->args[0]);
+				ft_error(exec_node->args[0]);
 				exit(1);
 			}
 		}

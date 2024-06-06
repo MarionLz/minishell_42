@@ -35,11 +35,12 @@ typedef enum s_tokentype
 	APPEND,
 }	t_tokentype;
 
-typedef struct s_env
+typedef struct s_data
 {
 	char	**env_cpy;
 	int		nb_cmd;
-}	t_env;
+	char	*new_input;
+}	t_data;
 
 typedef struct s_dollar
 {
@@ -86,19 +87,19 @@ void	ft_error(char *error);
 int		tab_len(char **tab);
 char	**dup_env(char **env);
 bool	valid_num_content(char *str);
-char 	**increase_shell_level(t_env *new_env);
-t_env	*handle_env(char **env);
+char 	**increase_shell_level(t_data *data);
+t_data	*handle_env(char **data);
 
 /* PARSING */
 t_node	*parse_exec(char **start_scan, char *end_input);
-t_node	*nulterminate(t_node *tree, t_env *env);
-t_node	*parse_input(char *input, t_env *env);
+t_node	*nulterminate(t_node *tree, t_data *data);
+t_node	*parse_input(char *input, t_data *data);
 
 /* CLEAN INPUT */
-char	*clean_input(char *input, t_env *new_env);
+char	*clean_input(char *input, t_data *data);
 
 /* REPLACE_DOLLAR */
-char	*replace_dollar(char *new_input, char **input, t_env *env);
+char	*replace_dollar(char *new_input, char **input, t_data *data);
 
 /* TOKEN */
 int		insight_input(char **start_token, char *end_input, char *target);
@@ -118,40 +119,44 @@ bool	is_token_with_quotes(char *input, char *quote_type);
 bool	inside_quotes(int count_quotes);
 
 /* PARSING_UTILS */
-bool	is_whitespace(char c);
 bool	is_symbol(char c);
 int		compare_cmd(char *str1, char *str2, int n);
 bool	is_builtin(char *cmd);
 char	*strjoin_char(char *s1, char c);
+bool	empty_pipe(char *input);
+
+/* NULTERMINATE */
+void	nulterminate_exec_node(t_data *data, t_exec_node *exec_node);
+t_node	*nulterminate(t_node *tree, t_data *data);
 
 /* RUN */
 int		ft_fork(void);
-void	run(t_node *tree, t_env *env);
-void	check_and_run(t_node *tree, t_env *env);
+void	run(t_node *tree, t_data *data);
+void	check_and_run(t_node *tree, t_data *data);
 
 /* RUN BUILTIN */
-void	run_builtin(char **args, t_env *env);
+void	run_builtin(char **args, t_data *data);
 
 /* RUN REDIR */
 void	handler_heredoc(int signal);
 void	reopen_stdin_stdout(int fd);
-void	run_redir(t_node *tree, t_env *env);
+void	run_redir(t_node *tree, t_data *data);
 
 /* HERE DOC UTILS */
 void	handle_line(char *line, int file);
 int		is_line_delimiter(char *line, t_redir_node *redir_node);
 
 /* RUN PIPE */
-int		run_pipe(t_node *tree, t_env *env);
+int		run_pipe(t_node *tree, t_data *data);
 
 /* RUN EXEC */
 void	free_tab(char **tab);
-void	run_exec(t_node *tree, t_env *env);
+void	run_exec(t_node *tree, t_data *data);
 
 /* BUILTINS */
-void	ft_cd(char **args, t_env *env);
+void	ft_cd(char **args, t_data *data);
 void	ft_pwd(void);
-void	ft_env(t_env *env);
+void	ft_env(t_data *data);
 
 /* ECHO */
 bool	is_empty_quotes(char *str);
@@ -161,18 +166,18 @@ void	ft_echo(char **args);
 /* EXIT */
 void	actualize_status_and_exit(char *status);
 void	ft_exit(char **args);
-void	is_input_exit(char *input, t_env *env);
-void	ft_exit_and_free(char **input_cpy, t_env *env);
+void	is_input_exit(char *input, t_data *data);
+void	ft_exit_and_free(char **input_cpy, t_data *data);
 
 /* EXPORT */
 int		is_var_valid(char *args);
-int		does_var_exist(char *var, t_env *env);
-void	add_new_var(char *var, t_env *env);
-void	change_var(char *var, t_env *env);
-void	ft_export(char **args, t_env *env);
+int		does_var_exist(char *var, t_data *data);
+void	add_new_var(char *var, t_data *data);
+void	change_var(char *var, t_data *data);
+void	ft_export(char **args, t_data *data);
 
 /* UNSET */
-void	ft_unset(char **args, t_env *env);
+void	ft_unset(char **args, t_data *data);
 
 /* SIGNALS */
 void	setup_heredoc_signals(void);
@@ -181,10 +186,11 @@ void	signal_routine(int signal);
 void	heredoc_handler(int signal);
 
 /* UTILS */
-char *ft_strnjoin(char *s1, char *s2, int n);
+char	*ft_strnjoin(char *s1, char *s2, int n);
+bool	is_whitespace(char c);
 
 /* FREE */
-void	free_env(t_env *env);
+void	free_env(t_data *data);
 void	free_tree(t_node *tree);
 void	*free_tab_until_n(char **env, int n);
 
