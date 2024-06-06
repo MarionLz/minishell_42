@@ -57,7 +57,6 @@ void	input_handler(char *input, t_data *data)
 		check_and_run(tree, data);
 		free_tree(tree);
 		free(data->new_input);
-		//free(data);
 		free(input);
 	}
 }

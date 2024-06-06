@@ -1,12 +1,5 @@
 #include "../../include/minishell.h"
 
-bool	is_symbol(char c)
-{
-	if (c == '|' || c == '<' || c == '>')
-		return (true);
-	return (false);
-}
-
 int	compare_cmd(char *str1, char *str2, int n)
 {
 	int	i;
@@ -94,4 +87,13 @@ bool	empty_pipe(char *input)
 		input++;
 	}
 	return (false);
+}
+
+int	check_for_double_pipe(char *start_scan, char *end_input)
+{
+	while (start_scan < end_input && is_whitespace(*start_scan))
+		start_scan++;
+	if (*start_scan == '|')
+		return (1);
+	return (0);
 }

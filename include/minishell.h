@@ -119,11 +119,11 @@ bool	is_token_with_quotes(char *input, char *quote_type);
 bool	inside_quotes(int count_quotes);
 
 /* PARSING_UTILS */
-bool	is_symbol(char c);
 int		compare_cmd(char *str1, char *str2, int n);
 bool	is_builtin(char *cmd);
 char	*strjoin_char(char *s1, char c);
 bool	empty_pipe(char *input);
+int	check_for_double_pipe(char *start_scan, char *end_input);
 
 /* NULTERMINATE */
 void	nulterminate_exec_node(t_data *data, t_exec_node *exec_node);
@@ -188,6 +188,7 @@ void	heredoc_handler(int signal);
 /* UTILS */
 char	*ft_strnjoin(char *s1, char *s2, int n);
 bool	is_whitespace(char c);
+bool	is_symbol(char c);
 
 /* FREE */
 void	free_env(t_data *data);

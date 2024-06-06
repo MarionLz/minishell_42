@@ -11,7 +11,6 @@ void	free_env(t_data *data)
 		i++;
 	}
 	free(data->env_cpy);
-    free(data);
 }
 
 void	free_tree(t_node *tree)

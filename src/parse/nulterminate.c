@@ -11,6 +11,11 @@ void	nulterminate_exec_node(t_data *data, t_exec_node *exec_node)
 		*exec_node->end_args[i] = 0;
 		i++;
 	}
+	if (is_builtin(exec_node->args[0]) == true)
+	{
+		printf("OK\n");
+		exec_node->is_builtin = true;
+	}
 }
 
 /* nulterminate : Replace the character following the command or its argument with

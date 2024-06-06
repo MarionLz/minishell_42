@@ -35,3 +35,10 @@ bool	is_whitespace(char c)
 		return (true);
 	return (false);
 }
+
+bool	is_symbol(char c)
+{
+	if (c == '|' || c == '<' || c == '>')
+		return (true);
+	return (false);
+}
