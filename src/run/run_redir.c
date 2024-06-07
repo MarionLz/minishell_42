@@ -58,7 +58,7 @@ void	ft_heredoc(t_redir_node *redir_node)
 	if (file < 0)
 		ft_error("heredoc");
 	if (dup2(file, 0) < 0)
-		ft_error("dup2 failed");
+		ft_error("dup2");
 	close(file);
 }
 

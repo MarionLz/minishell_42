@@ -40,6 +40,8 @@ typedef struct s_data
 	char	**env_cpy;
 	int		nb_cmd;
 	char	*new_input;
+	int		stdin_cpy;
+	int		stdout_cpy;
 }	t_data;
 
 typedef struct s_dollar
@@ -141,6 +143,7 @@ void	run_builtin(char **args, t_data *data);
 void	handler_heredoc(int signal);
 void	reopen_stdin_stdout(int fd);
 void	run_redir(t_node *tree, t_data *data);
+void	ft_heredoc(t_redir_node *redir_node);
 
 /* HERE DOC UTILS */
 void	handle_line(char *line, int file);
