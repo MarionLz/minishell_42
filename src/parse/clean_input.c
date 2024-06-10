@@ -84,8 +84,7 @@ char	*cleaner(char *new_input, char *input, t_data *data)
 
 	open_tok = 0;
 	quote = 0;
-	while (*input && is_whitespace(*input))
-		input++;
+	skip_whitespace(&input);
 	while (*input)
 	{
 		if (is_token_with_quotes(input, &quote) && open_tok == 0)
@@ -98,7 +97,8 @@ char	*cleaner(char *new_input, char *input, t_data *data)
 				new_input = delimit_token(new_input, &open_tok, quote);
 			if (*input == '$')
 				new_input = replace_dollar(new_input, &input, data);
-			new_input = make_new_input(new_input, &input);
+			else
+				new_input = make_new_input(new_input, &input);
 		}
 	}
 	if (open_tok == 1)

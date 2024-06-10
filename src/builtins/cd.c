@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 17:02:59 by gdaignea          #+#    #+#             */
+/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-char	*get_user_name(t_data *data)
+char	*get_home_folder(t_data *data)
 {
 	int		i;
 	int		j;
@@ -29,15 +41,14 @@ char	*get_user_name(t_data *data)
 	return (path);
 }
 
-void	change_directory(char *path)
+int	change_directory(char *path)
 {
-	char	*error_msg;
-
 	if (chdir(path) == -1)
 	{
-		error_msg = ft_strjoin("cd:", path);
-		ft_error(error_msg);
+		printf("cd: %s: no such file or directory\n", path);
+		return (1);
 	}
+	return (0);
 }
 
 //actualize OLDPWD and PWD variables in environment
@@ -60,6 +71,20 @@ void	actualize_env(char *directory, char *var, t_data *data)
 	free(new_oldpwd);
 }
 
+void	go_home(t_data *data, char *old_directory)
+{
+	char	*path;
+
+	path = get_home_folder(data);
+	if (path == NULL)
+	{
+		free(old_directory);
+		return ;
+	}
+	change_directory(path);
+	free(path);
+}
+
 //change directory to the given path. 
 //in case of cd alone, check if HOME variable hasn't been unset.
 //if so, just display proper error message.
@@ -67,21 +92,20 @@ void	ft_cd(char **args, t_data *data)
 {
 	char	*old_directory;
 	char	*current_directory;
-	char	*path;
 
 	old_directory = NULL;
 	current_directory = NULL;
 	old_directory = getcwd(old_directory, 0);
 	if (!args[1])
-	{
-		path = get_user_name(data);
-		if (path == NULL)
-			return ;
-		change_directory(path);
-		free(path);
-	}
+		go_home(data, old_directory);
 	else
-		change_directory(args[1]);
+	{
+		if (!change_directory(args[1]))
+		{
+			free(old_directory);
+			return ;
+		}
+	}
 	current_directory = getcwd(current_directory, 0);
 	actualize_env(old_directory, "OLDPWD=", data);
 	actualize_env(current_directory, "PWD=", data);

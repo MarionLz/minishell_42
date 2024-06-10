@@ -1,5 +1,17 @@
-#ifndef MINISHELL
-# define MINISHELL
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 17:03:55 by gdaignea          #+#    #+#             */
+/*   Updated: 2024/06/10 17:05:02 by gdaignea         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include <stdio.h>
 # include <unistd.h>
@@ -193,6 +205,7 @@ void	heredoc_handler(int signal);
 char	*ft_strnjoin(char *s1, char *s2, int n);
 bool	is_whitespace(char c);
 bool	is_symbol(char c);
+void	skip_whitespace(char **input);
 
 /* FREE */
 void	free_env(t_data *data);
