@@ -23,12 +23,8 @@ extern	int		exit_status;
 typedef enum s_tokentype
 {
 	EXEC,
-	CMD,
-	ARG,
-	ENV_VAR,
 	PIPE,
 	REDIR,
-	BUILTIN,
 	IN_REDIR,
 	OUT_REDIR,
 	HEREDOC,
@@ -67,12 +63,13 @@ typedef struct s_exec_node
 typedef struct s_redir_node
 {
 	int		type;
+	int		r_type;
 	t_node	*cmd;
 	char	*file;
 	char	*end_file;
 	int		mode;
 	int		fd;
-	bool	is_heredoc;
+	//bool	is_heredoc;
 }	t_redir_node;
 
 typedef struct s_pipe_node

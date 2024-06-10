@@ -7,7 +7,7 @@ void	run_next_node_left(t_pipe_node *pipe_node, int *fd, t_data *data)
 	if (pipe_node->left->type == REDIR)
 	{
 		rnode = (t_redir_node *) pipe_node->left;
-		if (rnode->is_heredoc == true)
+		if (rnode->r_type == HEREDOC)
 		{
 			dup2(data->stdin_cpy, STDIN_FILENO);
 			ft_heredoc(rnode);
@@ -28,7 +28,7 @@ void	run_next_node_right(t_pipe_node *pipe_node, int *fd, t_data *data)
 	if (pipe_node->right->type == REDIR)
 	{
 		rnode = (t_redir_node *) pipe_node->right;
-		if (rnode->is_heredoc == true)
+		if (rnode->r_type == HEREDOC)
 		{
 			dup2(data->stdin_cpy, STDIN_FILENO);
 			ft_heredoc(rnode);

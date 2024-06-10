@@ -35,16 +35,19 @@ t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file, char *e
 		return (NULL);
 	ft_memset(redir_node, 0, sizeof(*redir_node));
 	redir_node->type = REDIR;
+	redir_node->r_type = token_type;
+	if (token_type == HEREDOC)
+		exit_status = -42;
 	redir_node->cmd = cmd;
 	redir_node->file = start_file;
 	redir_node->end_file = end_file;
-	if (token_type == HEREDOC)
+	/*if (token_type == HEREDOC)
 	{
 		exit_status = -42;
 		redir_node->is_heredoc = true;
 	}
 	else
-		redir_node->is_heredoc = false;
+		redir_node->is_heredoc = false;*/
 	init_fd_and_mode(token_type, redir_node);
 	return ((t_node *)redir_node);
 }
