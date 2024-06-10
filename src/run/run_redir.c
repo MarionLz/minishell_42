@@ -80,7 +80,7 @@ void	run_redir(t_node *tree, t_data *data)
 		if (open(redir_node->file, redir_node->mode, 0777) < 0)
 			ft_error(redir_node->file);
 	}
-	else if (redir_node->is_heredoc == true)
+	else if (redir_node->r_type == HEREDOC)
 		ft_heredoc(redir_node);
 	else
 	{

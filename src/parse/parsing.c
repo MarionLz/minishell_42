@@ -15,7 +15,9 @@ t_node	*parse_redir(t_node *node, char **start_scan, char *end_input, t_data *da
 	(void) data;
 	while (insight_input(start_scan, end_input, "<>"))
 	{
+		printf("start scan = %s\n", *start_scan);
 		token_type = get_token(start_scan, end_input, 0, 0);
+		printf("token type = %d\n", token_type);
 		if (get_token(start_scan, end_input, &start_file, &end_file) != EXEC)
 		{
 			free(node);
