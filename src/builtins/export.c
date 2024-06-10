@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 17:03:21 by gdaignea          #+#    #+#             */
+/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 //1st char of export variable must be a alphabetical char or a '_'
@@ -9,9 +21,10 @@ int	is_var_valid(char *args)
 {
 	int	i;
 
-	i = 1;
+	i = 0;
 	if (!ft_isalpha(args[i]) && args[i] != '_')
 		return (0);
+	i++;
 	while (args[i] != '=')
 	{
 		if (args[i] == '\0')
@@ -37,7 +50,10 @@ int	does_var_exist(char *var, t_data *data)
 	{
 		if (ft_strncmp(var_name[0], data->env_cpy[i], var_name_len) == 0
 			&& data->env_cpy[i][var_name_len] == '=')
+		{
+			free_tab(var_name);
 			return (1);
+		}
 		i++;
 	}
 	free_tab(var_name);
@@ -52,7 +68,7 @@ void	add_new_var(char *var, t_data *data)
 	i = 0;
 	while (data->env_cpy[i])
 		i++;
-	new_env = (char **)malloc((sizeof(char *) * i) + 2);
+	new_env = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!new_env)
 		return ;
 	i = 0;
@@ -66,6 +82,7 @@ void	add_new_var(char *var, t_data *data)
 	new_env[i] = NULL;
 	free_tab(data->env_cpy);
 	data->env_cpy = dup_env(new_env);
+	free_tab(new_env);
 }
 
 void	change_var(char *var, t_data *data)

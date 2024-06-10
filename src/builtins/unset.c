@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 17:03:32 by gdaignea          #+#    #+#             */
+/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 bool	is_var_name_valid(char **args)
@@ -63,7 +75,7 @@ void	ft_unset(char **args, t_data *data)
 	int		j;
 	char	**new_env;
 
-	i = 1;
+	i = 0;
 	j = 0;
 	if (!is_var_name_valid(args))
 		return ;
@@ -71,17 +83,17 @@ void	ft_unset(char **args, t_data *data)
 			* sizeof(char *));
 	if (!new_env)
 		return ;
-	while (data->env_cpy[i])
+	while (data->env_cpy[++i])
 	{
 		if (find_var_to_delete(data->env_cpy[i], args) == 0)
 		{
 			new_env[j] = copy_variable(data->env_cpy[i], new_env, j);
 			j++;
 		}
-		i++;
 	}
 	new_env[j] = NULL;
 	free_tab(data->env_cpy);
 	data->env_cpy = dup_env(new_env);
+	free_tab(new_env);
 	return ;
 }

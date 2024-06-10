@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   run_redir.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 17:01:52 by gdaignea          #+#    #+#             */
+/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 void	reopen_stdin_stdout(int fd)
@@ -62,6 +74,25 @@ void	ft_heredoc(t_redir_node *redir_node)
 	close(file);
 }
 
+//check if next node to be runned is HEREDOC
+//if so, exchange the node so the HEREDOC can be runned first 
+//before other dup2 is made for the redirection. 
+t_redir_node	*exchange_cmd_order(t_redir_node *redir_node)
+{
+	t_redir_node	*r_node_cpy;
+	t_node			*cmd_cpy;
+
+	r_node_cpy = (t_redir_node *) redir_node->cmd;
+	cmd_cpy = r_node_cpy->cmd;
+	if (r_node_cpy->r_type == HEREDOC)
+	{
+		redir_node->cmd = cmd_cpy;
+		r_node_cpy->cmd = (t_node *) redir_node;
+		return (r_node_cpy);
+	}
+	return (redir_node);
+}
+
 //check what kind of redirection has to be handled.
 //if IN_REDIR or OUT_REDIR, close the proper fd (stdin or stdout basicaly)
 //and open the given file (open fct attribute to the opened file
@@ -73,17 +104,13 @@ void	run_redir(t_node *tree, t_data *data)
 	t_redir_node	*redir_node;
 
 	redir_node = (t_redir_node *)tree;
-	if (redir_node->type == OUT_REDIR || redir_node->type == APPEND)
-	{
-		if (close(redir_node->fd) < 0)
-			ft_error("close stdin/stdout failed");
-		if (open(redir_node->file, redir_node->mode, 0777) < 0)
-			ft_error(redir_node->file);
-	}
-	else if (redir_node->r_type == HEREDOC)
+	if (redir_node->r_type == HEREDOC)
 		ft_heredoc(redir_node);
 	else
 	{
+		redir_node = exchange_cmd_order(redir_node);
+		if (redir_node->r_type == HEREDOC)
+			run_redir((t_node *)redir_node, data);
 		if (close(redir_node->fd) < 0)
 			ft_error("close stdin/stdout failed");
 		if (open(redir_node->file, redir_node->mode, 0777) < 0)

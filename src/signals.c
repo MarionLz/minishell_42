@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 17:02:24 by gdaignea          #+#    #+#             */
+/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 void	signal_routine(int signal)
@@ -10,8 +22,6 @@ void	signal_routine(int signal)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	else if (signal == SIGQUIT)
-		return ;
 }
 
 void	heredoc_handler(int signal)
@@ -27,8 +37,6 @@ void	heredoc_handler(int signal)
 		g_exit_status = 130;
 		exit (g_exit_status);
 	}
-	else if (signal == SIGQUIT)
-		g_exit_status = 0;
 }
 
 //initialize sigaction structure for when ctrl+d and 
@@ -44,7 +52,7 @@ void	setup_main_signals(void)
 	sigemptyset(&sa_main.sa_mask);
 	sa_main.sa_flags = 0;
 	sigaction(SIGINT, &sa_main, NULL);
-	sigaction(SIGQUIT, &sa_main, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 //same as above but for when the program is in a here_doc prompt
@@ -56,5 +64,5 @@ void	setup_heredoc_signals(void)
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }

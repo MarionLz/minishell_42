@@ -27,7 +27,8 @@ char	*get_var_name(t_dollar *var, char **input)
 	i = 0;
 	tmp = *input;
 	var->len_name = 0;
-	while (*tmp && !is_whitespace(*tmp) && !is_quotes(*tmp) && !is_symbol(*tmp))
+	while (*tmp && !is_whitespace(*tmp) && !is_quotes(*tmp)
+		&& !is_symbol(*tmp) && *tmp != '$')
 	{
 		var->len_name++;
 		tmp++;
