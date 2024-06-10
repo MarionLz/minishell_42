@@ -65,7 +65,7 @@ void	check_and_run(t_node *tree, t_data *data)
 	{
 		ex_node = (t_exec_node *)tree;
 		run_builtin(ex_node->args, data);
-		exit_status = 0;
+		g_exit_status = 0;
 	}
 	else
 	{
@@ -77,7 +77,7 @@ void	check_and_run(t_node *tree, t_data *data)
 			while (waitpid(pid, &status, 0) == -1)
 				;
 			if (WIFEXITED(status))
-				exit_status = WEXITSTATUS(status);
+				g_exit_status = WEXITSTATUS(status);
 		}
 	}
 	return ;

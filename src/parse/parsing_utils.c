@@ -11,7 +11,8 @@ int	compare_cmd(char *str1, char *str2, int n)
 			return (str1[i] - str2[i]);
 		i++;
 	}
-	if (is_whitespace(str1[i]) || is_quotes(str1[i]) || is_symbol(str1[i]) || !str1[i])
+	if (is_whitespace(str1[i]) || is_quotes(str1[i]) || is_symbol(str1[i])
+		|| !str1[i])
 		return (0);
 	else
 		return (1);

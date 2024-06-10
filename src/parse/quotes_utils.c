@@ -9,8 +9,8 @@ bool	is_quotes(char c)
 	return (false);
 }
 
-/*check_quotes : when there is a double quote or a single quote, this function analyses
-if it's an open or a closed quote (1 = open, 0 = close).*/
+/*check_quotes : when there is a double quote or a single quote, this function
+analyses if it's an open or a closed quote (1 = open, 0 = close).*/
 void	check_quotes(int *simple_quote, int *double_quotes, char *input, int i)
 {
 	if (input[i] == '"')
@@ -33,7 +33,7 @@ void	check_quotes(int *simple_quote, int *double_quotes, char *input, int i)
 If yes, the function prints an error message and returns true.*/
 bool	open_quotes(char *input)
 {
-	int i;
+	int	i;
 	int	simple_quote;
 	int	double_quotes;
 
@@ -53,8 +53,8 @@ bool	open_quotes(char *input)
 	return (false);
 }
 
-/*is_token_with_quotes : take a look in the token to check if it contains quotes.
-Return true if it contains quotes, return false if not.*/
+/*is_token_with_quotes : take a look in the token to check if it contains
+quotes. Return true if it contains quotes, return false if not.*/
 bool	is_token_with_quotes(char *input, char *quote_type)
 {
 	while (*input && !is_whitespace(*input) && !is_symbol(*input))
@@ -68,6 +68,7 @@ bool	is_token_with_quotes(char *input, char *quote_type)
 	}
 	return (false);
 }
+
 /*inside_quotes : check if we are inside quotes.
 Return true if count_quotes is odd : it means that quotes are open.*/
 bool	inside_quotes(int count_quotes)

@@ -18,7 +18,7 @@
 # define MAX_ARGS 50
 
 //variable globale
-extern	int		exit_status;
+extern int	g_exit_status;
 
 typedef enum s_tokentype
 {
@@ -69,7 +69,6 @@ typedef struct s_redir_node
 	char	*end_file;
 	int		mode;
 	int		fd;
-	//bool	is_heredoc;
 }	t_redir_node;
 
 typedef struct s_pipe_node
@@ -86,7 +85,7 @@ void	ft_error(char *error);
 int		tab_len(char **tab);
 char	**dup_env(char **env);
 bool	valid_num_content(char *str);
-char 	**increase_shell_level(t_data *data);
+char	**increase_shell_level(t_data *data);
 t_data	*handle_env(char **data);
 
 /* PARSING */
@@ -104,11 +103,14 @@ char	*replace_dollar(char *new_input, char **input, t_data *data);
 /* TOKEN */
 int		insight_input(char **start_token, char *end_input, char *target);
 int		get_type(char **str, int type, char *end_input);
-int		get_token(char **start_scan, char *end_input, char **start_token, char **end_token);
+int		get_token(char **start_scan, char *end_input, char **start_token,
+			char **end_token);
 
 /* CREATE_NODES */
-void	fill_args(t_exec_node *exec_node, char *start_token, char *end_token, int *i);
-t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file, char *end_file);
+void	fill_args(t_exec_node *exec_node, char *start_token, char *end_token,
+			int *i);
+t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file,
+			char *end_file);
 t_node	*create_pipe_node(t_node *left, t_node *right);
 t_node	*create_exec_node(void);
 
