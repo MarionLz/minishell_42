@@ -1,22 +1,23 @@
 #include "../../include/minishell.h"
 
-/*get_exit_status : retrieves the exit status returned by the previous command line and replaces $? with its value.*/
+/*get_exit_status : retrieves the exit status returned by the previous
+command line and replaces $? with its value.*/
 
 char	*get_exit_status(char *new_input)
 {
 	char		*str_exit_status;
 
-	str_exit_status = ft_itoa(exit_status);
+	str_exit_status = ft_itoa(g_exit_status);
 	while (*str_exit_status)
 	{
 		new_input = strjoin_char(new_input, *str_exit_status);
 		str_exit_status++;
 	}
-	//free(str_exit_status);
 	return (new_input);
 }
 
-/*get_var_name : stores in a string the name of the environment variable contained in the input (after the $) and calculates its length.*/
+/*get_var_name : stores in a string the name of the environment variable
+contained in the input (after the $) and calculates its length.*/
 
 char	*get_var_name(t_dollar *var, char **input)
 {
@@ -44,17 +45,18 @@ char	*get_var_name(t_dollar *var, char **input)
 	return (var->name);
 }
 
-/*find_var_in_env : browses the environment to find the requested variable in the input.
-Return true if it founds it, return false if not.*/
+/*find_var_in_env : browses the environment to find the requested variable
+in the input. Return true if it founds it, return false if not.*/
 
 bool	find_var_in_env(t_dollar *var, t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while(data->env_cpy[i])
+	while (data->env_cpy[i])
 	{
-		if (ft_strncmp(var->name, data->env_cpy[i], var->len_name) == 0 && data->env_cpy[i][var->len_name] == '=')
+		if (ft_strncmp(var->name, data->env_cpy[i], var->len_name) == 0
+			&& data->env_cpy[i][var->len_name] == '=')
 		{
 			var->index = i;
 			return (true);
@@ -64,7 +66,8 @@ bool	find_var_in_env(t_dollar *var, t_data *data)
 	return (false);
 }
 
-/*copy_var_value : copies the content of the environment variable (after =) dans new_input.*/
+/*copy_var_value : copies the content of the environment variable (after =)
+dans new_input.*/
 
 char	*copy_var_value(t_dollar *var, char *new_input, t_data *data)
 {

@@ -2,9 +2,9 @@
 
 void	signal_routine(int signal)
 {
-	if (signal == SIGINT && exit_status != -42)
+	if (signal == SIGINT && g_exit_status != -42)
 	{
-		exit_status = 130;
+		g_exit_status = 130;
 		printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
@@ -24,11 +24,11 @@ void	heredoc_handler(int signal)
 		printf("\n");
 		unlink(".here_doc");
 		close(STDIN_FILENO);
-		exit_status = 130;
-		exit (exit_status);
+		g_exit_status = 130;
+		exit (g_exit_status);
 	}
 	else if (signal == SIGQUIT)
-		exit_status = 0;
+		g_exit_status = 0;
 }
 
 //initialize sigaction structure for when ctrl+d and 

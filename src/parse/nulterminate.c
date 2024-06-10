@@ -15,9 +15,9 @@ void	nulterminate_exec_node(t_data *data, t_exec_node *exec_node)
 		exec_node->is_builtin = true;
 }
 
-/* nulterminate : Replace the character following the command or its argument with
-a NULL character to indicate the end of the string. Thus, during execution, the program
-will only read until the NULL character. */
+/* nulterminate : Replace the character following the command or its
+argument with a NULL character to indicate the end of the string.
+Thus, during execution, the program will only read until the NULL character. */
 t_node	*nulterminate(t_node *tree, t_data *data)
 {
 	t_exec_node		*exec_node;

@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-int	exit_status;
+int	g_exit_status;
 
 void	ft_error(char *error)
 {
@@ -10,7 +10,7 @@ void	ft_error(char *error)
 
 bool	contain_only_whitespace(char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (input[i] && is_whitespace(input[i]))
@@ -48,7 +48,7 @@ int	is_input_empty(char *input, t_data *data)
 //otherwise,, parse and execute the input
 void	*input_handler(char *input, t_data *data)
 {
-	t_node *tree;
+	t_node	*tree;
 
 	is_input_exit(input, data);
 	add_history(input);
@@ -79,7 +79,7 @@ int	main(int ac, char **av, char **env)
 	data = handle_env(env);
 	if (!env)
 		return (1);
-	exit_status = 0;
+	g_exit_status = 0;
 	setup_main_signals();
 	while (1)
 	{

@@ -58,13 +58,13 @@ void	ft_exit_and_free(char **input_cpy, t_data *data)
 
 void	actualize_status_and_exit(char *status)
 {
-	exit_status = ft_atoi(status);
-	if (exit_status >= 0 && exit_status <= 255)
-		exit(exit_status);
+	g_exit_status = ft_atoi(status);
+	if (g_exit_status >= 0 && g_exit_status <= 255)
+		exit(g_exit_status);
 	else
 	{
-		exit_status %= 256;
-		exit(exit_status);
+		g_exit_status %= 256;
+		exit(g_exit_status);
 	}
 }
 

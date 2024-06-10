@@ -2,7 +2,7 @@
 
 void	run_next_node_left(t_pipe_node *pipe_node, int *fd, t_data *data)
 {
-	t_redir_node *rnode;
+	t_redir_node	*rnode;
 
 	if (pipe_node->left->type == REDIR)
 	{
@@ -18,12 +18,12 @@ void	run_next_node_left(t_pipe_node *pipe_node, int *fd, t_data *data)
 	dup2(fd[1], 1);
 	close(fd[1]);
 	run(pipe_node->left, data);
-	exit(exit_status);
+	exit(g_exit_status);
 }
 
 void	run_next_node_right(t_pipe_node *pipe_node, int *fd, t_data *data)
 {
-	t_redir_node *rnode;
+	t_redir_node	*rnode;
 
 	if (pipe_node->right->type == REDIR)
 	{
@@ -42,10 +42,10 @@ void	run_next_node_right(t_pipe_node *pipe_node, int *fd, t_data *data)
 		close(fd[0]);
 	}
 	run(pipe_node->right, data);
-	exit(exit_status);
+	exit(g_exit_status);
 }
 
-int	wait_for_process(pid_t pid1/* , pid_t pid2 */)
+int	wait_for_process(pid_t pid1)
 {
 	int	status;
 	int	return_status;

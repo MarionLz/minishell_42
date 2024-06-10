@@ -6,7 +6,8 @@ t_node	*parse_error(char *message)
 	return (NULL);
 }
 
-t_node	*parse_redir(t_node *node, char **start_scan, char *end_input, t_data *data)
+t_node	*parse_redir(t_node *node, char **start_scan, char *end_input,
+			t_data *data)
 {
 	int		token_type;
 	char	*start_file;
@@ -38,21 +39,20 @@ t_node	*parse_exec(char **start_scan, char *end_input, t_data *data)
 
 	node = create_exec_node();
 	exec_node = (t_exec_node *)node;
-	if (!(node = parse_redir(node, start_scan, end_input, data)))
-		return(NULL);
+	node = parse_redir(node, start_scan, end_input, data);
+	if (!node)
+		return (NULL);
 	i = 0;
 	while (!insight_input(start_scan, end_input, "|"))
 	{
 		if ((get_token(start_scan, end_input, &start_token, &end_token)) == -1)
-			break;
+			break ;
 		fill_args(exec_node, start_token, end_token, &i);
 		if (i >= MAX_ARGS)
 			return (parse_error("too many arguments"));
-		if (!(node = parse_redir(node, start_scan, end_input, data)))
-		{
-			free(exec_node);
-			return(NULL);
-		}
+		node = parse_redir(node, start_scan, end_input, data);
+		if (!node)
+			return (NULL);
 	}
 	return (node);
 }
@@ -63,7 +63,7 @@ t_node	*parse_pipe(char **start_scan, char *end_input, t_data *data)
 
 	node = parse_exec(start_scan, end_input, data);
 	if (!node)
-		return(NULL);
+		return (NULL);
 	if (insight_input(start_scan, end_input, "|"))
 	{
 		get_token(start_scan, end_input, 0, 0);
