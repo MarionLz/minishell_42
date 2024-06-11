@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:02:19 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 12:30:12 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	*input_handler(char *input, t_data *data)
 {
 	t_node	*tree;
 
-	is_input_exit(input, data);
+	if (is_input_exit(input, data) == 0)
+		return (0);
 	add_history(input);
 	tree = parse_input(input, data);
 	if (!tree)

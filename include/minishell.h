@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:03:55 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/10 17:05:02 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 12:28:41 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void	ft_echo(char **args);
 /* EXIT */
 void	actualize_status_and_exit(char *status);
 void	ft_exit(char **args);
-void	is_input_exit(char *input, t_data *data);
+int		is_input_exit(char *input, t_data *data);
 void	ft_exit_and_free(char **input_cpy, t_data *data);
 
 /* EXPORT */
@@ -200,6 +200,7 @@ void	setup_heredoc_signals(void);
 void	setup_main_signals(void);
 void	signal_routine(int signal);
 void	heredoc_handler(int signal);
+void	handler_sig_cmd(int signal);
 
 /* UTILS */
 char	*ft_strnjoin(char *s1, char *s2, int n);

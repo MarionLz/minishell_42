@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:03:21 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:03:48 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ void	ft_export(char **args, t_data *data)
 	int	i;
 
 	i = 1;
+	if (!args[i])
+		printf("export: identifier needed\n");
 	while (args[i])
 	{
 		if (is_var_valid(args[i]) == 0)
