@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:02:24 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/11 12:28:41 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:39:40 by malauzie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,11 @@ void	signal_routine(int signal)
 		rl_redisplay();
 	}
 }
-
-void	handler_sig_cmd(int signal)
+void	signal_routine_child(int signal)
 {
 	if (signal == SIGINT)
 	{
-		write(1, "\n", 1);
+		printf("\n");
 		g_exit_status = 130;
 	}
 }

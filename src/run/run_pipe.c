@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_pipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:01:44 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:24:30 by malauzie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,27 @@ int	wait_for_process(pid_t pid1)
 	return (return_status);
 }
 
+int	is_there_heredoc(t_node *node)
+{
+	t_redir_node	*redir_node;
+
+	if (node->type == EXEC)
+		return (1);
+	else
+	{
+		redir_node = (t_redir_node *)node;
+		while (redir_node->r_type == HEREDOC)
+		{
+			if (redir_node->cmd->type == EXEC)
+				return (1);
+			redir_node = (t_redir_node *) redir_node->cmd;
+		}
+		if (redir_node->r_type == HEREDOC)
+			return (0);
+	}
+	return (1);
+}
+
 /* one of the most important fct.
 fork and set up pipes each time there is one.
 then call recursivly run fct with the next left and right nodes
@@ -91,12 +112,14 @@ int	run_pipe(t_node *tree, t_data *data)
 	pid1 = ft_fork();
 	if (pid1 == 0)
 		run_next_node_left(pipe_node, fd, data);
-	return_status = wait_for_process(pid1);
+	if (is_there_heredoc(pipe_node->left) == 0)
+		return_status = wait_for_process(pid1);
 	pid2 = ft_fork();
 	if (pid2 == 0)
 		run_next_node_right(pipe_node, fd, data);
 	close(fd[0]);
 	close(fd[1]);
+	return_status = wait_for_process(pid1);
 	return_status = wait_for_process(pid2);
 	return (return_status);
 }

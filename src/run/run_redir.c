@@ -6,7 +6,7 @@
 /*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:01:52 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/11 11:56:23 by malauzie         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:23:51 by malauzie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,25 +74,6 @@ void	ft_heredoc(t_redir_node *redir_node)
 	close(file);
 }
 
-//check if next node to be runned is HEREDOC
-//if so, exchange the node so the HEREDOC can be runned first 
-//before other dup2 is made for the redirection. 
-t_redir_node	*exchange_cmd_order(t_redir_node *redir_node)
-{
-	t_redir_node	*r_node_cpy;
-	t_node			*cmd_cpy;
-
-	r_node_cpy = (t_redir_node *) redir_node->cmd;
-	cmd_cpy = r_node_cpy->cmd;
-	if (r_node_cpy->type == REDIR)
-	{
-		redir_node->cmd = cmd_cpy;
-		r_node_cpy->cmd = (t_node *) redir_node;
-		return (r_node_cpy);
-	}
-	return (redir_node);
-}
-
 //check what kind of redirection has to be handled.
 //if IN_REDIR or OUT_REDIR, close the proper fd (stdin or stdout basicaly)
 //and open the given file (open fct attribute to the opened file
@@ -104,7 +85,6 @@ void	run_redir(t_node *tree, t_data *data)
 	t_redir_node	*redir_node;
 
 	redir_node = (t_redir_node *)tree;
-	redir_node = exchange_cmd_order(redir_node);
 	if (redir_node->r_type == HEREDOC)
 	{
 		dup2(data->stdin_cpy, STDIN_FILENO);

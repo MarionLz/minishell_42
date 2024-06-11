@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:02:01 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/11 12:30:51 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:38:29 by malauzie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,25 @@ void	run(t_node *tree, t_data *data)
 	exit (return_status);
 }
 
+void	fork_before_exec(t_node *tree, t_data *data)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = 0;
+	pid = ft_fork();
+	signal(SIGINT, signal_routine_child);
+	if (pid == 0)
+		run(tree, data);
+	else if (pid > 0)
+	{
+		while (waitpid(pid, &status, 0) == -1)
+			;
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+	}
+}
+
 //check 1st if the cmd to be runned is a builtin involving 
 //to modify the environment.
 //if so, run them before forking so the program always remember 
@@ -69,10 +88,7 @@ void	run(t_node *tree, t_data *data)
 void	check_and_run(t_node *tree, t_data *data)
 {
 	t_exec_node	*ex_node;
-	pid_t		pid;
-	int			status;
 
-	pid = 0;
 	if (is_cmd_env_builtin(tree) == 1 && data->nb_cmd == 1)
 	{
 		ex_node = (t_exec_node *)tree;
@@ -80,18 +96,6 @@ void	check_and_run(t_node *tree, t_data *data)
 		g_exit_status = 0;
 	}
 	else
-	{
-		signal(SIGINT, handler_sig_cmd);
-		pid = ft_fork();
-		if (pid == 0)
-			run(tree, data);
-		else if (pid > 0)
-		{
-			while (waitpid(pid, &status, 0) == -1)
-				;
-			if (WIFEXITED(status))
-				g_exit_status = WEXITSTATUS(status);
-		}
-	}
+		fork_before_exec(tree, data);
 	return ;
 }

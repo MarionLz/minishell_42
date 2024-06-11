@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:02:19 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/11 12:30:12 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:38:41 by malauzie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ int	main(int ac, char **av, char **env)
 	if (!env)
 		return (1);
 	g_exit_status = 0;
-	setup_main_signals();
 	while (1)
 	{
+		setup_main_signals();
 		input = readline("minishell $ ");
 		if (!is_input_empty(input, data))
 			input_handler(input, data);
