@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:02:59 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:00:08 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_home_folder(t_data *data)
 	if (!data->env_cpy[i])
 	{
 		printf("minishell: cd: HOME not set\n");
-		return (NULL);
+		return (free(path), NULL);
 	}
 	while (data->env_cpy[i][j])
 	{
@@ -71,7 +71,7 @@ void	actualize_env(char *directory, char *var, t_data *data)
 	free(new_oldpwd);
 }
 
-void	go_home(t_data *data, char *old_directory)
+int	go_home(t_data *data, char *old_directory)
 {
 	char	*path;
 
@@ -79,10 +79,11 @@ void	go_home(t_data *data, char *old_directory)
 	if (path == NULL)
 	{
 		free(old_directory);
-		return ;
+		return (1);
 	}
 	change_directory(path);
 	free(path);
+	return (0);
 }
 
 //change directory to the given path. 
@@ -97,7 +98,10 @@ void	ft_cd(char **args, t_data *data)
 	current_directory = NULL;
 	old_directory = getcwd(old_directory, 0);
 	if (!args[1])
-		go_home(data, old_directory);
+	{
+		if (go_home(data, old_directory) == 1)
+			return ;
+	}
 	else
 	{
 		if (!change_directory(args[1]))

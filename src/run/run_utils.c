@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc_utils.c                                   :+:      :+:    :+:   */
+/*   run_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:01:03 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 18:37:51 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,11 @@ int	is_line_delimiter(char *line, t_redir_node *redir_node)
 		return (1);
 	else
 		return (0);
+}
+
+void	dup_right(int *fd)
+{
+	close (fd[1]);
+	dup2(fd[0], 0);
+	close(fd[0]);
 }

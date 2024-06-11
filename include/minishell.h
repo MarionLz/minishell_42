@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:03:55 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/11 17:39:18 by malauzie         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:14:48 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-# define MAX_ARGS 50
+# define MAX_ARGS 100
 
 //variable globale
 extern int	g_exit_status;
@@ -179,9 +179,10 @@ void	run_heredoc(t_redir_node *redir_node);
 void	run_redir(t_node *tree, t_data *data);
 void	ft_heredoc(t_redir_node *redir_node);
 
-/* HERE DOC UTILS */
+/* RUN UTILS */
 void	handle_line(char *line, int file);
 int		is_line_delimiter(char *line, t_redir_node *redir_node);
+void	dup_right(int *fd);
 
 /* RUN PIPE */
 void	run_next_node_left(t_pipe_node *pipe_node, int *fd, t_data *data);
@@ -200,7 +201,7 @@ void	run_exec(t_node *tree, t_data *data);
 char	*get_home_folder(t_data *data);
 int		change_directory(char *path);
 void	actualize_env(char *directory, char *var, t_data *data);
-void	go_home(t_data *data, char *old_directory);
+int		go_home(t_data *data, char *old_directory);
 void	ft_cd(char **args, t_data *data);
 
 /* ECHO */

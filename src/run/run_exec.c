@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:01:35 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/11 17:38:18 by malauzie         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:11:35 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,12 @@ char	*get_path(char *cmd, t_data *data)
 	char	**allpaths;
 	char	*goodpath;
 	char	*subpath;
+	char	*paths;
 
-	allpaths = ft_split(extract_env(data->env_cpy), ':');
+	paths = extract_env(data->env_cpy);
+	if (!paths)
+		return (NULL);
+	allpaths = ft_split(paths, ':');
 	i = -1;
 	while (allpaths[++i])
 	{
@@ -75,8 +79,6 @@ void	run_exec(t_node *tree, t_data *data)
 	else
 	{
 		path = get_path(exec_node->args[0], data);
-		if (!path)
-			ft_error("path");
 		if (execve(exec_node->args[0], exec_node->args, data->env_cpy) == -1)
 		{
 			if (execve(path, exec_node->args,
