@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:01:52 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 11:56:23 by malauzie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_redir_node	*exchange_cmd_order(t_redir_node *redir_node)
 
 	r_node_cpy = (t_redir_node *) redir_node->cmd;
 	cmd_cpy = r_node_cpy->cmd;
-	if (r_node_cpy->r_type == HEREDOC)
+	if (r_node_cpy->type == REDIR)
 	{
 		redir_node->cmd = cmd_cpy;
 		r_node_cpy->cmd = (t_node *) redir_node;
@@ -104,13 +104,14 @@ void	run_redir(t_node *tree, t_data *data)
 	t_redir_node	*redir_node;
 
 	redir_node = (t_redir_node *)tree;
+	redir_node = exchange_cmd_order(redir_node);
 	if (redir_node->r_type == HEREDOC)
+	{
+		dup2(data->stdin_cpy, STDIN_FILENO);
 		ft_heredoc(redir_node);
+	}
 	else
 	{
-		redir_node = exchange_cmd_order(redir_node);
-		if (redir_node->r_type == HEREDOC)
-			run_redir((t_node *)redir_node, data);
 		if (close(redir_node->fd) < 0)
 			ft_error("close stdin/stdout failed");
 		if (open(redir_node->file, redir_node->mode, 0777) < 0)
