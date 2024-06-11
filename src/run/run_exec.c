@@ -6,7 +6,7 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:01:35 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:46:41 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,11 @@ void	run_exec(t_node *tree, t_data *data)
 	else
 	{
 		path = get_path(exec_node->args[0], data);
-		if (execve(path, exec_node->args, data->env_cpy) == -1)
+		if (!path)
+			ft_error("path");
+		if (execve(exec_node->args[0], exec_node->args, data->env_cpy) == -1)
 		{
-			if (execve(exec_node->args[0], exec_node->args,
+			if (execve(path, exec_node->args,
 					data->env_cpy) == -1)
 			{
 				free(path);

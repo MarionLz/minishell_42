@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_dollar.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 10:14:19 by malauzie          #+#    #+#             */
-/*   Updated: 2024/06/11 10:14:20 by malauzie         ###   ########.fr       */
+/*   Updated: 2024/06/11 12:14:17 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,17 @@ command line and replaces $? with its value.*/
 
 char	*get_exit_status(char *new_input)
 {
-	char		*str_exit_status;
+	char	*str_exit_status;
+	int		i;
 
+	i = 0;
 	str_exit_status = ft_itoa(g_exit_status);
-	while (*str_exit_status)
+	while (str_exit_status[i])
 	{
-		new_input = strjoin_char(new_input, *str_exit_status);
-		str_exit_status++;
+		new_input = strjoin_char(new_input, str_exit_status[i]);
+		i++;
 	}
+	free(str_exit_status);
 	return (new_input);
 }
 

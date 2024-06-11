@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 10:14:03 by malauzie          #+#    #+#             */
-/*   Updated: 2024/06/11 10:17:32 by malauzie         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:33:27 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_node	*parse_error(char *message)
 {
-	printf("Error, %s.\n", message);
+	printf("Minishell: Error: %s.\n", message);
 	return (NULL);
 }
 

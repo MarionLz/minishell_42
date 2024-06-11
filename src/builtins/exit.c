@@ -6,20 +6,20 @@
 /*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:03:16 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:38 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:17:26 by gdaignea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	is_input_exit(char *input, t_data *data)
+int	is_input_exit(char *input, t_data *data)
 {
 	int		i;
 	char	**input_cpy;
 
 	i = 0;
 	if (!input)
-		return ;
+		return (1);
 	input_cpy = ft_split(input, ' ');
 	if (strcmp(input_cpy[0], "exit") == 0)
 	{
@@ -29,7 +29,7 @@ void	is_input_exit(char *input, t_data *data)
 		{
 			printf("exit\nminishell: exit: too many arguments\n");
 			free_tab(input_cpy);
-			return ;
+			return (g_exit_status = 1, 0);
 		}
 		else
 		{
@@ -38,7 +38,7 @@ void	is_input_exit(char *input, t_data *data)
 		}
 	}
 	free_tab(input_cpy);
-	return ;
+	return (1);
 }
 
 void	ft_exit_and_free(char **input_cpy, t_data *data)
