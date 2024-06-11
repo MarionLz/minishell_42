@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gdaignea <gdaignea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 17:03:55 by gdaignea          #+#    #+#             */
-/*   Updated: 2024/06/11 12:28:41 by gdaignea         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:39:18 by malauzie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@ typedef struct s_pipe_node
 
 /* MAIN */
 void	ft_error(char *error);
+bool	contain_only_whitespace(char *input);
+int		is_input_empty(char *input, t_data *data);
+void	*input_handler(char *input, t_data *data);
 
 /* ENV */
 int		tab_len(char **tab);
@@ -102,19 +105,31 @@ t_data	*handle_env(char **data);
 
 /* PARSING */
 t_node	*parse_error(char *message);
+t_node	*parse_redir(t_node *node, char **start_scan, char *end_input,
+			t_data *data);
 t_node	*parse_exec(char **start_scan, char *end_input, t_data *data);
-t_node	*nulterminate(t_node *tree, t_data *data);
+t_node	*parse_pipe(char **start_scan, char *end_input, t_data *data);
 t_node	*parse_input(char *input, t_data *data);
 
 /* CLEAN INPUT */
+char	*make_new_input(char *new_input, char **input);
+char	*skip_quotes_to_ignore(char **input, char *new_input, t_data *data);
+char	*delimit_token(char *new_input, bool *open_tok, char quote);
+char	*cleaner(char *new_input, char *input, t_data *data);
 char	*clean_input(char *input, t_data *data);
 
 /* REPLACE_DOLLAR */
+char	*get_exit_status(char *new_input);
+char	*get_var_name(t_dollar *var, char **input);
+bool	find_var_in_env(t_dollar *var, t_data *data);
+char	*copy_var_value(t_dollar *var, char *new_input, t_data *data);
 char	*replace_dollar(char *new_input, char **input, t_data *data);
 
 /* TOKEN */
 int		insight_input(char **start_token, char *end_input, char *target);
+int		get_type_redir(char **str, int type);
 int		get_type(char **str, int type, char *end_input);
+int		token_with_quotes(char **str, char **start_token, char **end_token);
 int		get_token(char **start_scan, char *end_input, char **start_token,
 			char **end_token);
 
@@ -126,7 +141,11 @@ t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file,
 t_node	*create_pipe_node(t_node *left, t_node *right);
 t_node	*create_exec_node(void);
 
-/* QUOTES */
+/* REDIR UTILS */
+void	init_fd_and_mode(int token_type, t_redir_node	*redir_node);
+t_node	*multiple_redir(t_node *cmd, t_redir_node *last_redir);
+
+/* QUOTES UTILS */
 bool	is_quotes(char c);
 void	check_quotes(int *simple_quote, int *double_quotes, char *input, int i);
 bool	open_quotes(char *input);
@@ -146,15 +165,17 @@ t_node	*nulterminate(t_node *tree, t_data *data);
 
 /* RUN */
 int		ft_fork(void);
+int		is_cmd_env_builtin(t_node *tree);
 void	run(t_node *tree, t_data *data);
+void	fork_before_exec(t_node *tree, t_data *data);
 void	check_and_run(t_node *tree, t_data *data);
 
 /* RUN BUILTIN */
 void	run_builtin(char **args, t_data *data);
 
 /* RUN REDIR */
-void	handler_heredoc(int signal);
 void	reopen_stdin_stdout(int fd);
+void	run_heredoc(t_redir_node *redir_node);
 void	run_redir(t_node *tree, t_data *data);
 void	ft_heredoc(t_redir_node *redir_node);
 
@@ -163,21 +184,32 @@ void	handle_line(char *line, int file);
 int		is_line_delimiter(char *line, t_redir_node *redir_node);
 
 /* RUN PIPE */
+void	run_next_node_left(t_pipe_node *pipe_node, int *fd, t_data *data);
+void	run_next_node_right(t_pipe_node *pipe_node, int *fd, t_data *data);
+int		wait_for_process(pid_t pid1);
+int		is_there_heredoc(t_node *node);
 int		run_pipe(t_node *tree, t_data *data);
 
 /* RUN EXEC */
 void	free_tab(char **tab);
+char	*extract_env(char **env);
+char	*get_path(char *cmd, t_data *data);
 void	run_exec(t_node *tree, t_data *data);
 
-/* BUILTINS */
+/* CD */
+char	*get_home_folder(t_data *data);
+int		change_directory(char *path);
+void	actualize_env(char *directory, char *var, t_data *data);
+void	go_home(t_data *data, char *old_directory);
 void	ft_cd(char **args, t_data *data);
-void	ft_pwd(void);
-void	ft_env(t_data *data);
 
 /* ECHO */
 bool	is_empty_quotes(char *str);
 void	print_args(char **args, int i);
 void	ft_echo(char **args);
+
+/* ENV */
+void	ft_env(t_data *data);
 
 /* EXIT */
 void	actualize_status_and_exit(char *status);
@@ -192,7 +224,13 @@ void	add_new_var(char *var, t_data *data);
 void	change_var(char *var, t_data *data);
 void	ft_export(char **args, t_data *data);
 
+/* PWD */
+void	ft_pwd(void);
+
 /* UNSET */
+bool	is_var_name_valid(char **args);
+int		find_var_to_delete(char *env, char **args);
+char	*copy_variable(char *to_copy, char **new_env, int j);
 void	ft_unset(char **args, t_data *data);
 
 /* SIGNALS */
@@ -200,7 +238,7 @@ void	setup_heredoc_signals(void);
 void	setup_main_signals(void);
 void	signal_routine(int signal);
 void	heredoc_handler(int signal);
-void	handler_sig_cmd(int signal);
+void	signal_routine_child(int signal);
 
 /* UTILS */
 char	*ft_strnjoin(char *s1, char *s2, int n);

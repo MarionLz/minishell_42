@@ -6,7 +6,7 @@
 /*   By: malauzie <malauzie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 13:47:21 by malauzie          #+#    #+#             */
-/*   Updated: 2024/06/10 14:09:21 by malauzie         ###   ########.fr       */
+/*   Updated: 2024/06/11 15:44:18 by malauzie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,6 @@ void	fill_args(t_exec_node *exec_node, char *start_token, char *end_token,
 	exec_node->args[*i] = start_token;
 	exec_node->end_args[*i] = end_token;
 	(*i)++;
-}
-
-void	init_fd_and_mode(int token_type, t_redir_node	*redir_node)
-{
-	if (token_type == IN_REDIR)
-	{
-		redir_node->mode = O_RDONLY;
-		redir_node->fd = 0;
-	}
-	if (token_type == OUT_REDIR)
-	{
-		redir_node->mode = O_RDWR | O_CREAT | O_TRUNC;
-		redir_node->fd = 1;
-	}
-	if (token_type == APPEND)
-	{
-		redir_node->mode = O_RDWR | O_CREAT | O_APPEND;
-		redir_node->fd = 1;
-	}
 }
 
 t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file,
@@ -56,6 +37,8 @@ t_node	*create_redir_node(int token_type, t_node *cmd, char *start_file,
 	redir_node->file = start_file;
 	redir_node->end_file = end_file;
 	init_fd_and_mode(token_type, redir_node);
+	if (cmd->type == REDIR)
+		return (multiple_redir(cmd, redir_node));
 	return ((t_node *)redir_node);
 }
 
